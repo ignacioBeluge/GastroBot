@@ -1,0 +1,25 @@
+{
+  "name": "gastrobot-backend",
+  "version": "1.0.0",
+  "description": "Backend para la aplicación GastroBot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed": "node scripts/seedRecipes.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.1",
+    "nodemailer": "^7.0.3",
+    "resend": "^4.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
