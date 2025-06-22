@@ -34,7 +34,7 @@ const fetchFullRecipeDetails = async (recipeStub) => {
 
 router.get('/category/:categoryName', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('dietaryPreferences');
+    const user = await User.findById(req.user._id).select('dietaryPreferences');
     const preferences = user.dietaryPreferences;
 
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${req.params.categoryName}`);
@@ -56,7 +56,7 @@ router.get('/category/:categoryName', authMiddleware, async (req, res) => {
 
 router.get('/mealtype/:typeName', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('dietaryPreferences');
+    const user = await User.findById(req.user._id).select('dietaryPreferences');
     const preferences = user.dietaryPreferences;
 
     // TheMealDB uses 'search' for meal types, not a filter.

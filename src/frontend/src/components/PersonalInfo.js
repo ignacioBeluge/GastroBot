@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getCurrentUser } from '../services/authService';
 import { getUserPreferences, updateUserPreferences } from '../services/userService';
 import './PersonalInfo.css';
+import './ProfilePage.css';
 
 const dietaryOptions = [
   { id: 'celiac', name: 'Celiac' },
@@ -63,8 +64,8 @@ const PersonalInfo = ({ onBack, onEdit }) => {
   }
 
   return (
-    <div className="personal-info-bg">
-      <div className="personal-info-container">
+    <div className="profile-bg">
+      <div className="personal-info-container profile-card">
         <div className="personal-info-header">
           <button className="personal-info-back-btn" onClick={onBack}>
             <svg width="28" height="28" viewBox="0 0 22 22">
