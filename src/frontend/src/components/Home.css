@@ -199,15 +199,15 @@
   border: 2px solid #404040 !important;
   border-radius: 16px !important;
   overflow: hidden !important;
-  transition: all 0.3s ease !important;
   cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
 }
 
 .home-recommend:hover {
-  background: #404040 !important;
-  border-color: #ff7a00 !important;
   transform: translateY(-4px) !important;
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
+  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.3) !important;
+  border-color: #ff7a00 !important;
 }
 
 .home-recommend-img {
@@ -229,26 +229,583 @@
 }
 
 .home-recommend-desc {
-  color: #888888 !important;
+  color: #b0b0b0 !important;
   font-size: 0.95rem !important;
-  line-height: 1.5 !important;
   margin-bottom: 1rem !important;
+  line-height: 1.5 !important;
 }
 
 .home-recommend-meta {
   display: flex !important;
-  align-items: center !important;
   gap: 1rem !important;
   color: #ff7a00 !important;
-  font-size: 0.9rem !important;
   font-weight: 600 !important;
+  font-size: 0.9rem !important;
 }
 
-/* Profile components dark theme */
+/* Dark theme styles for all other components */
+.search-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.search-card {
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #404040 !important;
+  max-width: 800px !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.search-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+}
+
+.search-back-btn {
+  position: absolute !important;
+  top: 18px !important;
+  left: 18px !important;
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  z-index: 10 !important;
+}
+
+.search-back-btn:hover {
+  background: #404040 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.search-back-btn svg circle {
+  fill: #333333 !important;
+}
+
+.search-back-btn svg path {
+  stroke: #ffffff !important;
+}
+
+/* Food Details Components */
+.food-details-card {
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #404040 !important;
+  max-width: 800px !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.food-details-img-wrap {
+  position: relative !important;
+  width: 100% !important;
+  height: 300px !important;
+  overflow: hidden !important;
+}
+
+.food-details-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.food-details-back {
+  position: absolute !important;
+  top: 18px !important;
+  left: 18px !important;
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  z-index: 10 !important;
+}
+
+.food-details-back:hover {
+  background: #404040 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.food-details-title {
+  color: #ffffff !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  padding: 1.5rem 2rem 1rem !important;
+  line-height: 1.3 !important;
+}
+
+.food-details-meta {
+  color: #e0e0e0 !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+  padding: 0 2rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1.5rem !important;
+}
+
+.food-details-desc {
+  color: #e0e0e0 !important;
+  font-size: 1.05rem !important;
+  line-height: 1.6 !important;
+  padding: 0 2rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.food-details-ing-title {
+  color: #ff7a00 !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin: 1.5rem 0 1rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+.food-details-ings {
+  padding: 0 2rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.food-details-ing {
+  color: #e0e0e0 !important;
+  font-size: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 1rem !important;
+}
+
+.food-details-steps-title {
+  color: #ff7a00 !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin: 2rem 0 1rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+
+.food-details-steps-container {
+  padding: 0 2rem 2rem !important;
+}
+
+.food-details-step-item {
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  color: #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.food-details-step-item:hover {
+  border-color: #ff7a00 !important;
+  background: #404040 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.2) !important;
+}
+
+.step-number {
+  background: #ff7a00 !important;
+  color: #ffffff !important;
+}
+
+/* Favorites and History Components */
+.favhis-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.favhis-card {
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #404040 !important;
+  max-width: 800px !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.favhis-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+}
+
+.favhis-header-row {
+  display: flex !important;
+  align-items: center !important;
+  padding: 1.5rem 2rem !important;
+  border-bottom: 1px solid #404040 !important;
+  background: #333333 !important;
+}
+
+.favhis-back-btn {
+  background: #404040 !important;
+  border: 2px solid #505050 !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-right: 1rem !important;
+}
+
+.favhis-back-btn:hover {
+  background: #505050 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.favhis-back-btn svg circle {
+  fill: #404040 !important;
+}
+
+.favhis-back-btn svg path {
+  stroke: #ffffff !important;
+}
+
+.favhis-title {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  flex: 1 !important;
+}
+
+.favhis-list {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 1.5rem 2rem !important;
+}
+
+.favhis-item {
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  border-radius: 16px !important;
+  padding: 1rem !important;
+  margin-bottom: 1rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+.favhis-item:hover {
+  background: #404040 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
+}
+
+.favhis-img {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 12px !important;
+  object-fit: cover !important;
+  flex-shrink: 0 !important;
+}
+
+.favhis-info {
+  flex: 1 !important;
+}
+
+.favhis-name {
+  color: #ffffff !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.3 !important;
+}
+
+.favhis-desc {
+  color: #b0b0b0 !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.4 !important;
+}
+
+/* Category Components */
+.category-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+}
+
+.category-card {
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #404040 !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.category-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+}
+
+.category-header-row {
+  display: flex !important;
+  align-items: center !important;
+  padding: 1.5rem 2rem !important;
+  border-bottom: 1px solid #404040 !important;
+  background: #333333 !important;
+}
+
+.category-back-btn {
+  background: #404040 !important;
+  border: 2px solid #505050 !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-right: 1rem !important;
+}
+
+.category-back-btn:hover {
+  background: #505050 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.category-title {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  flex: 1 !important;
+}
+
+.category-list {
+  padding: 2rem !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+  gap: 1.5rem !important;
+  max-height: calc(100vh - 200px) !important;
+  overflow-y: auto !important;
+}
+
+.category-item {
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.category-item:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.3) !important;
+  border-color: #ff7a00 !important;
+}
+
+.category-item-img {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+}
+
+.category-item-info {
+  padding: 1.5rem !important;
+}
+
+.category-item-title {
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.3 !important;
+}
+
+.category-item-desc {
+  color: #b0b0b0 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+}
+
+/* Chat Components */
+.chatbox-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+}
+
+.chatbox-card {
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid #404040 !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+  position: relative !important;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.chatbox-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+}
+
+.chatbox-header {
+  display: flex !important;
+  align-items: center !important;
+  padding: 1.5rem 2rem !important;
+  border-bottom: 1px solid #404040 !important;
+  background: #333333 !important;
+}
+
+.chatbox-title {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  flex: 1 !important;
+}
+
+.chatbox-body {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding: 1.5rem 2rem !important;
+  background: #2a2a2a !important;
+}
+
+.chat-msg {
+  margin-bottom: 1rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 12px !important;
+  max-width: 85% !important;
+  word-wrap: break-word !important;
+}
+
+.chat-msg.bot {
+  background: #333333 !important;
+  border: 1px solid #404040 !important;
+  color: #e0e0e0 !important;
+  margin-right: auto !important;
+}
+
+.chat-msg.user {
+  background: #ff7a00 !important;
+  color: #ffffff !important;
+  margin-left: auto !important;
+}
+
+.chatbox-input {
+  padding: 1.5rem 2rem !important;
+  border-top: 1px solid #404040 !important;
+  background: #333333 !important;
+  display: flex !important;
+  gap: 1rem !important;
+}
+
+.chatbox-input input {
+  flex: 1 !important;
+  padding: 1rem 1.25rem !important;
+  border: 2px solid #404040 !important;
+  border-radius: 12px !important;
+  font-size: 1rem !important;
+  background: #2a2a2a !important;
+  color: #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.chatbox-input input:focus {
+  outline: none !important;
+  border-color: #ff7a00 !important;
+  background: #404040 !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
+}
+
+.chatbox-input button {
+  background: #ff7a00 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.5rem !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.chatbox-input button:hover {
+  background: #e66d00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+/* Profile Components */
 .profile-bg {
   background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
   min-height: 100vh !important;
-  padding: 2rem !important;
+  padding: 2rem 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -259,10 +816,11 @@
   border-radius: 20px !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
   border: 1px solid #404040 !important;
-  width: 100% !important;
-  max-width: 500px !important;
-  position: relative !important;
+  max-width: 600px !important;
+  width: 90% !important;
+  margin: 0 auto !important;
   overflow: hidden !important;
+  position: relative !important;
 }
 
 .profile-card::before {
@@ -278,13 +836,14 @@
 .profile-header-row {
   display: flex !important;
   align-items: center !important;
-  padding: 1.5rem !important;
+  padding: 1.5rem 2rem !important;
   border-bottom: 1px solid #404040 !important;
+  background: #333333 !important;
 }
 
 .profile-back-btn {
-  background: #333333 !important;
-  border: 2px solid #404040 !important;
+  background: #404040 !important;
+  border: 2px solid #505050 !important;
   border-radius: 50% !important;
   width: 44px !important;
   height: 44px !important;
@@ -297,13 +856,14 @@
 }
 
 .profile-back-btn:hover {
-  background: #404040 !important;
+  background: #505050 !important;
   border-color: #ff7a00 !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
 }
 
 .profile-back-btn svg circle {
-  fill: #333333 !important;
+  fill: #404040 !important;
 }
 
 .profile-back-btn svg path {
@@ -314,84 +874,87 @@
   color: #ffffff !important;
   font-size: 1.5rem !important;
   font-weight: 700 !important;
+  flex: 1 !important;
 }
 
 .profile-avatar-big {
   width: 120px !important;
   height: 120px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+  object-fit: cover !important;
+  border: 4px solid #ff7a00 !important;
   margin: 2rem auto 1rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 3rem !important;
-  color: #ffffff !important;
+  display: block !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
 }
 
 .profile-username {
   color: #ffffff !important;
-  font-size: 1.5rem !important;
+  font-size: 1.75rem !important;
   font-weight: 700 !important;
   text-align: center !important;
   margin-bottom: 0.5rem !important;
 }
 
 .profile-desc {
-  color: #888888 !important;
+  color: #b0b0b0 !important;
+  font-size: 1rem !important;
   text-align: center !important;
   margin-bottom: 2rem !important;
-  padding: 0 1.5rem !important;
-  line-height: 1.5 !important;
+  padding: 0 2rem !important;
 }
 
 .profile-menu-list-2 {
-  padding: 0 1.5rem 1.5rem !important;
+  padding: 0 2rem 2rem !important;
 }
 
 .profile-menu-item-2 {
-  display: flex !important;
-  align-items: center !important;
-  padding: 1rem !important;
   background: #333333 !important;
   border: 2px solid #404040 !important;
   border-radius: 12px !important;
-  margin-bottom: 0.75rem !important;
+  padding: 1rem 1.5rem !important;
+  margin-bottom: 1rem !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
-  color: #e0e0e0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 .profile-menu-item-2:hover {
   background: #404040 !important;
   border-color: #ff7a00 !important;
   transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
 }
 
 .profile-menu-item-2.logout {
-  color: #ff6b6b !important;
-  background: #3d1f1f !important;
-  border-color: #ff6b6b !important;
+  background: #4a1a1a !important;
+  border-color: #ff4444 !important;
+  color: #ff6666 !important;
 }
 
 .profile-menu-item-2.logout:hover {
-  background: #4d2f2f !important;
+  background: #5a2222 !important;
+  border-color: #ff6666 !important;
 }
 
 .profile-menu-icon-2 {
-  font-size: 1.5rem !important;
+  color: #ff7a00 !important;
+  font-size: 1.25rem !important;
   margin-right: 1rem !important;
-  width: 24px !important;
-  text-align: center !important;
 }
 
 .profile-menu-arrow-2 {
-  margin-left: auto !important;
   color: #888888 !important;
-  font-size: 1.25rem !important;
+  font-size: 1.1rem !important;
 }
 
 .profile-edit-form {
+  padding: 0 2rem 2rem !important;
+}
+
+.profile-edit-form input {
   width: 100% !important;
   padding: 1rem 1.25rem !important;
   border: 2px solid #404040 !important;
@@ -399,11 +962,11 @@
   font-size: 1rem !important;
   background: #333333 !important;
   color: #e0e0e0 !important;
+  margin-bottom: 1rem !important;
   transition: all 0.3s ease !important;
-  margin-top: 0.5rem !important;
 }
 
-.profile-edit-form:focus {
+.profile-edit-form input:focus {
   outline: none !important;
   border-color: #ff7a00 !important;
   background: #404040 !important;
@@ -411,277 +974,289 @@
 }
 
 .profile-save-btn {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
-  color: #ffffff !important;
-  padding: 1rem 2rem !important;
+  background: #ff7a00 !important;
   border: none !important;
   border-radius: 12px !important;
-  font-size: 1rem !important;
-  font-weight: 700 !important;
+  padding: 1rem 2rem !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+  width: 100% !important;
 }
 
 .profile-save-btn:hover {
-  background: linear-gradient(135deg, #e66d00 0%, #e68500 100%) !important;
+  background: #e66d00 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
 }
 
-/* Chat components dark theme */
+/* Chatbox Components */
 .chatbox-window {
   position: fixed !important;
-  bottom: 100px !important;
-  right: 20px !important;
-  width: 350px !important;
+  bottom: 2rem !important;
+  right: 2rem !important;
+  width: 400px !important;
   height: 500px !important;
   background: #2a2a2a !important;
   border-radius: 20px !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
   border: 1px solid #404040 !important;
-  z-index: 1200 !important;
   overflow: hidden !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .chatbox-header {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
-  color: #ffffff !important;
-  padding: 1rem !important;
-  font-weight: 700 !important;
-  font-size: 1.125rem !important;
-  text-align: center !important;
+  background: #333333 !important;
+  padding: 1rem 1.5rem !important;
   border-bottom: 1px solid #404040 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 .chatbox-body {
-  background: #2a2a2a !important;
-  height: calc(100% - 60px) !important;
+  flex: 1 !important;
   overflow-y: auto !important;
-  padding: 1rem !important;
+  padding: 1rem 1.5rem !important;
+  background: #2a2a2a !important;
 }
 
 .chat-msg {
   margin-bottom: 1rem !important;
-  padding: 1rem !important;
+  padding: 0.75rem 1rem !important;
   border-radius: 12px !important;
-  max-width: 80% !important;
+  max-width: 85% !important;
+  word-wrap: break-word !important;
 }
 
 .chat-msg.bot {
   background: #333333 !important;
-  color: #e0e0e0 !important;
   border: 1px solid #404040 !important;
+  color: #e0e0e0 !important;
   margin-right: auto !important;
 }
 
 .chat-msg.user {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+  background: #ff7a00 !important;
   color: #ffffff !important;
   margin-left: auto !important;
 }
 
 .chatbox-btn {
   position: fixed !important;
-  bottom: 20px !important;
-  right: 20px !important;
+  bottom: 2rem !important;
+  right: 2rem !important;
   width: 60px !important;
   height: 60px !important;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+  background: #ff7a00 !important;
   border: none !important;
   border-radius: 50% !important;
   cursor: pointer !important;
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4) !important;
   transition: all 0.3s ease !important;
-  z-index: 1000 !important;
+  z-index: 1001 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
 }
 
 .chatbox-btn:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.5) !important;
+  background: #e66d00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.4) !important;
 }
 
 .chatbox-btn img {
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 50% !important;
+  width: 28px !important;
+  height: 28px !important;
+  filter: brightness(0) invert(1) !important;
 }
 
-/* Tablet styles (768px and below) */
+/* Responsive Design */
 @media (max-width: 768px) {
-  .home-greet-bar {
-    padding: 0 1.5rem !important;
-  }
-  
-  .home-greet-text {
-    font-size: 1.25rem !important;
-  }
-  
-  .home-main-scroll {
-    padding: 1.5rem !important;
-  }
-  
-  .home-recommend-list {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
-    gap: 1rem !important;
-  }
-  
-  .home-categories {
-    gap: 0.75rem !important;
-  }
-  
-  .home-category {
-    min-width: 100px !important;
-    padding: 0.75rem !important;
-  }
-  
-  .chatbox-window {
-    width: 300px !important;
-    height: 450px !important;
-    right: 10px !important;
-    bottom: 80px !important;
-  }
-}
-
-/* Mobile styles (480px and below) */
-@media (max-width: 480px) {
   .home-greet-bar {
     padding: 0 1rem !important;
   }
-  
+
   .home-greet-text {
-    font-size: 1.125rem !important;
+    font-size: 1.25rem !important;
   }
-  
+
+  .home-main-scroll {
+    padding: 1.5rem !important;
+  }
+
+  .home-recommend-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+  }
+
+  .home-categories {
+    gap: 0.75rem !important;
+  }
+
+  .home-category {
+    min-width: 100px !important;
+  }
+
+  .chatbox-window {
+    width: 90vw !important;
+    height: 70vh !important;
+    bottom: 1rem !important;
+    right: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-greet-bar {
+    padding: 0 0.75rem !important;
+  }
+
+  .home-greet-text {
+    font-size: 1.1rem !important;
+  }
+
   .home-main-scroll {
     padding: 1rem !important;
   }
-  
+
   .home-recommend-list {
     grid-template-columns: 1fr !important;
-    gap: 0.75rem !important;
   }
-  
+
   .home-categories {
     gap: 0.5rem !important;
   }
-  
+
   .home-category {
     min-width: 80px !important;
-    padding: 0.5rem !important;
+    padding: 0.75rem !important;
   }
-  
+
   .home-category img {
     width: 40px !important;
     height: 40px !important;
   }
-  
+
   .home-category span {
     font-size: 0.8rem !important;
   }
-  
+
   .chatbox-window {
-    width: calc(100vw - 20px) !important;
-    height: 400px !important;
-    right: 10px !important;
-    left: 10px !important;
-    bottom: 80px !important;
+    width: 95vw !important;
+    height: 80vh !important;
+    bottom: 0.5rem !important;
+    right: 0.5rem !important;
   }
-  
+
   .chatbox-btn {
     width: 50px !important;
     height: 50px !important;
-    bottom: 15px !important;
-    right: 15px !important;
+    bottom: 1rem !important;
+    right: 1rem !important;
   }
-  
+
   .chatbox-btn img {
-    width: 28px !important;
-    height: 28px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 }
 
-/* Small mobile devices (320px and below) */
 @media (max-width: 320px) {
   .home-greet-text {
     font-size: 1rem !important;
   }
-  
+
   .home-main-scroll {
     padding: 0.75rem !important;
   }
-  
+
   .home-section-title {
     font-size: 1.25rem !important;
   }
-  
+
   .home-recommend-title {
-    font-size: 1.125rem !important;
+    font-size: 1.1rem !important;
   }
-  
+
   .home-recommend-info {
     padding: 1rem !important;
   }
 }
 
-/* Landscape orientation adjustments */
 @media (orientation: landscape) and (max-height: 500px) {
   .home-main-scroll {
     max-height: calc(100vh - 120px) !important;
   }
-  
+
   .chatbox-window {
-    height: 350px !important;
+    height: 90vh !important;
   }
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .home-main-card,
-  .profile-card,
-  .chatbox-window {
-    border: 2px solid #ffffff !important;
+  .search-card,
+  .food-details-card,
+  .favhis-card,
+  .category-card,
+  .chatbox-card,
+  .profile-card {
+    border-width: 3px !important;
   }
-  
+
   .home-search,
-  .profile-edit-form {
-    border-width: 2px !important;
+  .chatbox-input input,
+  .profile-edit-form input {
+    border-width: 3px !important;
   }
 }
 
-/* Reduced motion preferences */
+/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .home-perfil,
   .home-category,
   .home-recommend,
+  .search-back-btn,
+  .food-details-back,
+  .favhis-back-btn,
+  .category-back-btn,
   .profile-back-btn,
+  .favhis-item,
+  .category-item,
   .profile-menu-item-2,
-  .profile-save-btn,
-  .chatbox-btn {
+  .chatbox-btn,
+  .food-details-step-item {
     transition: none !important;
   }
-  
+
   .home-perfil:hover,
   .home-category:hover,
   .home-recommend:hover,
+  .search-back-btn:hover,
+  .food-details-back:hover,
+  .favhis-back-btn:hover,
+  .category-back-btn:hover,
   .profile-back-btn:hover,
+  .favhis-item:hover,
+  .category-item:hover,
   .profile-menu-item-2:hover,
-  .profile-save-btn:hover,
-  .chatbox-btn:hover {
+  .chatbox-btn:hover,
+  .food-details-step-item:hover {
     transform: none !important;
   }
 }
 
-/* Safe area support for devices with notches */
+/* Safe area support for mobile devices */
 @supports (padding: max(0px)) {
   .home-greet-bar {
     padding-left: max(2rem, env(safe-area-inset-left)) !important;
     padding-right: max(2rem, env(safe-area-inset-right)) !important;
   }
-  
+
   .home-main-scroll {
     padding-left: max(2rem, env(safe-area-inset-left)) !important;
     padding-right: max(2rem, env(safe-area-inset-right)) !important;

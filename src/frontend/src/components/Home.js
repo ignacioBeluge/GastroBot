@@ -577,7 +577,6 @@ const getHistory = () => JSON.parse(localStorage.getItem('history') || '[]');
 const setHistory = hist => localStorage.setItem('history', JSON.stringify(hist));
 
 const RecipeDetail = ({ recipe, onBack }) => {
-  const [step, setStep] = useState(0);
   const [isFav, setIsFav] = useState(false);
   const [fromFavorite, setFromFavorite] = useState(false);
   useEffect(() => {
@@ -620,76 +619,78 @@ const RecipeDetail = ({ recipe, onBack }) => {
       }).filter(Boolean)
     : [];
   const steps = splitSteps(recipe.fullDesc);
-  if (step === 0) {
-    return (
-      <div className="search-bg">
-        <div className="search-card food-details-card" style={{ maxHeight: 540, minHeight: 540, display: 'flex', flexDirection: 'column' }}>
-          <div className="food-details-img-wrap" style={{ flex: '0 0 auto' }}>
-            <img src={recipe.img} alt={recipe.name} className="food-details-img" />
-            <button className="search-back-btn food-details-back" onClick={onBack}>
-              <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#f5f5f5" /><path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
-            </button>
-            <button onClick={toggleFav} style={{ position: 'absolute', top: 18, right: 18, background: 'none', border: 'none', cursor: 'pointer', fontSize: 26 }} title={isFav ? 'Remove from favorites' : 'Add to favorites'}>
-              <span style={{ color: isFav ? '#ff7a00' : '#ccc', textShadow: '0 1px 4px #fff' }}>{isFav ? '❤️' : '🤍'}</span>
-            </button>
-          </div>
-          <div className="food-details-title" style={{ flex: '0 0 auto' }}>{recipe.name}</div>
-          <div className="food-details-meta" style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'center', marginBottom: 4 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span role="img" aria-label="star">⭐</span> {recipe.rating}</span>
-            <span>{recipe.level}</span>
-            <span role="img" aria-label="time">⏱️</span> <span style={{ color: '#ff7a00', marginLeft: 4 }}>{recipe.time}</span>
-          </div>
-          {/* Scrollable content */}
-          <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', marginTop: 8, scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="food-details-scroll-invisible">
-            <style>{`.food-details-scroll-invisible::-webkit-scrollbar { display: none; }`}</style>
-            <div className="food-details-desc" style={{ margin: '10px 0 8px 0', color: '#444', fontSize: '1.05rem' }}>{recipe.desc || recipe.fullDesc}</div>
-            <div className="food-details-ing-title">INGREDIENTS</div>
-            <ul className="food-details-ings" style={{ flexWrap: 'wrap', justifyContent: 'flex-start', listStyle: 'disc', paddingLeft: 18 }}>
-              {ingredients.length === 0 && <li style={{ color: '#aaa' }}>No ingredients found.</li>}
-              {ingredients.map((ing, idx) => (
-                <li className="food-details-ing" key={idx} style={{ background: 'none', color: '#ff7a00', fontWeight: 500, fontSize: '1rem', marginBottom: 2 }}>{ing}</li>
-              ))}
-            </ul>
-          </div>
-          <div style={{ flex: '0 0 auto', paddingTop: 8, background: 'transparent' }}>
-            <button className="food-details-btn" style={{ minWidth: 180, minHeight: 54, fontSize: '1.13rem', borderRadius: 14, padding: '14px 0' }} onClick={() => setStep(1)}>START</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  // Wizard de pasos mejorado
-  const currentStep = steps[step - 1];
+  
   return (
     <div className="search-bg">
-      <div className="search-card food-details-card">
-        <div className="food-details-img-wrap">
+      <div className="search-card food-details-card" style={{ maxHeight: '90vh', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
+        <div className="food-details-img-wrap" style={{ flex: '0 0 auto' }}>
           <img src={recipe.img} alt={recipe.name} className="food-details-img" />
           <button className="search-back-btn food-details-back" onClick={onBack}>
             <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#f5f5f5" /><path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
           </button>
+          <button onClick={toggleFav} style={{ position: 'absolute', top: 18, right: 18, background: 'none', border: 'none', cursor: 'pointer', fontSize: 26 }} title={isFav ? 'Remove from favorites' : 'Add to favorites'}>
+            <span style={{ color: isFav ? '#ff7a00' : '#ccc', textShadow: '0 1px 4px #fff' }}>{isFav ? '❤️' : '🤍'}</span>
+          </button>
         </div>
-        <div className="food-details-title">{recipe.name}</div>
-        <div className="food-details-step-title" style={{ fontSize: '1.15rem', color: '#ff7a00', marginTop: 10 }}>Paso {step} de {steps.length}</div>
-        <div className="food-details-step" style={{ background: '#fff3e6', borderRadius: 10, padding: 16, margin: '16px 0', color: '#222', fontSize: '1.08rem', fontWeight: 500, textAlign: 'center' }}>
-          {currentStep}
+        <div className="food-details-title" style={{ flex: '0 0 auto' }}>{recipe.name}</div>
+        <div className="food-details-meta" style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: 16, justifyContent: 'center', marginBottom: 4 }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span role="img" aria-label="star">⭐</span> {recipe.rating}</span>
+          <span>{recipe.level}</span>
+          <span role="img" aria-label="time">⏱️</span> <span style={{ color: '#ff7a00', marginLeft: 4 }}>{recipe.time}</span>
         </div>
-        <div className="food-details-step-dots">
-          {steps.map((_, idx) => (
-            <span
-              key={idx}
-              className={step - 1 === idx ? 'dot active' : 'dot'}
-              onClick={() => setStep(idx + 1)}
-              style={{ cursor: 'pointer' }}
-            ></span>
-          ))}
+        {/* Scrollable content */}
+        <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', marginTop: 8, scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="food-details-scroll-invisible">
+          <style>{`.food-details-scroll-invisible::-webkit-scrollbar { display: none; }`}</style>
+          <div className="food-details-desc" style={{ margin: '10px 0 8px 0', color: '#444', fontSize: '1.05rem' }}>{recipe.desc || recipe.fullDesc}</div>
+          <div className="food-details-ing-title">INGREDIENTS</div>
+          <ul className="food-details-ings" style={{ flexWrap: 'wrap', justifyContent: 'flex-start', listStyle: 'disc', paddingLeft: 18 }}>
+            {ingredients.length === 0 && <li style={{ color: '#aaa' }}>No ingredients found.</li>}
+            {ingredients.map((ing, idx) => (
+              <li className="food-details-ing" key={idx} style={{ background: 'none', color: '#ff7a00', fontWeight: 500, fontSize: '1rem', marginBottom: 2 }}>{ing}</li>
+            ))}
+          </ul>
+          
+          {/* Recipe Steps Section */}
+          <div className="food-details-steps-title" style={{ marginTop: '24px', marginBottom: '16px', fontSize: '1.2rem', fontWeight: 700, color: '#ff7a00', textAlign: 'center' }}>
+            RECIPE STEPS
+          </div>
+          <div className="food-details-steps-container">
+            {steps.map((step, idx) => (
+              <div key={idx} className="food-details-step-item" style={{ 
+                background: '#fff3e6', 
+                borderRadius: 12, 
+                padding: '16px 20px', 
+                margin: '12px 0', 
+                color: '#222', 
+                fontSize: '1.05rem', 
+                fontWeight: 500,
+                border: '2px solid #ff7a00',
+                position: 'relative'
+              }}>
+                <div className="step-number" style={{
+                  position: 'absolute',
+                  top: '-8px',
+                  left: '16px',
+                  background: '#ff7a00',
+                  color: 'white',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.9rem',
+                  fontWeight: 700
+                }}>
+                  {idx + 1}
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                  {step}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        {step < steps.length ? (
-          <button className="food-details-btn" onClick={() => setStep(step + 1)}>NEXT</button>
-        ) : (
-          <button className="food-details-btn" onClick={() => setStep(0)}>FINISH</button>
-        )}
-        <button className="food-details-skip" onClick={() => setStep(0)}>Skip</button>
       </div>
     </div>
   );
