@@ -7,7 +7,7 @@ require('dotenv').config();
 router.post('/', async (req, res) => {
   const { query } = req.body;
 
-  console.log('Search query:', query);
+  // console.log('Search query:', query);
 
   if (!query) {
     return res.status(400).json({ error: 'Search query is required' });

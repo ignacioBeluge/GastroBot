@@ -26,6 +26,8 @@ router.post('/', async (req, res) => {
       }),
     });
 
+    console.log('This is the response from AI API:', response.status, response.statusText);
+
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Error from AI API:', errorData);
