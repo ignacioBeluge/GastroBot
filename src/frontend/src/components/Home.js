@@ -179,7 +179,7 @@ const Home = ({ onSignOut }) => {
   }
 
   if (page === 'search') {
-    return <Search onBack={handleBack} />;
+    return <Search onBack={handleBack} onRecipeSelect={handleShowRecipe} />;
   }
 
   if (page === 'categories') {
