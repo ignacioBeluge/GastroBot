@@ -43,27 +43,32 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   async function fetchAIResponse(userMessage) {
     setLoading(true);
     try {
-      const res = await fetch('https://free.v36.cm/v1/chat/completions', {
+      // The new messages array sent to the backend
+      const messagesToBeSent = [
+        ...messages.filter(m => m.from !== 'image').map(m => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text })),
+        { role: 'user', content: userMessage }
+      ];
+
+      const res = await fetch('http://localhost:5000/api/chat', { // Updated endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer sk-z7NSVDja8nDQgcW7A51cE6549d574008Bd95617cAc89746b',
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            { role: 'system', content: 'You are a helpful cooking assistant.' },
-            ...messages.filter(m => m.from !== 'image').map(m => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text })),
-            { role: 'user', content: userMessage }
-          ],
-          max_tokens: 200
+          messages: messagesToBeSent
         })
       });
+
+      if (!res.ok) {
+        throw new Error('Error connecting to backend API');
+      }
+
       const data = await res.json();
       const aiText = data.choices?.[0]?.message?.content || 'Sorry, I could not answer.';
       setMessages(msgs => [...msgs, { from: 'bot', text: aiText }]);
     } catch (e) {
-      setMessages(msgs => [...msgs, { from: 'bot', text: 'Error connecting to AI.' }]);
+      console.error(e);
+      setMessages(msgs => [...msgs, { from: 'bot', text: 'Error connecting to the GastroBot AI.' }]);
     }
     setLoading(false);
   }
