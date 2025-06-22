@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { getCurrentUser } from '../services/authService';
 import './CategoryRecipes.css';
 
 const getRandomDifficulty = () => {
@@ -13,69 +15,38 @@ const getRandomTime = () => `${20 + Math.floor(Math.random() * 30)}min`;
 const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`);
-        const data = await response.json();
-        
-        if (data.meals) {
-          const recipesWithDetails = data.meals.map(meal => ({
-            ...meal,
-            name: meal.strMeal,
-            img: meal.strMealThumb,
-            difficulty: getRandomDifficulty(),
-            rating: getRandomRating(),
-            time: getRandomTime(),
-          }));
-          setRecipes(recipesWithDetails);
-        } else {
-          setRecipes([]);
+        const user = getCurrentUser();
+        const token = user?.token;
+
+        if (!token) {
+          setError('You must be logged in to view recipes.');
+          setLoading(false);
+          return;
         }
-      } catch (error) {
-        console.error('Error fetching recipes:', error);
-        setRecipes([]);
+
+        const response = await axios.get(`http://localhost:5000/api/browse/category/${category.strCategory}`, {
+          headers: { 'x-auth-token': token }
+        });
+        
+        setRecipes(response.data);
+      } catch (err) {
+        setError('Failed to load recipes. Please try again later.');
+        console.error('Error fetching category recipes:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecipes();
-  }, [category]);
+  }, [category.strCategory]);
 
-  const handleRecipeClick = async (recipe) => {
-    try {
-      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipe.idMeal}`);
-      const data = await response.json();
-      
-      if (data.meals && data.meals[0]) {
-        const meal = data.meals[0];
-        const ingredients = [];
-        for (let i = 1; i <= 20; i++) {
-          const ing = meal[`strIngredient${i}`];
-          const measure = meal[`strMeasure${i}`];
-          if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
-            ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
-          }
-        }
-        
-        const fullRecipe = {
-          ...meal,
-          name: meal.strMeal,
-          img: meal.strMealThumb,
-          fullDesc: meal.strInstructions,
-          time: meal.strTags || recipe.time,
-          ingredients,
-          difficulty: recipe.difficulty,
-          rating: recipe.rating,
-        };
-        
-        onShowRecipe(fullRecipe);
-      }
-    } catch (error) {
-      console.error('Error fetching recipe details:', error);
-    }
+  const handleRecipeClick = (recipe) => {
+    onShowRecipe(recipe);
   };
 
   if (loading) {
@@ -89,7 +60,7 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
                 <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
               </svg>
             </button>
-            <span className="category-recipes-title">{category}</span>
+            <span className="category-recipes-title">{category.strCategory}</span>
           </div>
           <div className="category-recipes-loading">Loading recipes...</div>
         </div>
@@ -107,7 +78,7 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
               <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
             </svg>
           </button>
-          <span className="category-recipes-title">{category}</span>
+          <span className="category-recipes-title">{category.strCategory}</span>
         </div>
         
         {recipes.length === 0 ? (
@@ -124,17 +95,17 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
                 onClick={() => handleRecipeClick(recipe)}
               >
                 <div className="category-recipes-image-container">
-                  <img src={recipe.img} alt={recipe.name} className="category-recipes-image" />
+                  <img src={recipe.strMealThumb} alt={recipe.strMeal} className="category-recipes-image" />
                   <div className="category-recipes-overlay">
                     <div className="category-recipes-meta">
-                      <span className="category-recipes-time">{recipe.time}</span>
-                      <span className="category-recipes-difficulty">{recipe.difficulty}</span>
-                      <span className="category-recipes-rating">{recipe.rating} ⭐</span>
+                      <span className="category-recipes-time">{recipe.strTags || getRandomTime()}</span>
+                      <span className="category-recipes-difficulty">{getRandomDifficulty()}</span>
+                      <span className="category-recipes-rating">{getRandomRating()} ⭐</span>
                     </div>
                   </div>
                 </div>
                 <div className="category-recipes-content">
-                  <h3 className="category-recipes-name">{recipe.name}</h3>
+                  <h3 className="category-recipes-name">{recipe.strMeal}</h3>
                 </div>
               </div>
             ))}

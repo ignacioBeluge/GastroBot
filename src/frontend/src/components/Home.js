@@ -194,7 +194,7 @@ const Home = ({ onSignOut }) => {
   }
 
   if (page === 'mealtypelist') {
-    return <MealTypeList onBack={() => setPage('mealtype')} selectedMealType={selectedMealType} />;
+    return <MealTypeList onBack={() => setPage('mealtype')} selectedMealType={selectedMealType} onRecipeSelect={handleShowRecipe} />;
   }
 
   // Main home page

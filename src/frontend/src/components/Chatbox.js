@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { getUserPreferences } from '../services/userService';
 import './Chatbox.css';
 
 const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessages, setMessages: propSetMessages, isMinimized, onToggleMinimize }) => {
