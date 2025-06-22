@@ -249,7 +249,6 @@
   align-items: center !important;
   justify-content: center !important;
   box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
-  position: relative !important;
 }
 
 .chatbox-floating-btn:hover {
@@ -258,10 +257,9 @@
 }
 
 .chatbox-floating-icon {
-  width: 32px !important;
-  height: 32px !important;
+  width: 36px !important;
+  height: 36px !important;
   object-fit: contain !important;
-  filter: brightness(0) invert(1) !important; /* Make logo white */
 }
 
 .chatbox-notification-badge {
