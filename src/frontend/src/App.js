@@ -43,11 +43,6 @@ function AppRoutes() {
 }
 
 function App() {
-  // Limpiar sesión al iniciar la app
-  useEffect(() => {
-    localStorage.removeItem('user');
-  }, []);
-
   return (
     <Router>
       <div className="App">
