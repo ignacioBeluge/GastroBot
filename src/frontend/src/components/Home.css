@@ -1379,6 +1379,8 @@
   display: flex !important;
   gap: 0.75rem !important;
   align-items: center !important;
+  position: relative !important;
+  z-index: 10 !important;
 }
 
 .chatbox-input-field {
@@ -1390,6 +1392,9 @@
   background: #2a2a2a !important;
   color: #e0e0e0 !important;
   transition: all 0.3s ease !important;
+  position: relative !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
 }
 
 .chatbox-input-field:focus {
@@ -1449,4 +1454,120 @@
   max-width: 200px !important;
   border-radius: 8px !important;
   margin-top: 0.5rem !important;
+}
+
+.profile-edit-btn {
+  position: absolute !important;
+  right: 24px !important;
+  top: 18px !important;
+  background: #ff7a00 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.profile-edit-btn:hover {
+  background: #e66d00 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.profile-info-list {
+  margin-top: 18px !important;
+  padding: 0 2rem 2rem !important;
+}
+
+.profile-info-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 1rem !important;
+  background: #333333 !important;
+  border: 2px solid #404040 !important;
+  border-radius: 12px !important;
+  margin-bottom: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.profile-info-item:hover {
+  background: #404040 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.2) !important;
+}
+
+.profile-info-icon {
+  font-size: 1.5rem !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #404040 !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+.profile-info-label {
+  color: #888888 !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.profile-info-value {
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+}
+
+.profile-avatar-edit-container {
+  margin-top: 24px !important;
+  position: relative !important;
+}
+
+.profile-avatar-edit {
+  position: absolute !important;
+  right: -10px !important;
+  bottom: -10px !important;
+  background: #ffffff !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  padding: 2px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.profile-avatar-edit:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3) !important;
+}
+
+.profile-error {
+  color: #ff6b6b !important;
+  margin-bottom: 8px !important;
+  padding: 0.75rem !important;
+  background: #4a1a1a !important;
+  border: 1px solid #ff4444 !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+}
+
+.profile-success {
+  color: #4caf50 !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
+  font-size: 1.05rem !important;
+  background: #1a4a1a !important;
+  border: 1px solid #4caf50 !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+  text-align: center !important;
 } 

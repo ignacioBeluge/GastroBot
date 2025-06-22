@@ -241,7 +241,13 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
         <button type="button" className="chatbox-icon-btn" onClick={handleVoice} title="Send voice">
           <svg width="22" height="22" viewBox="0 0 22 22" style={{ verticalAlign: 'middle' }}><rect x="8" y="4" width="6" height="10" rx="3" stroke="#ff7a00" strokeWidth="2" fill="none" /><path d="M11 18v-2" stroke="#ff7a00" strokeWidth="2" strokeLinecap="round" /><path d="M7 14a4 4 0 0 0 8 0" stroke="#ff7a00" strokeWidth="2" fill="none" /></svg>
         </button>
-        <input className="chatbox-input-field" value={input} onChange={e => setInput(e.target.value)} placeholder="Type your message..." />
+        <input 
+          className="chatbox-input-field" 
+          value={input} 
+          onChange={e => setInput(e.target.value)} 
+          placeholder="Type your message..." 
+          style={{ zIndex: 1, position: 'relative' }}
+        />
         <button className="chatbox-send" type="submit">➤</button>
       </form>
     </div>
@@ -916,12 +922,12 @@ const PersonalInfo = ({ onBack, onEdit }) => {
             <svg width="28" height="28" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#f5f5f5" /><path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
           </button>
           <span className="profile-title">Personal Info</span>
-          <button className="profile-edit-btn" style={{ position: 'absolute', right: 24, top: 18 }} onClick={onEdit}>EDIT</button>
+          <button className="profile-edit-btn" onClick={onEdit}>EDIT</button>
         </div>
         <div className="profile-avatar-big" />
         <div className="profile-username">{user?.user?.name || 'Usuario'}</div>
         <div className="profile-desc">¡Bienvenido a GastroBot!</div>
-        <div className="profile-info-list" style={{ marginTop: 18 }}>
+        <div className="profile-info-list">
           <div className="profile-info-item">
             <span className="profile-info-icon">👤</span>
             <div>
@@ -978,8 +984,8 @@ const EditProfile = ({ onBack }) => {
           </button>
           <span className="profile-title">Edit Profile</span>
         </div>
-        <div className="profile-avatar-big" style={{ marginTop: 24, position: 'relative' }}>
-          <span className="profile-avatar-edit" style={{ position: 'absolute', right: -10, bottom: -10, background: '#fff', borderRadius: '50%', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', padding: 2 }}>
+        <div className="profile-avatar-big profile-avatar-edit-container">
+          <span className="profile-avatar-edit">
             <svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="14" fill="#ff7a00" /><path d="M9 19l7.5-7.5a1 1 0 0 1 1.4 0l1.1 1.1a1 1 0 0 1 0 1.4L11.5 21H9v-2z" fill="#fff" /></svg>
           </span>
         </div>
@@ -993,8 +999,8 @@ const EditProfile = ({ onBack }) => {
           <label>BIO
             <textarea value={bio} onChange={e => setBio(e.target.value)} rows={3} disabled={loading} />
           </label>
-          {error && <div style={{ color: 'red', marginBottom: 8 }}>{error}</div>}
-          {success && <div style={{ color: 'green', marginBottom: 8, fontWeight: 'bold', fontSize: '1.05rem', background: '#e6ffe6', borderRadius: 8, padding: '8px 0', textAlign: 'center' }}>{success}</div>}
+          {error && <div className="profile-error">{error}</div>}
+          {success && <div className="profile-success">{success}</div>}
           <button className="profile-save-btn" type="submit" disabled={loading}>{loading ? 'Guardando...' : 'SAVE'}</button>
         </form>
       </div>
