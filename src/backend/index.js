@@ -4,6 +4,10 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const recipeRoutes = require('./routes/recipes');
+const connectDB = require('./config/db');
+
+// Conectar a la base de datos
+connectDB();
 
 // Configuración de variables de entorno
 dotenv.config();
@@ -17,11 +21,7 @@ app.use(express.json());
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
-
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error conectando a MongoDB:', err));
+;
 
 // Ruta de prueba
 app.get('/', (req, res) => {

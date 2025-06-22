@@ -1,25 +1,30 @@
+/* Mobile-first responsive login styles */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .login-form-container {
   background-color: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  margin: 0 auto;
 }
 
 .login-form-container h2 {
   color: #ff7a00;
   text-align: center;
   margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .login-form {
@@ -37,64 +42,305 @@
 .form-group label {
   color: #333;
   font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
 }
 
 .form-group input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.875rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+  min-height: 48px; /* Touch target size */
+  box-sizing: border-box;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: #ff7a00;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+.form-group input::placeholder {
+  color: #999;
+  font-size: 0.9rem;
 }
 
 .login-button {
   background-color: #ff7a00;
   color: white;
-  padding: 0.75rem;
+  padding: 0.875rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 12px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.2s ease;
   margin-top: 1rem;
+  min-height: 48px; /* Touch target size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .login-button:hover {
   background-color: #e66d00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.3);
 }
 
 .login-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .error-message {
   background-color: #ffebee;
   color: #c62828;
-  padding: 0.75rem;
-  border-radius: 4px;
+  padding: 0.875rem;
+  border-radius: 12px;
   margin-bottom: 1rem;
   text-align: center;
+  font-size: 0.9rem;
+  border: 1px solid #ffcdd2;
 }
 
 .register-link {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   color: #666;
+  font-size: 0.9rem;
 }
 
 .register-link a {
   color: #ff7a00;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .register-link a:hover {
+  color: #e66d00;
   text-decoration: underline;
+}
+
+/* Tablet styles (768px and up) */
+@media (min-width: 768px) {
+  .login-container {
+    padding: 24px;
+  }
+  
+  .login-form-container {
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+  
+  .login-form-container h2 {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  
+  .form-group input {
+    padding: 1rem;
+    font-size: 1.1rem;
+    min-height: 52px;
+  }
+  
+  .login-button {
+    padding: 1rem;
+    font-size: 1.1rem;
+    min-height: 52px;
+  }
+  
+  .error-message {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .register-link {
+    font-size: 1rem;
+    margin-top: 2rem;
+  }
+}
+
+/* Desktop styles (1024px and up) */
+@media (min-width: 1024px) {
+  .login-container {
+    padding: 32px;
+  }
+  
+  .login-form-container {
+    padding: 2.5rem;
+    max-width: 450px;
+  }
+  
+  .login-form-container h2 {
+    font-size: 2rem;
+  }
+  
+  .form-group input {
+    padding: 1.125rem;
+    font-size: 1.125rem;
+    min-height: 56px;
+  }
+  
+  .login-button {
+    padding: 1.125rem;
+    font-size: 1.125rem;
+    min-height: 56px;
+  }
+}
+
+/* Large desktop styles (1280px and up) */
+@media (min-width: 1280px) {
+  .login-form-container {
+    max-width: 500px;
+  }
+}
+
+/* Small mobile devices (320px and below) */
+@media (max-width: 320px) {
+  .login-container {
+    padding: 12px;
+  }
+  
+  .login-form-container {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+  
+  .login-form-container h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-group input {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+  
+  .login-button {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .login-container {
+    padding: 8px;
+  }
+  
+  .login-form-container {
+    padding: 1rem;
+    margin: 8px auto;
+  }
+  
+  .login-form-container h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  .login-button {
+    margin-top: 0.5rem;
+  }
+  
+  .register-link {
+    margin-top: 1rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .login-form-container {
+    border: 2px solid #000;
+  }
+  
+  .form-group input {
+    border-width: 2px;
+  }
+  
+  .login-button {
+    border: 2px solid #000;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .login-container {
+    background-color: #1a1a1a;
+  }
+  
+  .login-form-container {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+  }
+  
+  .form-group label {
+    color: #f0f0f0;
+  }
+  
+  .form-group input {
+    background-color: #333;
+    border-color: #444;
+    color: #f0f0f0;
+  }
+  
+  .form-group input:focus {
+    background-color: #2a2a2a;
+    border-color: #ff7a00;
+  }
+  
+  .form-group input::placeholder {
+    color: #aaa;
+  }
+  
+  .error-message {
+    background-color: #3d1f1f;
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+  }
+  
+  .register-link {
+    color: #aaa;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .login-button,
+  .form-group input {
+    transition: none;
+  }
+  
+  .login-button:hover {
+    transform: none;
+  }
+}
+
+/* Safe area support for devices with notches */
+@supports (padding: max(0px)) {
+  .login-container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
 } 
