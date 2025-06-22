@@ -3,6 +3,10 @@ import './RecipeDetail.css';
 
 const splitSteps = (instructions) => {
   if (!instructions) return [];
+  // Check if the instructions are newline-separated (from AI) or period-separated (from DB)
+  if (instructions.includes('\n')) {
+    return instructions.split('\n').filter(step => step.trim().length > 0);
+  }
   return instructions
     .split(/\.\s+/)
     .filter(step => step.trim().length > 0)
