@@ -641,7 +641,6 @@ const RecipeDetail = ({ recipe, onBack }) => {
         {/* Scrollable content */}
         <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', marginTop: 8, scrollbarWidth: 'none', msOverflowStyle: 'none' }} className="food-details-scroll-invisible">
           <style>{`.food-details-scroll-invisible::-webkit-scrollbar { display: none; }`}</style>
-          <div className="food-details-desc" style={{ margin: '10px 0 8px 0', color: '#444', fontSize: '1.05rem' }}>{recipe.desc || recipe.fullDesc}</div>
           <div className="food-details-ing-title">INGREDIENTS</div>
           <ul className="food-details-ings" style={{ flexWrap: 'wrap', justifyContent: 'flex-start', listStyle: 'disc', paddingLeft: 18 }}>
             {ingredients.length === 0 && <li style={{ color: '#aaa' }}>No ingredients found.</li>}
@@ -1040,17 +1039,17 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
     }
   }, [category]);
   return (
-    <div className="search-bg">
-      <div className="search-card" style={{ maxHeight: 540, minHeight: 540, display: 'flex', flexDirection: 'column' }}>
-        <div className="search-header-row" style={{ flex: '0 0 auto' }}>
-          <button className="search-back-btn" onClick={onBack}>
+    <div className="category-bg">
+      <div className="category-card">
+        <div className="category-header-row">
+          <button className="category-back-btn" onClick={onBack}>
             <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#f5f5f5" /><path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
           </button>
-          <span className="search-title">{category}</span>
+          <span className="category-title">{category}</span>
         </div>
-        <div className="mealtype-list" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', marginBottom: 0 }}>
+        <div className="category-list">
           {meals.length === 0 ? (
-            <span style={{ color: '#aaa' }}>No recipes found.</span>
+            <div className="category-empty" style={{ color: '#aaa', textAlign: 'center', width: '100%', padding: '2rem' }}>No recipes found.</div>
           ) : (
             meals.map(meal => {
               const favs = getFavorites();
@@ -1070,7 +1069,7 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
                 });
               };
               return (
-                <div className="mealtype-list-item" key={meal.idMeal} onClick={() => {
+                <div className="category-item" key={meal.idMeal} onClick={() => {
                   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`)
                     .then(res => res.json())
                     .then(data => {
@@ -1097,19 +1096,22 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
                       }
                     });
                 }}>
-                  <img src={meal.strMealThumb} alt={meal.strMeal} className="favhis-img" />
-                  <div className="favhis-info">
-                    <div className="favhis-name">{meal.strMeal}</div>
-                    <div className="favhis-desc">{meal.strInstructions?.slice(0, 60) || ''}</div>
-                    <div className="home-recommend-meta">
+                  <img src={meal.strMealThumb} alt={meal.strMeal} className="category-item-img" />
+                  <div className="category-item-info">
+                    <div className="category-item-title">{meal.strMeal}</div>
+                    <div className="category-item-meta">
                       <span>⭐ {meal.rating}</span>
                       <span>{meal.level}</span>
                       <span>{meal.time}</span>
                     </div>
+                    <button 
+                      onClick={e => { e.stopPropagation(); toggleFav(e); }} 
+                      className="category-fav-btn"
+                      title={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                    >
+                      <span style={{ color: isFav ? '#ff7a00' : '#ccc', fontSize: '1.2rem' }}>{isFav ? '❤️' : '🤍'}</span>
+                    </button>
                   </div>
-                  <button onClick={e => { e.stopPropagation(); toggleFav(e); }} title={isFav ? 'Remove from favorites' : 'Add to favorites'}>
-                    <span style={{ color: isFav ? '#ff7a00' : '#ccc' }}>{isFav ? '❤️' : '🤍'}</span>
-                  </button>
                 </div>
               );
             })

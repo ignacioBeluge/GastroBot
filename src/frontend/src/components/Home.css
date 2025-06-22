@@ -652,6 +652,7 @@
   overflow: hidden !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
+  position: relative !important;
 }
 
 .category-item:hover {
@@ -682,6 +683,44 @@
   color: #b0b0b0 !important;
   font-size: 0.95rem !important;
   line-height: 1.5 !important;
+}
+
+.category-item-meta {
+  display: flex !important;
+  gap: 1rem !important;
+  color: #ff7a00 !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.category-fav-btn {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  background: rgba(42, 42, 42, 0.8) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.category-fav-btn:hover {
+  background: rgba(255, 122, 0, 0.2) !important;
+  transform: scale(1.1) !important;
+}
+
+.category-empty {
+  color: #888888 !important;
+  font-size: 1.1rem !important;
+  text-align: center !important;
+  padding: 3rem 2rem !important;
 }
 
 /* Chat Components */
