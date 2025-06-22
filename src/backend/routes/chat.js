@@ -36,7 +36,7 @@ const fetchRecipesFromDB = async (query) => {
 };
 
 const generateRecipeWithAI = async (query) => {
-  const prompt = `You are a world-class chef and recipe database. A user is searching for a recipe for "${query}". Provide a single, complete recipe for this dish. Return the recipe as a JSON object with the following structure: {"name": "Recipe Name","img": "a URL to a relevant, high-quality image","time": "e.g., '45 min'","difficulty": "Easy, Medium, or Hard","rating": "e.g., 4.7","ingredients": ["1 cup flour", "2 eggs"],"fullDesc": "Step-by-step instructions separated by newline characters (\\n)."}. Only return the JSON object, with no other text.`;
+  const prompt = `You are a world-class chef and recipe database. A user is searching for a recipe for "${query}". Provide a single, complete recipe for this dish. Return the recipe as a JSON object with the following structure: {"name": "Recipe Name","time": "e.g., '45 min'","difficulty": "Easy, Medium, or Hard","rating": "e.g., 4.7","ingredients": ["1 cup flour", "2 eggs"],"fullDesc": "Step-by-step instructions separated by newline characters (\\n)."}. Only return the JSON object, with no other text.`;
   try {
     const response = await fetch('https://free.v36.cm/v1/chat/completions', {
       method: 'POST',
@@ -77,9 +77,9 @@ router.post('/', async (req, res) => {
         const mappedRecipe = {
           idMeal: `ai-${Date.now()}`,
           strMeal: aiRecipe.name,
-          strMealThumb: aiRecipe.img,
+          strMealThumb: null,
           name: aiRecipe.name,
-          img: aiRecipe.img,
+          img: null,
           time: aiRecipe.time,
           difficulty: aiRecipe.difficulty,
           rating: aiRecipe.rating,

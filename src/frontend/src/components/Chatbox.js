@@ -11,8 +11,6 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   const setMessages = propSetMessages || setInternalMessages;
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [recipeResults, setRecipeResults] = useState([]);
-  const fileInputRef = useRef();
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -116,24 +114,6 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
     }
   };
 
-  const handleImage = e => {
-    const file = e.target.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setMessages(msgs => [...msgs, { from: 'user', image: url }]);
-      setTimeout(() => {
-        setMessages(msgs => [...msgs, { from: 'bot', text: 'Nice image!' }]);
-      }, 600);
-    }
-  };
-
-  const handleVoice = () => {
-    setMessages(msgs => [...msgs, { from: 'user', text: '[Voice message]' }]);
-    setTimeout(() => {
-      setMessages(msgs => [...msgs, { from: 'bot', text: 'Voice received!' }]);
-    }, 600);
-  };
-
   const handleNewChat = () => {
     setMessages([{ from: 'bot', text: 'Hi! How can I help you today?' }]);
     setInput('');
@@ -184,13 +164,12 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
                 <p>I found these recipes for you:</p>
                 {msg.recipes.map((rec) => (
                   <div key={rec.idMeal} className="chat-recipe-item" onClick={() => handleRecipeClick(rec)}>
-                    <img src={rec.strMealThumb} alt={rec.strMeal} className="chat-recipe-img" />
+                    {rec.strMealThumb && <img src={rec.strMealThumb} alt={rec.strMeal} className="chat-recipe-img" />}
                     <div className="chat-recipe-name">{rec.strMeal}</div>
                   </div>
                 ))}
               </div>
             )}
-            {msg.image && <img src={msg.image} alt="upload" className="chat-msg-img" />}
           </div>
         ))}
         {loading && <div className="chat-msg bot">...</div>}
@@ -198,24 +177,6 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
       </div>
       
       <form className="chatbox-input" onSubmit={handleSendMessage}>
-        <button type="button" className="chatbox-icon-btn" onClick={() => fileInputRef.current.click()} title="Upload image">
-          <svg width="22" height="22" viewBox="0 0 22 22">
-            <path d="M4 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="#ff7a00" strokeWidth="2" fill="none" />
-            <rect x="7" y="10" width="8" height="6" rx="1" stroke="#ff7a00" strokeWidth="2" fill="none" />
-            <circle cx="11" cy="13" r="1.5" fill="#ff7a00" />
-          </svg>
-        </button>
-        
-        <input type="file" accept="image/*" style={{ display: 'none' }} ref={fileInputRef} onChange={handleImage} />
-        
-        <button type="button" className="chatbox-icon-btn" onClick={handleVoice} title="Send voice">
-          <svg width="22" height="22" viewBox="0 0 22 22">
-            <rect x="8" y="4" width="6" height="10" rx="3" stroke="#ff7a00" strokeWidth="2" fill="none" />
-            <path d="M11 18v-2" stroke="#ff7a00" strokeWidth="2" strokeLinecap="round" />
-            <path d="M7 14a4 4 0 0 0 8 0" stroke="#ff7a00" strokeWidth="2" fill="none" />
-          </svg>
-        </button>
-        
         <input 
           ref={inputRef}
           className="chatbox-input-field" 
