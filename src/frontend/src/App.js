@@ -9,10 +9,32 @@ import { isAuthenticated } from './services/authService';
 
 // Componente para proteger rutas
 const ProtectedRoute = ({ children }) => {
-  const isAuth = isAuthenticated();
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const authenticated = await isAuthenticated();
+        setIsAuth(authenticated);
+      } catch (error) {
+        setIsAuth(false);
+      } finally {
+        setAuthChecked(true);
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
+  if (!authChecked) {
+    return <div>Loading...</div>;
+  }
+
   if (!isAuth) {
     return <Navigate to="/login" replace />;
   }
+  
   return children;
 };
 
@@ -23,10 +45,15 @@ function AppRoutes() {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    const checkAuth = () => {
-      const authenticated = isAuthenticated();
-      setIsAuth(authenticated);
-      setAuthChecked(true);
+    const checkAuth = async () => {
+      try {
+        const authenticated = await isAuthenticated();
+        setIsAuth(authenticated);
+      } catch (error) {
+        setIsAuth(false);
+      } finally {
+        setAuthChecked(true);
+      }
     };
     
     checkAuth();

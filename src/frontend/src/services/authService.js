@@ -48,14 +48,47 @@ export const getCurrentUser = () => {
   return null;
 };
 
-export const isAuthenticated = () => {
-  const user = getCurrentUser();
-  // Verifica que exista usuario y token
-  const valid = !!(user && user.token && typeof user.token === 'string' && user.token.length > 0);
-  if (!valid) {
+export const validateToken = async () => {
+  try {
+    const user = getCurrentUser();
+    if (!user || !user.token) {
+      return false;
+    }
+
+    const response = await axios.get(`${API_URL}/validate`, {
+      headers: { 'x-auth-token': user.token }
+    });
+
+    if (response.data.valid) {
+      // Update user data with fresh data from server
+      const updatedUser = {
+        ...user,
+        user: response.data.user
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    // Token is invalid, clear it
     localStorage.removeItem('user');
+    return false;
   }
-  return valid;
+};
+
+export const isAuthenticated = async () => {
+  const user = getCurrentUser();
+  // First check if we have a token locally
+  const hasToken = !!(user && user.token && typeof user.token === 'string' && user.token.length > 0);
+  
+  if (!hasToken) {
+    localStorage.removeItem('user');
+    return false;
+  }
+
+  // Then validate with backend
+  return await validateToken();
 };
 
 export const verifyEmail = async (token) => {

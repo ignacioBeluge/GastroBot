@@ -209,4 +209,34 @@ router.put('/user/:id', async (req, res) => {
   }
 });
 
+// Validate token endpoint
+router.get('/validate', async (req, res) => {
+  try {
+    const token = req.header('x-auth-token');
+    
+    if (!token) {
+      return res.status(401).json({ valid: false, message: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.user._id).select('-password');
+    
+    if (!user) {
+      return res.status(401).json({ valid: false, message: 'User not found' });
+    }
+
+    res.json({ 
+      valid: true, 
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        dietaryPreferences: user.dietaryPreferences
+      }
+    });
+  } catch (error) {
+    res.status(401).json({ valid: false, message: 'Invalid token' });
+  }
+});
+
 module.exports = router; 
