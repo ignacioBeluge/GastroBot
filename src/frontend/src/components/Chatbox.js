@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './Chatbox.css';
 
 const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessages, setMessages: propSetMessages, isMinimized, onToggleMinimize }) => {
@@ -28,7 +30,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
 
   // Detect if message is a recipe query
   function isRecipeQuery(text) {
-    const foodKeywords = ['receta', 'cómo hacer', 'como hacer', 'preparar', 'ingredientes', 'cocinar', 'hacer', 'cómo preparo', 'como preparo'];
+    const foodKeywords = ['receta', 'cómo hacer', 'como hacer', 'preparar', 'ingredientes', 'cocinar', 'hacer', 'cómo preparo', 'como preparo', 'recipe', 'cook', 'cooking', 'meal', 'dish', 'food', 'plato', 'comida', 'how to make', 'how to cook', 'how to prepare', 'how to recipe', 'how to dish', 'how to food'];
     return foodKeywords.some(k => text.toLowerCase().includes(k)) ||
       (/^[a-zA-Z\s]+$/.test(text) && text.trim().split(' ').length <= 3 && !text.includes('?'));
   }
@@ -40,73 +42,71 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
     return text.trim().endsWith('?') || generalWords.some(w => lower.includes(w));
   }
 
-  async function fetchAIResponse(userMessage) {
-    setLoading(true);
-    try {
-      // The new messages array sent to the backend
-      const messagesToBeSent = [
-        ...messages.filter(m => m.from !== 'image').map(m => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text })),
-        { role: 'user', content: userMessage }
-      ];
-
-      const res = await fetch('http://localhost:5000/api/chat', { // Updated endpoint
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          messages: messagesToBeSent
-        })
-      });
-
-      if (!res.ok) {
-        throw new Error('Error connecting to backend API');
-      }
-
-      const data = await res.json();
-      const aiText = data.choices?.[0]?.message?.content || 'Sorry, I could not answer.';
-      setMessages(msgs => [...msgs, { from: 'bot', text: aiText }]);
-    } catch (e) {
-      console.error(e);
-      setMessages(msgs => [...msgs, { from: 'bot', text: 'Error connecting to the GastroBot AI.' }]);
-    }
-    setLoading(false);
-  }
-
-  async function fetchRecipeFromAPI(query) {
-    setLoading(true);
-    setRecipeResults([]);
-    try {
-      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      if (data.meals && data.meals.length > 0) {
-        setRecipeResults(data.meals.slice(0, 5));
-        setMessages(msgs => [...msgs, { from: 'bot', text: `Encontré estas recetas para "${query}":`, recipes: data.meals.slice(0, 5) }]);
-      } else {
-        setMessages(msgs => [...msgs, { from: 'bot', text: 'No encontré recetas, creando una para ti...' }]);
-        fetchAIResponse(`Crea una receta original para: ${query}`);
-      }
-    } catch (e) {
-      setMessages(msgs => [...msgs, { from: 'bot', text: 'Error buscando recetas.' }]);
-    }
-    setLoading(false);
-  }
-
-  const handleSend = e => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-    
-    const userMessage = input.trim();
-    setMessages(msgs => [...msgs, { from: 'user', text: userMessage }]);
+
+    const userMessage = { from: 'user', text: input.trim() };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
-    
-    if (isGeneralQuestion(userMessage)) {
-      fetchAIResponse(userMessage);
-    } else if (isRecipeQuery(userMessage)) {
-      fetchRecipeFromAPI(userMessage);
-    } else {
-      fetchAIResponse(userMessage);
+    setLoading(true);
+
+    try {
+      const backendMessages = newMessages
+        .filter(m => m.from !== 'image' && m.text)
+        .map(m => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text }));
+
+      const res = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: backendMessages }),
+      });
+
+      if (!res.ok) throw new Error('Backend responded with an error');
+
+      const data = await res.json();
+      
+      if (data.type === 'recipe_list' && data.content.length > 0) {
+        setMessages(current => [...current, { from: 'bot', recipes: data.content }]);
+      } else {
+        setMessages(current => [...current, { from: 'bot', text: data.content || 'Sorry, I ran into a problem.' }]);
+      }
+
+    } catch (err) {
+      setMessages(current => [...current, { from: 'bot', text: 'Error connecting to GastroBot. Please try again.' }]);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleRecipeClick = (recipe) => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipe.idMeal}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.meals && data.meals[0]) {
+          const meal = data.meals[0];
+          const ingredients = [];
+          for (let i = 1; i <= 20; i++) {
+            const ing = meal[`strIngredient${i}`];
+            const measure = meal[`strMeasure${i}`];
+            if (ing && ing.trim()) {
+              ingredients.push(`${measure || ''} ${ing}`.trim());
+            }
+          }
+          setSelectedRecipe({
+            ...meal,
+            name: meal.strMeal,
+            img: meal.strMealThumb,
+            fullDesc: meal.strInstructions,
+            time: meal.strTags || '30 min',
+            ingredients,
+            difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+            rating: (4 + Math.random()).toFixed(1),
+          });
+          setShowRecipeDetail(true);
+        }
+      });
   };
 
   const handleImage = e => {
@@ -130,9 +130,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   const handleNewChat = () => {
     setMessages([{ from: 'bot', text: 'Hi! How can I help you today?' }]);
     setInput('');
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    inputRef.current?.focus();
   };
 
   // If minimized, show only the floating chat button
@@ -168,59 +166,31 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
       
       <div className="chatbox-body">
         {messages.map((msg, i) => (
-          msg.image ? (
-            <div key={i} className={msg.from === 'bot' ? 'chat-msg bot' : 'chat-msg user'}>
-              <img src={msg.image} alt="upload" className="chat-msg-img" />
-            </div>
-          ) : msg.recipes ? (
-            <div key={i} className="chat-msg bot">
-              <div>{msg.text}</div>
+          <div key={i} className={`chat-msg ${msg.from}`}>
+            {msg.text && (
+              <ReactMarkdown className="markdown-content" remarkPlugins={[remarkGfm]}>
+                {msg.text}
+              </ReactMarkdown>
+            )}
+            {msg.recipes && (
               <div className="chat-recipes-list">
-                {msg.recipes.map((rec, idx) => (
-                  <div key={rec.idMeal} className="chat-recipe-item"
-                    onClick={() => {
-                      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${rec.idMeal}`)
-                        .then(res => res.json())
-                        .then(data => {
-                          if (data.meals && data.meals[0]) {
-                            const meal = data.meals[0];
-                            const ingredients = [];
-                            for (let i = 1; i <= 20; i++) {
-                              const ing = meal[`strIngredient${i}`];
-                              const measure = meal[`strMeasure${i}`];
-                              if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
-                                ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
-                              }
-                            }
-                            setSelectedRecipe({
-                              ...meal,
-                              name: meal.strMeal,
-                              img: meal.strMealThumb,
-                              fullDesc: meal.strInstructions,
-                              time: meal.strTags || '',
-                              ingredients,
-                            });
-                            setShowRecipeDetail(true);
-                          }
-                        });
-                    }}>
+                <p>I found these recipes for you:</p>
+                {msg.recipes.map((rec) => (
+                  <div key={rec.idMeal} className="chat-recipe-item" onClick={() => handleRecipeClick(rec)}>
                     <img src={rec.strMealThumb} alt={rec.strMeal} className="chat-recipe-img" />
                     <div className="chat-recipe-name">{rec.strMeal}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          ) : (
-            <div key={i} className={msg.from === 'bot' ? 'chat-msg bot' : 'chat-msg user'}>
-              {msg.text}
-            </div>
-          )
+            )}
+            {msg.image && <img src={msg.image} alt="upload" className="chat-msg-img" />}
+          </div>
         ))}
         {loading && <div className="chat-msg bot">...</div>}
         <div ref={messagesEndRef} />
       </div>
       
-      <form className="chatbox-input" onSubmit={handleSend}>
+      <form className="chatbox-input" onSubmit={handleSendMessage}>
         <button type="button" className="chatbox-icon-btn" onClick={() => fileInputRef.current.click()} title="Upload image">
           <svg width="22" height="22" viewBox="0 0 22 22">
             <path d="M4 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="#ff7a00" strokeWidth="2" fill="none" />
