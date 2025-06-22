@@ -52,13 +52,16 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
 
     try {
       const backendMessages = newMessages
-        .filter(m => m.from !== 'image' && m.text)
+        .filter(m => m.text)
         .map(m => ({ role: m.from === 'user' ? 'user' : 'assistant', content: m.text }));
+
+      // Fetch preferences to send with the message
+      const preferences = await getUserPreferences();
 
       const res = await fetch('http://localhost:5000/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: backendMessages }),
+        body: JSON.stringify({ messages: backendMessages, preferences: preferences }),
       });
 
       if (!res.ok) throw new Error('Backend responded with an error');

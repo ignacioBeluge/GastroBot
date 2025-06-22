@@ -35,8 +35,13 @@ const fetchRecipesFromDB = async (query) => {
   ));
 };
 
-const generateRecipeWithAI = async (query) => {
-  const prompt = `You are a world-class chef and recipe database. A user is searching for a recipe for "${query}". Provide a single, complete recipe for this dish. Return the recipe as a JSON object with the following structure: {"name": "Recipe Name","time": "e.g., '45 min'","difficulty": "Easy, Medium, or Hard","rating": "e.g., 4.7","ingredients": ["1 cup flour", "2 eggs"],"fullDesc": "Step-by-step instructions separated by newline characters (\\n)."}. Only return the JSON object, with no other text.`;
+const generateRecipeWithAI = async (query, preferences = []) => {
+  let preferenceText = '';
+  if (preferences && preferences.length > 0) {
+    preferenceText = ` The user has the following dietary needs: ${preferences.join(', ')}. Please ensure the recipe is strictly suitable for them (e.g., for 'celiac', no gluten; for 'lactose-intolerant', no dairy).`;
+  }
+
+  const prompt = `You are a world-class chef and recipe database. A user is searching for a recipe for "${query}".${preferenceText} Provide a single, complete recipe for this dish. Return the recipe as a JSON object with the following structure: {"name": "Recipe Name","time": "e.g., '45 min'","difficulty": "Easy, Medium, or Hard","rating": "e.g., 4.7","ingredients": ["1 cup flour", "2 eggs"],"fullDesc": "Step-by-step instructions separated by newline characters (\\n)."}. Only return the JSON object, with no other text.`;
   try {
     const response = await fetch('https://free.v36.cm/v1/chat/completions', {
       method: 'POST',
@@ -55,7 +60,7 @@ const generateRecipeWithAI = async (query) => {
 };
 
 router.post('/', async (req, res) => {
-  const { messages } = req.body;
+  const { messages, preferences } = req.body;
 
   if (!messages || messages.length === 0) {
     return res.status(400).json({ error: 'Messages are required' });
@@ -72,7 +77,7 @@ router.post('/', async (req, res) => {
       }
 
       // If DB fails, fallback to AI generation
-      const aiRecipe = await generateRecipeWithAI(userQuery);
+      const aiRecipe = await generateRecipeWithAI(userQuery, preferences);
       if (aiRecipe) {
         const mappedRecipe = {
           idMeal: `ai-${Date.now()}`,
@@ -98,8 +103,12 @@ router.post('/', async (req, res) => {
   }
   
   // Default to general conversation
+  let preferenceText = '';
+  if (preferences && preferences.length > 0) {
+    preferenceText = ` Remember, the user has the following dietary needs: ${preferences.join(', ')}. Tailor your advice accordingly.`;
+  }
   try {
-    const systemPrompt = { role: 'system', content: 'You are GastroBot, a helpful cooking assistant. Format your answers clearly using Markdown. Be friendly and concise.' };
+    const systemPrompt = { role: 'system', content: `You are GastroBot, a helpful cooking assistant. Format your answers clearly using Markdown. Be friendly and concise.${preferenceText}` };
     const response = await fetch('https://free.v36.cm/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.AI_API_KEY}`},

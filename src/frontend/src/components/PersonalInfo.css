@@ -1,0 +1,88 @@
+.personal-info-item {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Dietary Preferences Section */
+.dietary-preferences-section {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #404040;
+}
+
+.dietary-preferences-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.dietary-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.dietary-option-btn {
+  padding: 0.75rem 1rem;
+  background: #333333;
+  color: #e0e0e0;
+  border: 2px solid #505050;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.dietary-option-btn.selected {
+  background: #ff7a00;
+  color: #ffffff;
+  border-color: #ff9500;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3);
+}
+
+.dietary-option-btn:hover:not(.selected) {
+  background: #404040;
+  border-color: #666;
+}
+
+.save-preferences-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2rem;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save-preferences-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4);
+}
+
+.pref-error-msg,
+.pref-success-msg {
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.pref-error-msg {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+}
+
+.pref-success-msg {
+  background: rgba(77, 255, 153, 0.1);
+  color: #4dff99;
+} 

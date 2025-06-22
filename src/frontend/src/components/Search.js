@@ -23,12 +23,15 @@ const Search = ({ onBack, onRecipeSelect }) => {
     setSearched(true); // Mark that a search has been initiated
 
     try {
+      // Fetch preferences to send with the search
+      const preferences = await getUserPreferences();
+
       const response = await fetch('http://localhost:5000/api/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: query.trim() }),
+        body: JSON.stringify({ query: query.trim(), preferences: preferences }),
       });
 
       if (!response.ok) {
@@ -37,7 +40,7 @@ const Search = ({ onBack, onRecipeSelect }) => {
       }
 
       const recipes = await response.json();
-      setResults(recipes); // The backend now returns an array of recipes
+      setResults(recipes);
 
     } catch (err) {
       console.error('Search error:', err);

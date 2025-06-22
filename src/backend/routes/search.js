@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 require('dotenv').config();
 
 router.post('/', async (req, res) => {
-  const { query } = req.body;
+  const { query, preferences } = req.body;
 
   // console.log('Search query:', query);
 
@@ -13,9 +13,26 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Search query is required' });
   }
 
-  const ingredients = query.split(/[, ]+/).map(q => q.trim()).filter(Boolean);
+  let url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`;
 
-  const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`;
+  // If preferences are provided, use them to refine the search.
+  // Note: TheMealDB free API has limited filtering. This is a basic implementation.
+  // For celiac/lactose, we primarily rely on AI filtering.
+  if (preferences && preferences.includes('vegetarian')) {
+    url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegetarian`;
+  }
+  if (preferences && preferences.includes('vegan')) {
+    url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=Vegan`;
+  }
+  
+  // Custom prompt additions based on preferences
+  let preferenceText = '';
+  if (preferences && preferences.length > 0) {
+    preferenceText = ` The user has the following dietary needs: ${preferences.join(', ')}. Ensure the recipe is suitable for them.`;
+  }
+  // This part would be used if we were still using AI search directly,
+  // but we leave the logic here to show how it would be integrated.
+  // The chat endpoint WILL use this logic.
 
   try {
     const allResults = await Promise.all(

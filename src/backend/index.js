@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const recipeRoutes = require('./routes/recipes');
 const chatRoutes = require('./routes/chat');
 const searchRoutes = require('./routes/search');
+const userRoutes = require('./routes/user');
 const connectDB = require('./config/db');
 
 // Conectar a la base de datos
@@ -25,6 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/recipes', recipeRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/user', userRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

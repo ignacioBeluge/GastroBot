@@ -32,11 +32,15 @@ const userSchema = new mongoose.Schema({
   verificationTokenExpires: {
     type: Date
   },
+  dietaryPreferences: {
+    type: [String],
+    default: []
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
-});
+}, { timestamps: true });
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
