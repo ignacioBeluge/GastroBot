@@ -81,32 +81,39 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   };
 
   const handleRecipeClick = (recipe) => {
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipe.idMeal}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.meals && data.meals[0]) {
-          const meal = data.meals[0];
-          const ingredients = [];
-          for (let i = 1; i <= 20; i++) {
-            const ing = meal[`strIngredient${i}`];
-            const measure = meal[`strMeasure${i}`];
-            if (ing && ing.trim()) {
-              ingredients.push(`${measure || ''} ${ing}`.trim());
+    if (recipe.source === 'AI') {
+      // It's a fully detailed AI recipe, just show it
+      setSelectedRecipe(recipe);
+      setShowRecipeDetail(true);
+    } else {
+      // It's a DB recipe stub, fetch the full details
+      fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipe.idMeal}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.meals && data.meals[0]) {
+            const meal = data.meals[0];
+            const ingredients = [];
+            for (let i = 1; i <= 20; i++) {
+              const ing = meal[`strIngredient${i}`];
+              const measure = meal[`strMeasure${i}`];
+              if (ing && ing.trim()) {
+                ingredients.push(`${measure || ''} ${ing}`.trim());
+              }
             }
+            setSelectedRecipe({
+              ...meal,
+              name: meal.strMeal,
+              img: meal.strMealThumb,
+              fullDesc: meal.strInstructions,
+              time: meal.strTags || '30 min',
+              ingredients,
+              difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+              rating: (4 + Math.random()).toFixed(1),
+            });
+            setShowRecipeDetail(true);
           }
-          setSelectedRecipe({
-            ...meal,
-            name: meal.strMeal,
-            img: meal.strMealThumb,
-            fullDesc: meal.strInstructions,
-            time: meal.strTags || '30 min',
-            ingredients,
-            difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
-            rating: (4 + Math.random()).toFixed(1),
-          });
-          setShowRecipeDetail(true);
-        }
-      });
+        });
+    }
   };
 
   const handleImage = e => {
