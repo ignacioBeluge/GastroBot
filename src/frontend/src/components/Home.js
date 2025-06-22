@@ -32,8 +32,8 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
   const bio = user?.user?.bio || '';
   return (
     <div className="profile-bg">
-      <div className="profile-card" style={{ maxHeight: 540, minHeight: 540, display: 'flex', flexDirection: 'column' }}>
-        <div className="profile-header-row" style={{ flex: '0 0 auto' }}>
+      <div className="profile-card">
+        <div className="profile-header-row">
           <button className="profile-back-btn" onClick={onBack}>
             <svg width="28" height="28" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#f5f5f5" /><path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg>
           </button>
@@ -42,7 +42,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
         <div className="profile-avatar-big" />
         <div className="profile-username">{name}</div>
         <div className="profile-desc">{bio || '¡Agrega una bio desde Editar Perfil!'}</div>
-        <div className="profile-menu-list-2" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', marginBottom: 0 }}>
+        <div className="profile-menu-list-2">
           {profileMenuList.map(item => (
             <div
               className={`profile-menu-item-2${item.logout ? ' logout' : ''}`}
@@ -50,7 +50,6 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
               onClick={item.key === 'signout'
                 ? () => { if (onSignOut) onSignOut(); }
                 : item.key ? () => onMenu(item.key) : undefined}
-              style={item.logout ? { color: '#ff4d4f', background: '#fff0f0' } : {}}
             >
               <span className="profile-menu-icon-2">{item.icon}</span>
               <span>{item.label}</span>
@@ -176,14 +175,14 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
 
   return (
     <div className="chatbox-window">
-      <div className="chatbox-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', height: 48, background: '#ff7a00', color: '#fff', fontWeight: 600, fontSize: 17, letterSpacing: 0.2 }}>
-        <button onClick={handleNewChat} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', display: 'flex', alignItems: 'center', color: '#fff', fontSize: 13, cursor: 'pointer', gap: 4, padding: '2px 6px', borderRadius: 8, height: 28, minWidth: 0 }} title="New chat">
+      <div className="chatbox-header">
+        <button onClick={handleNewChat} className="chatbox-new-btn" title="New chat">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#fff" strokeWidth="2" style={{ minWidth: 16 }}><path d="M4 17v-2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" /><rect x="7" y="7" width="6" height="6" rx="1" /><path d="M10 9v2M9 10h2" /></svg>
-          <span style={{ color: '#fff', fontWeight: 500, fontSize: 13, letterSpacing: 0 }}>New chat</span>
+          <span>New chat</span>
         </button>
-        <span style={{ textAlign: 'center', width: '100%', pointerEvents: 'none', fontWeight: 600, fontSize: 17 }}>GastroBot Chat</span>
+        <span className="chatbox-title">GastroBot Chat</span>
       </div>
-      <div className="chatbox-body scrollable" style={{ paddingBottom: 62 }}>
+      <div className="chatbox-body">
         {messages.map((msg, i) => (
           msg.image ? (
             <div key={i} className={msg.from === 'bot' ? 'chat-msg bot' : 'chat-msg user'}>
@@ -192,9 +191,9 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
           ) : msg.recipes ? (
             <div key={i} className="chat-msg bot">
               <div>{msg.text}</div>
-              <div style={{ marginTop: 8 }}>
+              <div className="chat-recipes-list">
                 {msg.recipes.map((rec, idx) => (
-                  <div key={rec.idMeal} style={{ background: '#fff7f0', borderRadius: 10, marginBottom: 8, padding: 8, display: 'flex', alignItems: 'center', cursor: 'pointer', boxShadow: '0 2px 8px rgba(255,122,0,0.07)' }}
+                  <div key={rec.idMeal} className="chat-recipe-item"
                     onClick={() => {
                       fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${rec.idMeal}`)
                         .then(res => res.json())
@@ -221,8 +220,8 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
                           }
                         });
                     }}>
-                    <img src={rec.strMealThumb} alt={rec.strMeal} style={{ width: 38, height: 38, borderRadius: 8, objectFit: 'cover', marginRight: 10 }} />
-                    <div style={{ fontWeight: 600 }}>{rec.strMeal}</div>
+                    <img src={rec.strMealThumb} alt={rec.strMeal} className="chat-recipe-img" />
+                    <div className="chat-recipe-name">{rec.strMeal}</div>
                   </div>
                 ))}
               </div>
@@ -234,7 +233,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
         {loading && <div className="chat-msg bot">...</div>}
         <div ref={messagesEndRef} />
       </div>
-      <form className="chatbox-input-row chatbox-input-align" onSubmit={handleSend} style={{ position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 1200, background: '#fff', boxShadow: '0 -2px 8px rgba(0,0,0,0.04)', padding: '8px 8px 8px 8px', width: '100vw', maxWidth: '100vw' }}>
+      <form className="chatbox-input" onSubmit={handleSend}>
         <button type="button" className="chatbox-icon-btn" onClick={() => fileInputRef.current.click()} title="Upload image">
           <svg width="22" height="22" viewBox="0 0 22 22" style={{ verticalAlign: 'middle' }}><path d="M4 16v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" stroke="#ff7a00" strokeWidth="2" fill="none" /><rect x="7" y="10" width="8" height="6" rx="1" stroke="#ff7a00" strokeWidth="2" fill="none" /><circle cx="11" cy="13" r="1.5" fill="#ff7a00" /></svg>
         </button>
@@ -242,7 +241,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
         <button type="button" className="chatbox-icon-btn" onClick={handleVoice} title="Send voice">
           <svg width="22" height="22" viewBox="0 0 22 22" style={{ verticalAlign: 'middle' }}><rect x="8" y="4" width="6" height="10" rx="3" stroke="#ff7a00" strokeWidth="2" fill="none" /><path d="M11 18v-2" stroke="#ff7a00" strokeWidth="2" strokeLinecap="round" /><path d="M7 14a4 4 0 0 0 8 0" stroke="#ff7a00" strokeWidth="2" fill="none" /></svg>
         </button>
-        <input className="chatbox-input" value={input} onChange={e => setInput(e.target.value)} placeholder="Type your message..." />
+        <input className="chatbox-input-field" value={input} onChange={e => setInput(e.target.value)} placeholder="Type your message..." />
         <button className="chatbox-send" type="submit">➤</button>
       </form>
     </div>
