@@ -155,7 +155,7 @@
 
 .search-results-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Single column layout for AI result */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
 }
 
@@ -178,7 +178,7 @@
 
 .search-recipe-image {
   width: 100%;
-  height: 250px;
+  height: 200px; /* Adjusted height for grid view */
   object-fit: cover;
 }
 
@@ -187,7 +187,7 @@
 }
 
 .search-recipe-name {
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* Adjusted for grid view */
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 0.75rem;
@@ -246,6 +246,10 @@
   .search-submit-btn {
     padding: 0.75rem 1.5rem !important;
   }
+  
+  .search-results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
@@ -287,6 +291,10 @@
   
   .search-recipe-meta span {
     gap: 0.3rem !important;
+  }
+  
+  .search-results-grid {
+    grid-template-columns: 1fr;
   }
 }
 

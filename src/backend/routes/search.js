@@ -11,61 +11,44 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Search query is required' });
   }
 
-  const prompt = `
-    You are a world-class chef and recipe database. 
-    A user is searching for a recipe for "${query}".
-    Find the best recipe for this dish. If it's a common dish, provide the standard recipe. If it's ambiguous or creative, create a suitable recipe.
-    Return the recipe as a JSON object with the following structure:
-    {
-      "name": "Recipe Name",
-      "img": "a URL to a relevant, high-quality image of the dish",
-      "time": "estimated time to prepare, e.g., '45 min'",
-      "difficulty": "Easy, Medium, or Hard",
-      "rating": "a rating out of 5, e.g., 4.7",
-      "ingredients": ["1 cup flour", "2 eggs", "1/2 cup milk"],
-      "fullDesc": "Step-by-step instructions, separated by newline characters (\\n). Be clear and concise."
-    }
-    Only return the JSON object, with no other text or explanation before or after it.
-  `;
+  const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`;
 
   try {
-    const response = await fetch('https://free.v36.cm/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.AI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.3,
-      }),
-    });
-
+    const response = await fetch(url);
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('Error from AI API:', errorData);
-      return res.status(response.status).json({ error: 'Error from AI service during search' });
+      throw new Error(`TheMealDB API responded with status ${response.status}`);
     }
-
+    
     const data = await response.json();
-    const recipeContent = data.choices[0].message.content;
-
-    // Clean the response to ensure it's valid JSON
-    const cleanedJsonString = recipeContent.replace(/```json/g, '').replace(/```/g, '').trim();
-
-    try {
-      const recipeJson = JSON.parse(cleanedJsonString);
-      res.json(recipeJson);
-    } catch (parseError) {
-      console.error('Error parsing AI response JSON:', parseError);
-      console.error('Original AI response:', recipeContent);
-      res.status(500).json({ error: 'Failed to parse recipe from AI response' });
+    
+    if (data.meals) {
+      // Enhance the recipe data with fields our frontend expects
+      const enhancedRecipes = data.meals.map(meal => ({
+        ...meal,
+        id: meal.idMeal,
+        name: meal.strMeal,
+        img: meal.strMealThumb,
+        fullDesc: meal.strInstructions,
+        time: meal.strTags ? meal.strTags.split(',')[0] : `${20 + Math.floor(Math.random() * 40)} min`,
+        difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+        rating: (3.5 + Math.random() * 1.5).toFixed(1),
+        ingredients: Array.from({ length: 20 }, (_, i) => {
+          const ing = meal[`strIngredient${i + 1}`];
+          const measure = meal[`strMeasure${i + 1}`];
+          if (ing && ing.trim()) {
+            return `${measure || ''} ${ing}`.trim();
+          }
+          return null;
+        }).filter(Boolean),
+      }));
+      res.json(enhancedRecipes);
+    } else {
+      res.json([]); // Return an empty array if no meals are found
     }
-
+    
   } catch (error) {
-    console.error('Error connecting to AI service for search:', error);
-    res.status(500).json({ error: 'Internal server error during search' });
+    console.error('Error fetching from TheMealDB:', error);
+    res.status(500).json({ error: 'Failed to fetch recipes from TheMealDB' });
   }
 });
 

@@ -6,6 +6,7 @@ const Search = ({ onBack, onRecipeSelect }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [searched, setSearched] = useState(false); // Track if a search has been performed
   const searchInputRef = useRef(null);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const Search = ({ onBack, onRecipeSelect }) => {
     setLoading(true);
     setError('');
     setResults([]);
+    setSearched(true); // Mark that a search has been initiated
 
     try {
       const response = await fetch('http://localhost:5000/api/search', {
@@ -31,15 +33,16 @@ const Search = ({ onBack, onRecipeSelect }) => {
 
       if (!response.ok) {
         const errData = await response.json();
-        throw new Error(errData.error || 'Failed to fetch recipe from AI');
+        throw new Error(errData.error || 'Failed to fetch recipes');
       }
 
-      const recipe = await response.json();
-      setResults([recipe]); // The backend returns a single, complete recipe object
+      const recipes = await response.json();
+      setResults(recipes); // The backend now returns an array of recipes
 
     } catch (err) {
       console.error('Search error:', err);
       setError(err.message || 'An error occurred during the search. Please try again.');
+      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -59,7 +62,7 @@ const Search = ({ onBack, onRecipeSelect }) => {
               <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
             </svg>
           </button>
-          <span className="search-title">AI Recipe Search</span>
+          <span className="search-title">Search Recipes</span>
         </div>
 
         <form className="search-form" onSubmit={handleSearch}>
@@ -67,7 +70,7 @@ const Search = ({ onBack, onRecipeSelect }) => {
             ref={searchInputRef}
             type="text"
             className="search-input"
-            placeholder="What do you want to cook?"
+            placeholder="Search for a recipe..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -81,8 +84,8 @@ const Search = ({ onBack, onRecipeSelect }) => {
           
           {results.length > 0 && (
             <div className="search-results-grid">
-              {results.map((recipe, index) => (
-                <div key={index} className="search-recipe-card" onClick={() => handleRecipeClick(recipe)}>
+              {results.map((recipe) => (
+                <div key={recipe.id} className="search-recipe-card" onClick={() => handleRecipeClick(recipe)}>
                   <img src={recipe.img} alt={recipe.name} className="search-recipe-image" />
                   <div className="search-recipe-content">
                     <h3 className="search-recipe-name">{recipe.name}</h3>
@@ -97,11 +100,19 @@ const Search = ({ onBack, onRecipeSelect }) => {
             </div>
           )}
 
-          {!loading && results.length === 0 && !error && (
+          {!loading && results.length === 0 && searched && !error && (
             <div className="search-empty-state">
+              <div className="search-empty-icon">😕</div>
+              <h3>No Recipes Found</h3>
+              <p>We couldn't find any recipes for "{query}". Try a different search!</p>
+            </div>
+          )}
+
+          {!searched && !loading && (
+             <div className="search-empty-state">
               <div className="search-empty-icon">🍳</div>
-              <h3>Ready to find your next meal?</h3>
-              <p>Use the search bar above to ask our AI for any recipe you can imagine!</p>
+              <h3>What are you craving?</h3>
+              <p>Use the search bar above to find your next favorite meal.</p>
             </div>
           )}
         </div>
