@@ -134,7 +134,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   if (isMinimized) {
     return (
       <div className="chatbox-floating-btn" onClick={onToggleMinimize}>
-        <div className="chatbox-floating-icon">💬</div>
+        <img src="/logo.png" alt="GastroBot" className="chatbox-floating-icon" />
         {messages.length > 1 && (
           <div className="chatbox-notification-badge">{messages.length - 1}</div>
         )}

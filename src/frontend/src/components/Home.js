@@ -34,8 +34,7 @@ const Home = ({ onSignOut }) => {
   const [fromFavorite, setFromFavorite] = useState(false);
   const [fromHistory, setFromHistory] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
-  const [showChat, setShowChat] = useState(false);
-  const [isChatMinimized, setIsChatMinimized] = useState(false);
+  const [isChatMinimized, setIsChatMinimized] = useState(true);
   const isMobile = useResponsive();
 
   const user = getCurrentUser();
@@ -128,15 +127,6 @@ const Home = ({ onSignOut }) => {
 
   const handleBackToPersonal = () => {
     setPage('personal');
-  };
-
-  const handleToggleChat = () => {
-    if (showChat && !isChatMinimized) {
-      setIsChatMinimized(true);
-    } else {
-      setShowChat(true);
-      setIsChatMinimized(false);
-    }
   };
 
   const handleToggleChatMinimize = () => {
@@ -240,23 +230,18 @@ const Home = ({ onSignOut }) => {
             <div className="home-menu-icon">🕓</div>
             <span className="home-menu-text">History</span>
           </div>
-          <div className="home-menu-item" onClick={handleToggleChat}>
-            <div className="home-menu-icon">💬</div>
-            <span className="home-menu-text">Chat</span>
-          </div>
         </div>
       </div>
 
-      {showChat && (
-        <Chatbox
-          setSelectedRecipe={setSelectedRecipe}
-          setShowRecipeDetail={setShowRecipeDetail}
-          messages={chatMessages}
-          setMessages={setChatMessages}
-          isMinimized={isChatMinimized}
-          onToggleMinimize={handleToggleChatMinimize}
-        />
-      )}
+      {/* Always show chat as floating icon */}
+      <Chatbox
+        setSelectedRecipe={setSelectedRecipe}
+        setShowRecipeDetail={setShowRecipeDetail}
+        messages={chatMessages}
+        setMessages={setChatMessages}
+        isMinimized={isChatMinimized}
+        onToggleMinimize={handleToggleChatMinimize}
+      />
     </div>
   );
 };

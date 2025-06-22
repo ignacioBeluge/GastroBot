@@ -8,81 +8,113 @@ const MealTypeList = ({ onBack, selectedMealType }) => {
   useEffect(() => {
     const fetchMealTypeRecipes = async () => {
       try {
-        // Fetch recipes based on meal type
-        let searchQuery = '';
+        // Fetch recipes based on meal type with better search queries
+        let searchQueries = [];
         switch (selectedMealType) {
           case 'Breakfast':
-            searchQuery = 'breakfast';
+            searchQueries = ['breakfast', 'pancake', 'waffle', 'omelette', 'toast', 'cereal', 'bacon', 'eggs'];
             break;
           case 'Lunch':
-            searchQuery = 'lunch';
+            searchQueries = ['lunch', 'sandwich', 'salad', 'soup', 'pasta', 'rice', 'chicken', 'fish'];
             break;
           case 'Dinner':
-            searchQuery = 'dinner';
+            searchQueries = ['dinner', 'steak', 'roast', 'grilled', 'baked', 'casserole', 'lasagna', 'curry'];
             break;
           case 'Snack':
-            searchQuery = 'snack';
+            searchQueries = ['snack', 'cookie', 'cake', 'brownie', 'muffin', 'chips', 'dip', 'finger food'];
             break;
           default:
-            searchQuery = 'meal';
+            searchQueries = ['meal', 'food', 'recipe'];
         }
 
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`);
-        const data = await response.json();
+        let allRecipes = [];
         
-        if (data.meals && data.meals.length > 0) {
-          // Process and enhance the recipes
-          const processedRecipes = data.meals.slice(0, 12).map(meal => {
-            const ingredients = [];
-            for (let i = 1; i <= 20; i++) {
-              const ing = meal[`strIngredient${i}`];
-              const measure = meal[`strMeasure${i}`];
-              if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
-                ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
-              }
-            }
+        // Fetch recipes for each search query
+        for (const query of searchQueries) {
+          try {
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`);
+            const data = await response.json();
             
-            return {
-              ...meal,
-              name: meal.strMeal,
-              img: meal.strMealThumb,
-              fullDesc: meal.strInstructions,
-              time: meal.strTags || '30 min',
-              ingredients,
-              difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
-              rating: (4 + Math.random()).toFixed(1),
-            };
-          });
-          
-          setRecipes(processedRecipes);
+            if (data.meals && data.meals.length > 0) {
+              // Process and enhance the recipes
+              const processedRecipes = data.meals.map(meal => {
+                const ingredients = [];
+                for (let i = 1; i <= 20; i++) {
+                  const ing = meal[`strIngredient${i}`];
+                  const measure = meal[`strMeasure${i}`];
+                  if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
+                    ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
+                  }
+                }
+                
+                return {
+                  ...meal,
+                  name: meal.strMeal,
+                  img: meal.strMealThumb,
+                  fullDesc: meal.strInstructions,
+                  time: meal.strTags || '30 min',
+                  ingredients,
+                  difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+                  rating: (4 + Math.random()).toFixed(1),
+                };
+              });
+              
+              allRecipes = [...allRecipes, ...processedRecipes];
+            }
+          } catch (error) {
+            console.error(`Error fetching recipes for query "${query}":`, error);
+          }
+        }
+        
+        // Remove duplicates based on meal ID and limit to 12 recipes
+        const uniqueRecipes = allRecipes.filter((recipe, index, self) => 
+          index === self.findIndex(r => r.idMeal === recipe.idMeal)
+        ).slice(0, 12);
+        
+        if (uniqueRecipes.length > 0) {
+          setRecipes(uniqueRecipes);
         } else {
           // Fallback to random recipes if no specific meal type recipes found
-          const randomResponse = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-          const randomData = await randomResponse.json();
-          if (randomData.meals && randomData.meals[0]) {
-            const meal = randomData.meals[0];
-            const ingredients = [];
-            for (let i = 1; i <= 20; i++) {
-              const ing = meal[`strIngredient${i}`];
-              const measure = meal[`strMeasure${i}`];
-              if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
-                ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
+          const randomRecipes = [];
+          for (let i = 0; i < 6; i++) {
+            try {
+              const randomResponse = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+              const randomData = await randomResponse.json();
+              if (randomData.meals && randomData.meals[0]) {
+                const meal = randomData.meals[0];
+                const ingredients = [];
+                for (let i = 1; i <= 20; i++) {
+                  const ing = meal[`strIngredient${i}`];
+                  const measure = meal[`strMeasure${i}`];
+                  if (ing && ing.trim() && ing.trim().toLowerCase() !== 'null' && ing.trim().toLowerCase() !== 'undefined') {
+                    ingredients.push((measure && measure.trim() ? measure.trim() + ' ' : '') + ing.trim());
+                  }
+                }
+                
+                const recipe = {
+                  ...meal,
+                  name: meal.strMeal,
+                  img: meal.strMealThumb,
+                  fullDesc: meal.strInstructions,
+                  time: meal.strTags || '30 min',
+                  ingredients,
+                  difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+                  rating: (4 + Math.random()).toFixed(1),
+                };
+                
+                randomRecipes.push(recipe);
               }
+            } catch (error) {
+              console.error('Error fetching random recipe:', error);
             }
-            
-            const recipe = {
-              ...meal,
-              name: meal.strMeal,
-              img: meal.strMealThumb,
-              fullDesc: meal.strInstructions,
-              time: meal.strTags || '30 min',
-              ingredients,
-              difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
-              rating: (4 + Math.random()).toFixed(1),
-            };
-            
-            setRecipes([recipe]);
           }
+          
+          // Remove duplicates from random recipes
+          const uniqueRandomRecipes = randomRecipes.filter((recipe, index, self) => 
+            index === self.findIndex(r => r.idMeal === recipe.idMeal)
+          );
+          
+          setRecipes(uniqueRandomRecipes);
         }
       } catch (error) {
         console.error('Error fetching meal type recipes:', error);
