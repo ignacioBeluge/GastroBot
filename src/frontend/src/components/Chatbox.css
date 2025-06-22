@@ -51,7 +51,8 @@
   font-size: 1.1rem !important;
   font-weight: 700 !important;
   color: #ffffff !important;
-  margin-left: auto !important;
+  flex: 1 !important;
+  text-align: center !important;
 }
 
 .chatbox-body {
@@ -231,6 +232,79 @@
   height: 16px !important;
 }
 
+/* Floating Chat Button */
+.chatbox-floating-btn {
+  position: fixed !important;
+  bottom: 2rem !important;
+  right: 2rem !important;
+  width: 60px !important;
+  height: 60px !important;
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  z-index: 1001 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.3) !important;
+  position: relative !important;
+}
+
+.chatbox-floating-btn:hover {
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.4) !important;
+}
+
+.chatbox-floating-icon {
+  font-size: 1.8rem !important;
+  color: #ffffff !important;
+}
+
+.chatbox-notification-badge {
+  position: absolute !important;
+  top: -5px !important;
+  right: -5px !important;
+  background: #ff4444 !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  border: 2px solid #1a1a1a !important;
+}
+
+/* Minimize Button */
+.chatbox-minimize-btn {
+  background: #404040 !important;
+  border: 2px solid #505050 !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+  outline: none !important;
+}
+
+.chatbox-minimize-btn:hover {
+  background: #505050 !important;
+  border-color: #ff7a00 !important;
+  transform: scale(1.1) !important;
+}
+
+.chatbox-minimize-btn:active {
+  transform: scale(0.95) !important;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .chatbox-window {
@@ -238,6 +312,17 @@
     height: 70vh !important;
     bottom: 1rem !important;
     right: 1rem !important;
+  }
+  
+  .chatbox-floating-btn {
+    bottom: 1rem !important;
+    right: 1rem !important;
+    width: 55px !important;
+    height: 55px !important;
+  }
+  
+  .chatbox-floating-icon {
+    font-size: 1.6rem !important;
   }
 }
 
@@ -264,6 +349,17 @@
     padding: 0.5rem 0.75rem !important;
     font-size: 0.95rem !important;
   }
+  
+  .chatbox-floating-btn {
+    bottom: 0.75rem !important;
+    right: 0.75rem !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .chatbox-floating-icon {
+    font-size: 1.4rem !important;
+  }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
@@ -288,14 +384,18 @@
   .chatbox-new-btn,
   .chatbox-icon-btn,
   .chatbox-send,
-  .chat-recipe-item {
+  .chat-recipe-item,
+  .chatbox-floating-btn,
+  .chatbox-minimize-btn {
     transition: none !important;
   }
   
   .chatbox-new-btn:hover,
   .chatbox-icon-btn:hover,
   .chatbox-send:hover,
-  .chat-recipe-item:hover {
+  .chat-recipe-item:hover,
+  .chatbox-floating-btn:hover,
+  .chatbox-minimize-btn:hover {
     transform: none !important;
   }
 } 

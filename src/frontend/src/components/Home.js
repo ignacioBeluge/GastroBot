@@ -30,10 +30,12 @@ const Home = ({ onSignOut }) => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [showRecipeDetail, setShowRecipeDetail] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedMealType, setSelectedMealType] = useState(null);
   const [fromFavorite, setFromFavorite] = useState(false);
   const [fromHistory, setFromHistory] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [showChat, setShowChat] = useState(false);
+  const [isChatMinimized, setIsChatMinimized] = useState(false);
   const isMobile = useResponsive();
 
   const user = getCurrentUser();
@@ -129,7 +131,16 @@ const Home = ({ onSignOut }) => {
   };
 
   const handleToggleChat = () => {
-    setShowChat(!showChat);
+    if (showChat && !isChatMinimized) {
+      setIsChatMinimized(true);
+    } else {
+      setShowChat(true);
+      setIsChatMinimized(false);
+    }
+  };
+
+  const handleToggleChatMinimize = () => {
+    setIsChatMinimized(!isChatMinimized);
   };
 
   // Render different pages
@@ -186,11 +197,14 @@ const Home = ({ onSignOut }) => {
   }
 
   if (page === 'mealtype') {
-    return <MealType onBack={handleBack} onSelect={() => setPage('mealtypelist')} />;
+    return <MealType onBack={handleBack} onSelect={(mealType) => {
+      setSelectedMealType(mealType);
+      setPage('mealtypelist');
+    }} />;
   }
 
   if (page === 'mealtypelist') {
-    return <MealTypeList onBack={() => setPage('mealtype')} />;
+    return <MealTypeList onBack={() => setPage('mealtype')} selectedMealType={selectedMealType} />;
   }
 
   // Main home page
@@ -239,6 +253,8 @@ const Home = ({ onSignOut }) => {
           setShowRecipeDetail={setShowRecipeDetail}
           messages={chatMessages}
           setMessages={setChatMessages}
+          isMinimized={isChatMinimized}
+          onToggleMinimize={handleToggleChatMinimize}
         />
       )}
     </div>

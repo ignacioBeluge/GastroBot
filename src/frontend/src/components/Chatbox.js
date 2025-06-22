@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Chatbox.css';
 
-const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessages, setMessages: propSetMessages }) => {
+const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessages, setMessages: propSetMessages, isMinimized, onToggleMinimize }) => {
   const [internalMessages, setInternalMessages] = useState([
     { from: 'bot', text: 'Hi! How can I help you today?' }
   ]);
@@ -21,10 +21,10 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
 
   // Focus input when chat opens
   useEffect(() => {
-    if (inputRef.current) {
+    if (!isMinimized && inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [isMinimized]);
 
   // Detect if message is a recipe query
   function isRecipeQuery(text) {
@@ -130,6 +130,18 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
     }
   };
 
+  // If minimized, show only the floating chat button
+  if (isMinimized) {
+    return (
+      <div className="chatbox-floating-btn" onClick={onToggleMinimize}>
+        <div className="chatbox-floating-icon">💬</div>
+        {messages.length > 1 && (
+          <div className="chatbox-notification-badge">{messages.length - 1}</div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="chatbox-window">
       <div className="chatbox-header">
@@ -142,6 +154,11 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
           <span>New chat</span>
         </button>
         <span className="chatbox-title">GastroBot Chat</span>
+        <button onClick={onToggleMinimize} className="chatbox-minimize-btn" title="Minimize">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
+            <path d="M18 15l-6-6-6 6"/>
+          </svg>
+        </button>
       </div>
       
       <div className="chatbox-body">
