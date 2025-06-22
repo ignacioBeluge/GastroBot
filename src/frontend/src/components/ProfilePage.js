@@ -1,0 +1,57 @@
+import React from 'react';
+import { getCurrentUser } from '../services/authService';
+import './ProfilePage.css';
+
+const profileMenuList = [
+  { icon: '🧑‍💼', label: 'Personal Info', key: 'personal' },
+  { icon: '🏠', label: 'Addresses' },
+  { icon: '💳', label: 'Payment', key: 'payment' },
+  { icon: '❤️', label: 'Favourite', key: 'favorite' },
+  { icon: '🔔', label: 'Notifications' },
+  { icon: '🕓', label: 'History', key: 'history' },
+  { icon: '❓', label: 'FAQs' },
+  { icon: '⭐', label: 'User Review' },
+  { icon: '🚪', label: 'Sign Out', key: 'signout', logout: true },
+];
+
+const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
+  const user = getCurrentUser();
+  const name = user?.user?.name || '';
+  const bio = user?.user?.bio || '';
+  
+  return (
+    <div className="profile-bg">
+      <div className="profile-card">
+        <div className="profile-header-row">
+          <button className="profile-back-btn" onClick={onBack}>
+            <svg width="28" height="28" viewBox="0 0 22 22">
+              <circle cx="11" cy="11" r="11" fill="#f5f5f5" />
+              <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            </svg>
+          </button>
+          <span className="profile-title">Profile</span>
+        </div>
+        <div className="profile-avatar-big" />
+        <div className="profile-username">{name}</div>
+        <div className="profile-desc">{bio || '¡Agrega una bio desde Editar Perfil!'}</div>
+        <div className="profile-menu-list-2">
+          {profileMenuList.map(item => (
+            <div
+              className={`profile-menu-item-2${item.logout ? ' logout' : ''}`}
+              key={item.label}
+              onClick={item.key === 'signout'
+                ? () => { if (onSignOut) onSignOut(); }
+                : item.key ? () => onMenu(item.key) : undefined}
+            >
+              <span className="profile-menu-icon-2">{item.icon}</span>
+              <span>{item.label}</span>
+              <span className="profile-menu-arrow-2">›</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProfilePage; 

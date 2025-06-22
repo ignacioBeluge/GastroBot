@@ -1,0 +1,277 @@
+/* Search Component Styles */
+.search-bg {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+}
+
+.search-container {
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  padding: 0 2rem !important;
+}
+
+.search-header {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 2rem !important;
+  padding: 1.5rem 2rem !important;
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid #404040 !important;
+}
+
+.search-back-btn {
+  background: #404040 !important;
+  border: 2px solid #505050 !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-right: 1rem !important;
+}
+
+.search-back-btn:hover {
+  background: #505050 !important;
+  border-color: #ff7a00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.search-back-btn svg circle {
+  fill: #404040 !important;
+}
+
+.search-back-btn svg path {
+  stroke: #ffffff !important;
+}
+
+.search-title {
+  color: #ffffff !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  flex: 1 !important;
+}
+
+.search-form {
+  display: flex !important;
+  gap: 1rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.search-input {
+  flex: 1 !important;
+  padding: 1rem 1.5rem !important;
+  border: 2px solid #404040 !important;
+  border-radius: 12px !important;
+  font-size: 1rem !important;
+  background: #333333 !important;
+  color: #e0e0e0 !important;
+  transition: all 0.3s ease !important;
+}
+
+.search-input:focus {
+  outline: none !important;
+  border-color: #ff7a00 !important;
+  background: #404040 !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1) !important;
+}
+
+.search-input::placeholder {
+  color: #888888 !important;
+}
+
+.search-btn {
+  background: #ff7a00 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 1rem 2rem !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 1rem !important;
+}
+
+.search-btn:hover {
+  background: #e66d00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+}
+
+.search-loading {
+  text-align: center !important;
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  padding: 3rem !important;
+  background: #2a2a2a !important;
+  border-radius: 20px !important;
+  border: 1px solid #404040 !important;
+}
+
+.search-results {
+  display: grid !important;
+  gap: 1.5rem !important;
+}
+
+.search-result-item {
+  background: #2a2a2a !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid #404040 !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 1rem !important;
+}
+
+.search-result-item:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.2) !important;
+  border-color: #ff7a00 !important;
+}
+
+.search-result-image {
+  width: 80px !important;
+  height: 80px !important;
+  border-radius: 12px !important;
+  object-fit: cover !important;
+  margin-right: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+.search-result-content {
+  flex: 1 !important;
+}
+
+.search-result-name {
+  color: #ffffff !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+.search-result-meta {
+  display: flex !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+.search-result-time,
+.search-result-difficulty,
+.search-result-rating {
+  background: #404040 !important;
+  color: #ffffff !important;
+  padding: 0.25rem 0.75rem !important;
+  border-radius: 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+.search-result-rating {
+  background: #ff7a00 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 0 1rem !important;
+  }
+  
+  .search-header {
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .search-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .search-form {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  
+  .search-btn {
+    padding: 0.75rem 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bg {
+    padding: 1rem 0 !important;
+  }
+  
+  .search-container {
+    padding: 0 0.5rem !important;
+  }
+  
+  .search-header {
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 1rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .search-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .search-result-item {
+    padding: 0.75rem !important;
+  }
+  
+  .search-result-image {
+    width: 60px !important;
+    height: 60px !important;
+    margin-right: 0.75rem !important;
+  }
+  
+  .search-result-name {
+    font-size: 1.1rem !important;
+  }
+  
+  .search-result-meta {
+    gap: 0.5rem !important;
+  }
+  
+  .search-result-time,
+  .search-result-difficulty,
+  .search-result-rating {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .search-header,
+  .search-result-item {
+    border-width: 3px !important;
+  }
+  
+  .search-input {
+    border-width: 3px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .search-back-btn,
+  .search-btn,
+  .search-result-item {
+    transition: none !important;
+  }
+  
+  .search-back-btn:hover,
+  .search-btn:hover,
+  .search-result-item:hover {
+    transform: none !important;
+  }
+} 
