@@ -1,5 +1,98 @@
+/* Personal Info Container Styles */
+.personal-info-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.personal-info-container {
+  background: #2a2a2a;
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #404040;
+}
+
+.personal-info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.personal-info-back-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.personal-info-back-btn:hover {
+  transform: scale(1.1);
+}
+
+.personal-info-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex: 1;
+}
+
+.personal-info-content {
+  margin-bottom: 2rem;
+}
+
 .personal-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #404040;
   margin-bottom: 1.5rem !important;
+}
+
+.personal-info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 1rem;
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.edit-profile-btn {
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.edit-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4);
 }
 
 /* Dietary Preferences Section */

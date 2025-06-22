@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
@@ -19,14 +19,43 @@ const ProtectedRoute = ({ children }) => {
 // Nuevo componente para las rutas
 function AppRoutes() {
   const navigate = useNavigate();
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const authenticated = isAuthenticated();
+      setIsAuth(authenticated);
+      setAuthChecked(true);
+    };
+    
+    checkAuth();
+    
+    // Listen for auth state changes
+    const handleAuthChange = () => {
+      checkAuth();
+    };
+    
+    window.addEventListener('authStateChanged', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('authStateChanged', handleAuthChange);
+    };
+  }, []);
+
   const handleSignOut = () => {
     navigate('/login', { replace: true });
   };
 
+  // Don't render anything until we've checked authentication
+  if (!authChecked) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={isAuth ? <Navigate to="/home" replace /> : <Login />} />
+      <Route path="/register" element={isAuth ? <Navigate to="/home" replace /> : <Register />} />
       <Route path="/verify-email" element={<EmailVerification />} />
       <Route 
         path="/home" 
@@ -36,7 +65,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      <Route path="/" element={isAuthenticated() ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />} />
+      <Route path="/" element={isAuth ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
