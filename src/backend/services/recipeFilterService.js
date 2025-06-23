@@ -16,6 +16,8 @@ const DANGEROUS_INGREDIENTS = {
     'yogurt', 'greek yogurt', 'sour cream', 'butter', 'margarine',
     'ice cream', 'gelato', 'pudding', 'custard'
   ],
+  'vegetarian': ['chicken', 'beef', 'pork', 'lamb', 'fish', 'seafood', 'bacon', 'ham', 'sausage', 'turkey', 'chicken breast', 'chicken thighs', 'ground beef', 'steak', 'pork chops', 'salmon', 'tuna', 'shrimp', 'crab', 'lobster',
+    'duck', 'goose', 'venison', 'rabbit', 'quail', 'pheasant', 'game meat']
 };
 
 // Safe alternatives that should NOT be filtered
