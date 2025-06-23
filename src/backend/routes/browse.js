@@ -35,17 +35,28 @@ const fetchFullRecipeDetails = async (recipeStub) => {
 router.get('/category/:categoryName', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('dietaryPreferences');
-    const preferences = user.dietaryPreferences;
+    const preferences = user.dietaryPreferences || [];
+
+    console.log(`Category ${req.params.categoryName} - User preferences:`, preferences);
 
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${req.params.categoryName}`);
     const data = await response.json();
-    if (!data.meals) return res.json([]);
+    if (!data.meals) {
+      console.log(`No meals found for category: ${req.params.categoryName}`);
+      return res.json([]);
+    }
+
+    console.log(`Found ${data.meals.length} recipes for category: ${req.params.categoryName}`);
 
     const recipeStubs = data.meals;
     const recipePromises = recipeStubs.map(stub => fetchFullRecipeDetails(stub));
     const fullRecipes = (await Promise.all(recipePromises)).filter(Boolean); // Filter out any nulls from failed fetches
 
+    console.log(`Successfully fetched ${fullRecipes.length} full recipes`);
+
     const safeRecipes = filterRecipes(fullRecipes, preferences);
+
+    console.log(`After filtering: ${safeRecipes.length} recipes remain`);
 
     res.json(safeRecipes);
   } catch (err) {
@@ -57,12 +68,19 @@ router.get('/category/:categoryName', authMiddleware, async (req, res) => {
 router.get('/mealtype/:typeName', authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('dietaryPreferences');
-    const preferences = user.dietaryPreferences;
+    const preferences = user.dietaryPreferences || [];
+
+    console.log(`Meal type ${req.params.typeName} - User preferences:`, preferences);
 
     // TheMealDB uses 'search' for meal types, not a filter.
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${req.params.typeName}`);
     const data = await response.json();
-    if (!data.meals) return res.json([]);
+    if (!data.meals) {
+      console.log(`No meals found for meal type: ${req.params.typeName}`);
+      return res.json([]);
+    }
+
+    console.log(`Found ${data.meals.length} recipes for meal type: ${req.params.typeName}`);
 
     // The 'search' endpoint returns full details, so no extra lookups needed.
     const fullRecipes = data.meals.map(meal => ({
@@ -81,7 +99,11 @@ router.get('/mealtype/:typeName', authMiddleware, async (req, res) => {
       }).filter(Boolean),
     }));
 
+    console.log(`Successfully processed ${fullRecipes.length} recipes`);
+
     const safeRecipes = filterRecipes(fullRecipes, preferences);
+
+    console.log(`After filtering: ${safeRecipes.length} recipes remain`);
 
     res.json(safeRecipes);
   } catch (err) {

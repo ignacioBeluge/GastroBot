@@ -83,23 +83,32 @@ const isUnsafe = (recipe, preferences) => {
 };
 
 const filterRecipes = (recipes, preferences) => {
+  console.log(`Filtering ${recipes.length} recipes with preferences:`, preferences);
+  
   if (!preferences || preferences.length === 0) {
+    console.log('No preferences - returning all recipes');
     return recipes;
   }
   
   // For weight preferences, don't filter - just return all recipes
   const weightPreferences = preferences.filter(p => p.includes('weight'));
   if (weightPreferences.length > 0 && preferences.length === weightPreferences.length) {
+    console.log('Only weight preferences - returning all recipes');
     return recipes;
   }
   
   // Filter out unsafe recipes for dietary restrictions
   const dietaryPreferences = preferences.filter(p => !p.includes('weight'));
   if (dietaryPreferences.length === 0) {
+    console.log('No dietary preferences - returning all recipes');
     return recipes;
   }
   
-  return recipes.filter(recipe => !isUnsafe(recipe, dietaryPreferences));
+  console.log(`Filtering for dietary preferences:`, dietaryPreferences);
+  const filtered = recipes.filter(recipe => !isUnsafe(recipe, dietaryPreferences));
+  console.log(`After filtering: ${filtered.length} recipes remain`);
+  
+  return filtered;
 };
 
 module.exports = {
