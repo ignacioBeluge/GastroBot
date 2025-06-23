@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { verifyEmail } from '../services/authService';
 import './EmailVerification.css';
 
 const EmailVerification = () => {
@@ -10,16 +9,40 @@ const EmailVerification = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const verifyUserEmail = async () => {
+    const handleVerification = async () => {
       try {
-        const token = new URLSearchParams(location.search).get('token');
+        const searchParams = new URLSearchParams(location.search);
+        const token = searchParams.get('token');
+        const error = searchParams.get('error');
+
+        // Handle error cases from backend redirects
+        if (error) {
+          setStatus('error');
+          switch (error) {
+            case 'no-token':
+              setErrorMessage('Token de verificación no encontrado');
+              break;
+            case 'invalid-token':
+              setErrorMessage('Token inválido o expirado');
+              break;
+            case 'server-error':
+              setErrorMessage('Error en el servidor');
+              break;
+            default:
+              setErrorMessage('Error en la verificación del email');
+          }
+          return;
+        }
+
+        // If no token and no error, show loading
         if (!token) {
           setStatus('error');
           setErrorMessage('Token de verificación no encontrado');
           return;
         }
 
-        await verifyEmail(token);
+        // If we have a token, the backend has already verified it and redirected us
+        // So we can show success immediately
         setStatus('success');
         
         // Redirigir al login después de 3 segundos
@@ -28,11 +51,11 @@ const EmailVerification = () => {
         }, 3000);
       } catch (error) {
         setStatus('error');
-        setErrorMessage(error.message || 'Error en la verificación del email');
+        setErrorMessage('Error en la verificación del email');
       }
     };
 
-    verifyUserEmail();
+    handleVerification();
   }, [location, navigate]);
 
   return (

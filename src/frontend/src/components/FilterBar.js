@@ -3,7 +3,7 @@ import './FilterBar.css';
 
 const FilterBar = ({ filters, onFilterChange }) => {
   const timeOptions = [
-    { value: 'all', label: 'All Times' },
+    { value: 'all', label: 'No preference' },
     { value: 'quick', label: 'Quick (< 30 min)' },
     { value: 'medium', label: 'Medium (30-60 min)' },
     { value: 'long', label: 'Long (> 60 min)' }

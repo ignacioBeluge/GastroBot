@@ -91,19 +91,6 @@ export const isAuthenticated = async () => {
   return await validateToken();
 };
 
-export const verifyEmail = async (token) => {
-  try {
-    const response = await axios.get(`${API_URL}/verify-email/${token}`);
-    // Limpiar el estado anterior del usuario
-    localStorage.removeItem('user');
-    return response.data;
-  } catch (error) {
-    // Limpiar el estado anterior del usuario en caso de error
-    localStorage.removeItem('user');
-    throw new Error(error.response?.data?.message || 'Error en la verificación del email');
-  }
-};
-
 export const updateUser = async (id, data) => {
   try {
     const response = await axios.put(`${API_URL}/user/${id}`, data);
@@ -126,7 +113,6 @@ const authService = {
   logout,
   getCurrentUser,
   isAuthenticated,
-  verifyEmail,
   updateUser
 };
 
