@@ -102,18 +102,27 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
                 ingredients.push(`${measure || ''} ${ing}`.trim());
               }
             }
-            setSelectedRecipe({
+            
+            // Create recipe object with consistent property names
+            const recipeObject = {
               ...meal,
+              idMeal: meal.idMeal, // Keep original ID for favorites/history
               name: meal.strMeal,
               img: meal.strMealThumb,
               fullDesc: meal.strInstructions,
               time: meal.strTags || '30 min',
-              ingredients,
+              ingredients: ingredients,
               difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
               rating: (4 + Math.random()).toFixed(1),
-            });
+            };
+            
+            console.log('Chatbox: Recipe object created:', recipeObject);
+            setSelectedRecipe(recipeObject);
             setShowRecipeDetail(true);
           }
+        })
+        .catch(error => {
+          console.error('Error fetching recipe details:', error);
         });
     }
   };

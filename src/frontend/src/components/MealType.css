@@ -442,4 +442,35 @@
   .meal-type-list-card:hover .meal-type-list-image {
     transform: none !important;
   }
+}
+
+/* Add these styles to the existing MealType.css */
+
+.meal-type-list-results {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.meal-type-list-results-text {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.meal-type-list-clear-filters-btn {
+  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.meal-type-list-clear-filters-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
 } 

@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getCurrentUser } from '../services/authService';
+import FilterBar from './FilterBar';
+import { filterRecipes } from '../utils/recipeFilters';
 import './MealType.css';
 
 const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
   const [recipes, setRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [filters, setFilters] = useState({
+    time: 'all',
+    rating: 'all',
+    difficulty: 'all'
+  });
 
   useEffect(() => {
     if (!selectedMealType) {
@@ -38,6 +46,7 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
         console.log('MealTypeList: Received response with', response.data.length, 'recipes');
 
         setRecipes(response.data);
+        setFilteredRecipes(response.data);
       } catch (error) {
         console.error('MealTypeList: Error fetching meal type recipes:', error);
         setError('Failed to load recipes. Please try again later.');
@@ -48,6 +57,16 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
 
     fetchMealTypeRecipes();
   }, [selectedMealType]);
+
+  // Apply filters whenever filters or recipes change
+  useEffect(() => {
+    const filtered = filterRecipes(recipes, filters);
+    setFilteredRecipes(filtered);
+  }, [filters, recipes]);
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
   const handleRecipeClick = (recipe) => {
     onRecipeSelect(recipe);
@@ -84,9 +103,19 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
           </button>
           <span className="meal-type-list-title">{selectedMealType} Recipes</span>
         </div>
+
+        {/* Filter Bar */}
+        <FilterBar filters={filters} onFilterChange={handleFilterChange} />
+        
+        {/* Results count */}
+        <div className="meal-type-list-results">
+          <span className="meal-type-list-results-text">
+            Showing {filteredRecipes.length} of {recipes.length} recipes
+          </span>
+        </div>
         
         <div className="meal-type-list-grid">
-          {recipes.map((recipe) => (
+          {filteredRecipes.map((recipe) => (
             <div key={recipe.idMeal} className="meal-type-list-card" onClick={() => handleRecipeClick(recipe)}>
               <img src={recipe.img} alt={recipe.name} className="meal-type-list-image" />
               <div className="meal-type-list-content">
@@ -101,11 +130,23 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
           ))}
         </div>
         
-        {recipes.length === 0 && (
+        {filteredRecipes.length === 0 && (
           <div className="meal-type-list-empty">
             <div className="meal-type-list-empty-icon">🍽️</div>
-            <h3 className="meal-type-list-empty-title">No {selectedMealType ? selectedMealType.toLowerCase() : ''} recipes found</h3>
-            <p className="meal-type-list-empty-text">This may be due to your dietary preferences. Try a different search!</p>
+            <h3 className="meal-type-list-empty-title">
+              {recipes.length === 0 ? `No ${selectedMealType ? selectedMealType.toLowerCase() : ''} recipes found` : 'No recipes match your filters'}
+            </h3>
+            <p className="meal-type-list-empty-text">
+              {recipes.length === 0 ? 'This may be due to your dietary preferences. Try a different search!' : 'Try adjusting your filters to see more recipes.'}
+            </p>
+            {recipes.length > 0 && (
+              <button 
+                onClick={() => setFilters({ time: 'all', rating: 'all', difficulty: 'all' })}
+                className="meal-type-list-clear-filters-btn"
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
         )}
       </div>
