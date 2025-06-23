@@ -1,6 +1,35 @@
 const DANGEROUS_INGREDIENTS = {
-  celiac: ['wheat', 'flour', 'barley', 'rye', 'gluten', 'bread', 'pasta', 'semolina', 'couscous'],
-  'lactose-intolerant': ['milk', 'cheese', 'yogurt', 'butter', 'cream', 'lactose', 'casein'],
+  celiac: [
+    // More specific gluten-containing ingredients
+    'wheat flour', 'all-purpose flour', 'bread flour', 'cake flour', 'rye flour', 'barley flour',
+    'semolina', 'couscous', 'bulgur', 'farro', 'spelt', 'kamut', 'triticale',
+    'breadcrumbs', 'panko', 'matzo meal', 'graham crackers', 'wheat germ',
+    // Common gluten-containing processed foods
+    'soy sauce', 'teriyaki sauce', 'worcestershire sauce', 'malt vinegar',
+    'beer', 'ale', 'lager', 'malt', 'malt extract'
+  ],
+  'lactose-intolerant': [
+    // Dairy products that contain lactose
+    'milk', 'whole milk', 'skim milk', 'buttermilk', 'evaporated milk', 'condensed milk',
+    'cream', 'heavy cream', 'light cream', 'half-and-half', 'whipping cream',
+    'cheese', 'cheddar cheese', 'mozzarella cheese', 'parmesan cheese', 'cream cheese',
+    'yogurt', 'greek yogurt', 'sour cream', 'butter', 'margarine',
+    'ice cream', 'gelato', 'pudding', 'custard'
+  ],
+};
+
+// Safe alternatives that should NOT be filtered
+const SAFE_ALTERNATIVES = {
+  celiac: [
+    'gluten-free', 'gluten free', 'rice flour', 'almond flour', 'coconut flour', 
+    'tapioca flour', 'potato flour', 'corn flour', 'quinoa flour', 'buckwheat flour',
+    'tamari', 'coconut aminos', 'gluten-free soy sauce', 'gluten-free breadcrumbs'
+  ],
+  'lactose-intolerant': [
+    'almond milk', 'soy milk', 'oat milk', 'coconut milk', 'rice milk', 'hemp milk',
+    'lactose-free', 'lactose free', 'dairy-free', 'dairy free', 'vegan cheese',
+    'nutritional yeast', 'coconut oil', 'olive oil', 'avocado oil'
+  ],
 };
 
 const isUnsafe = (recipe, preferences) => {
@@ -9,15 +38,43 @@ const isUnsafe = (recipe, preferences) => {
   }
 
   const recipeIngredients = recipe.ingredients.join(' ').toLowerCase();
+  const recipeName = recipe.name.toLowerCase();
+  const recipeInstructions = (recipe.fullDesc || '').toLowerCase();
 
   for (const preference of preferences) {
     const forbiddenList = DANGEROUS_INGREDIENTS[preference];
+    const safeList = SAFE_ALTERNATIVES[preference];
+    
     if (forbiddenList) {
+      let hasDangerousIngredient = false;
+      
+      // Check for dangerous ingredients
       for (const forbidden of forbiddenList) {
-        if (recipeIngredients.includes(forbidden)) {
-          console.log(`Filtering out "${recipe.name}" due to preference "${preference}" and ingredient "${forbidden}"`);
-          return true; // Found a dangerous ingredient
+        if (recipeIngredients.includes(forbidden.toLowerCase())) {
+          // Check if there's a safe alternative mentioned
+          let hasSafeAlternative = false;
+          if (safeList) {
+            for (const safe of safeList) {
+              if (recipeIngredients.includes(safe.toLowerCase()) || 
+                  recipeName.includes(safe.toLowerCase()) ||
+                  recipeInstructions.includes(safe.toLowerCase())) {
+                hasSafeAlternative = true;
+                break;
+              }
+            }
+          }
+          
+          // Only filter if no safe alternative is found
+          if (!hasSafeAlternative) {
+            console.log(`Filtering out "${recipe.name}" due to preference "${preference}" and ingredient "${forbidden}"`);
+            hasDangerousIngredient = true;
+            break;
+          }
         }
+      }
+      
+      if (hasDangerousIngredient) {
+        return true;
       }
     }
   }
@@ -29,7 +86,20 @@ const filterRecipes = (recipes, preferences) => {
   if (!preferences || preferences.length === 0) {
     return recipes;
   }
-  return recipes.filter(recipe => !isUnsafe(recipe, preferences));
+  
+  // For weight preferences, don't filter - just return all recipes
+  const weightPreferences = preferences.filter(p => p.includes('weight'));
+  if (weightPreferences.length > 0 && preferences.length === weightPreferences.length) {
+    return recipes;
+  }
+  
+  // Filter out unsafe recipes for dietary restrictions
+  const dietaryPreferences = preferences.filter(p => !p.includes('weight'));
+  if (dietaryPreferences.length === 0) {
+    return recipes;
+  }
+  
+  return recipes.filter(recipe => !isUnsafe(recipe, dietaryPreferences));
 };
 
 module.exports = {

@@ -92,8 +92,8 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      <Route path="/" element={isAuth ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

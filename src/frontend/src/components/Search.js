@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { getUserPreferences } from '../services/userService';
 import './Search.css';
 
 const Search = ({ onBack, onRecipeSelect }) => {
