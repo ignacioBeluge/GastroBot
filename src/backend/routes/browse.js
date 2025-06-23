@@ -40,7 +40,22 @@ router.get('/category/:categoryName', authMiddleware, async (req, res) => {
     console.log(`Category ${req.params.categoryName} - User preferences:`, preferences);
 
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${req.params.categoryName}`);
-    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error(`TheMealDB API error for category ${req.params.categoryName}:`, response.status, response.statusText);
+      return res.status(500).json({ error: 'Failed to fetch recipes from external API' });
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      console.error(`Invalid JSON response for category ${req.params.categoryName}:`, jsonError);
+      const responseText = await response.text();
+      console.error('Response text:', responseText);
+      return res.status(500).json({ error: 'Invalid response from external API' });
+    }
+
     if (!data.meals) {
       console.log(`No meals found for category: ${req.params.categoryName}`);
       return res.json([]);
@@ -60,7 +75,7 @@ router.get('/category/:categoryName', authMiddleware, async (req, res) => {
 
     res.json(safeRecipes);
   } catch (err) {
-    console.error(err.message);
+    console.error('Category endpoint error:', err.message);
     res.status(500).send('Server Error');
   }
 });
@@ -74,7 +89,22 @@ router.get('/mealtype/:typeName', authMiddleware, async (req, res) => {
 
     // TheMealDB uses 'search' for meal types, not a filter.
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${req.params.typeName}`);
-    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error(`TheMealDB API error for meal type ${req.params.typeName}:`, response.status, response.statusText);
+      return res.status(500).json({ error: 'Failed to fetch recipes from external API' });
+    }
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (jsonError) {
+      console.error(`Invalid JSON response for meal type ${req.params.typeName}:`, jsonError);
+      const responseText = await response.text();
+      console.error('Response text:', responseText);
+      return res.status(500).json({ error: 'Invalid response from external API' });
+    }
+
     if (!data.meals) {
       console.log(`No meals found for meal type: ${req.params.typeName}`);
       return res.json([]);
@@ -107,7 +137,7 @@ router.get('/mealtype/:typeName', authMiddleware, async (req, res) => {
 
     res.json(safeRecipes);
   } catch (err) {
-    console.error(err.message);
+    console.error('Meal type endpoint error:', err.message);
     res.status(500).send('Server Error');
   }
 });
