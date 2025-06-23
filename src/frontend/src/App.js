@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import EmailVerification from './components/EmailVerification';
-import { isAuthenticated } from './services/authService';
+import { isAuthenticated, logout } from './services/authService';
 
 // Componente para proteger rutas
 const ProtectedRoute = ({ children }) => {
@@ -71,6 +71,9 @@ function AppRoutes() {
   }, []);
 
   const handleSignOut = () => {
+    // Call the logout function to clear user session
+    logout();
+    // Navigate to login page
     navigate('/login', { replace: true });
   };
 
