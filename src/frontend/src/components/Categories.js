@@ -56,7 +56,7 @@ const Categories = ({ onBack, onCategory }) => {
             <div
               key={category.idCategory}
               className="category-card"
-              onClick={() => onCategory(category.strCategory)}
+              onClick={() => onCategory(category)}
             >
               <img src={category.strCategoryThumb} alt={category.strCategory} className="category-image" />
               <div className="category-content">

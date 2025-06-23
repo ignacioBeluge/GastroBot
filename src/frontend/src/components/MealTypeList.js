@@ -9,7 +9,12 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!selectedMealType) return;
+    if (!selectedMealType) {
+      console.log('MealTypeList: selectedMealType is null or undefined');
+      return;
+    }
+
+    console.log('MealTypeList: Fetching recipes for meal type:', selectedMealType);
 
     const fetchMealTypeRecipes = async () => {
       setLoading(true);
@@ -24,14 +29,18 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
           return;
         }
 
+        console.log('MealTypeList: Making API call to:', `http://localhost:5000/api/browse/mealtype/${selectedMealType}`);
+
         const response = await axios.get(`http://localhost:5000/api/browse/mealtype/${selectedMealType}`, {
           headers: { 'x-auth-token': token }
         });
 
+        console.log('MealTypeList: Received response with', response.data.length, 'recipes');
+
         setRecipes(response.data);
       } catch (error) {
+        console.error('MealTypeList: Error fetching meal type recipes:', error);
         setError('Failed to load recipes. Please try again later.');
-        console.error('Error fetching meal type recipes:', error);
       } finally {
         setLoading(false);
       }

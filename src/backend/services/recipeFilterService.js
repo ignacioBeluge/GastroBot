@@ -3,7 +3,7 @@ const DANGEROUS_INGREDIENTS = {
     // More specific gluten-containing ingredients
     'wheat flour', 'all-purpose flour', 'bread flour', 'cake flour', 'rye flour', 'barley flour',
     'semolina', 'couscous', 'bulgur', 'farro', 'spelt', 'kamut', 'triticale',
-    'breadcrumbs', 'panko', 'matzo meal', 'graham crackers', 'wheat germ',
+    'breadcrumbs', 'panko', 'matzo meal', 'graham crackers', 'wheat germ','plain flour',
     // Common gluten-containing processed foods
     'soy sauce', 'teriyaki sauce', 'worcestershire sauce', 'malt vinegar',
     'beer', 'ale', 'lager', 'malt', 'malt extract'
