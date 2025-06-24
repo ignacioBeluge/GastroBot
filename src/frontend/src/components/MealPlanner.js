@@ -160,9 +160,11 @@ function MealPlanner() {
       setMealPlan(prev => {
         const updated = { ...prev };
         if (updated[meal.day] && updated[meal.day][meal.mealTime]) {
+          // Create a new object for the day to ensure React re-renders
+          updated[meal.day] = { ...updated[meal.day] };
           delete updated[meal.day][meal.mealTime];
         }
-        return updated;
+        return { ...updated };
       });
       // If the deleted meal is being shown in the modal, close it
       if (selectedRecipe && selectedRecipe._id === meal._id) {
@@ -308,7 +310,14 @@ function MealPlanner() {
                   hoveredCell.day === day && hoveredCell.mealTime === mealTime ? (
                     <div className="cell-expanded-content">
                       {mealPlan[day][mealTime].img && (
-                        <img src={mealPlan[day][mealTime].img} alt={mealPlan[day][mealTime].name} className="cell-img-thumb" style={{ pointerEvents: 'none' }} />
+                        <img
+                          src={mealPlan[day][mealTime].img}
+                          alt={mealPlan[day][mealTime].name}
+                          className="cell-img-thumb"
+                          style={{ pointerEvents: 'none' }}
+                          draggable={false}
+                          tabIndex={-1}
+                        />
                       )}
                       <span
                         className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
