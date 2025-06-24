@@ -77,4 +77,18 @@ export const setCurrentPaymentMethod = async (method) => {
   });
   if (!res.ok) throw new Error('Failed to set current payment method');
   return res.json();
+};
+
+export const deletePaymentMethod = async (method) => {
+  const token = getAuthToken();
+  const res = await fetch(`${API_URL}/payment-methods`, {
+    method: 'DELETE',
+    headers: {
+      'x-auth-token': token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(method)
+  });
+  if (!res.ok) throw new Error('Failed to delete payment method');
+  return res.json();
 }; 

@@ -27,8 +27,8 @@
   background: #23272b;
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
-  max-width: 420px;
+  padding: 3.5rem 3.5rem 2.5rem 3.5rem;
+  max-width: 540px;
   width: 100%;
   margin: 2.5rem auto 0 auto;
   display: flex;
@@ -263,13 +263,13 @@
 }
 
 .modal-content {
-  max-width: 420px;
+  max-width: 540px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .modal-body {
-  max-width: 420px;
+  max-width: 540px;
   width: 100%;
   box-sizing: border-box;
 } 

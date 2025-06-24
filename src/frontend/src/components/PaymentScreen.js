@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { getUserPlan, getPaymentMethods, addPaymentMethod, setCurrentPaymentMethod } from '../services/userService';
+import { getUserPlan, getPaymentMethods, addPaymentMethod, setCurrentPaymentMethod, deletePaymentMethod } from '../services/userService';
 import { getCurrentUser } from '../services/authService';
 import './PaymentScreen.css';
+import { FaTrash } from 'react-icons/fa';
 
 const cardTypes = ['Visa', 'Mastercard', 'Amex', 'Discover'];
 const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
@@ -171,6 +172,30 @@ const PaymentScreen = ({ onBack }) => {
     setPlanLoading(false);
   };
 
+  const handleDeletePaymentMethod = async (pm) => {
+    if (!window.confirm('Are you sure you want to delete this payment method?')) return;
+    try {
+      // Call backend to delete
+      const updated = await deletePaymentMethod({
+        cardType: pm.cardType,
+        last4: pm.last4,
+        expMonth: pm.expMonth,
+        expYear: pm.expYear,
+        name: pm.name
+      });
+      setPaymentMethods(updated);
+      // If current was deleted, select another as current
+      if (pm.current && updated.length > 0) {
+        await setCurrentPaymentMethod(updated[0]);
+        setSelectedPaymentMethod(updated[0]);
+      } else if (updated.length === 0) {
+        setSelectedPaymentMethod(null);
+      }
+    } catch (e) {
+      alert('Failed to delete payment method.');
+    }
+  };
+
   return (
     <div className="payment-screen-bg">
       <div className="payment-screen-container">
@@ -195,6 +220,11 @@ const PaymentScreen = ({ onBack }) => {
                 <button className="add-payment-btn" style={{ marginLeft: '1.5rem' }} onClick={handlePlanChange} disabled={planLoading}>
                   {planLoading ? 'Updating...' : plan === 'pro' ? 'Downgrade to Free' : 'Upgrade to Pro'}
                 </button>
+                {plan === 'pro' && paymentMethods.length > 1 && (
+                  <button className="add-payment-btn" style={{ marginLeft: '1rem' }} onClick={() => setSelectCardModalOpen(true)}>
+                    Change Payment Method
+                  </button>
+                )}
               </div>
               {upgradeError && <div className="payment-error-msg">{upgradeError}</div>}
               <div className="payment-methods-section">
@@ -213,6 +243,9 @@ const PaymentScreen = ({ onBack }) => {
                         <span className="payment-method-exp">{pm.expMonth}/{pm.expYear}</span>
                         <span className="payment-method-name">{pm.name}</span>
                         {pm.current && <span className="payment-method-current-label">Current</span>}
+                        <span style={{ marginLeft: 'auto', cursor: 'pointer' }} onClick={() => handleDeletePaymentMethod(pm)} title="Delete">
+                          <FaTrash color="#ff4444" />
+                        </span>
                       </div>
                     ))}
                   </div>

@@ -132,4 +132,31 @@ router.put('/payment-methods/current', authMiddleware, async (req, res) => {
   }
 });
 
+// Delete a payment method
+router.delete('/payment-methods', authMiddleware, async (req, res) => {
+  const { cardType, last4, expMonth, expYear, name } = req.body;
+  if (!cardType || !last4 || !expMonth || !expYear || !name) {
+    return res.status(400).json({ msg: 'Missing payment method fields to identify the card' });
+  }
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    let wasCurrent = false;
+    user.paymentMethods = (user.paymentMethods || []).filter(pm => {
+      const match = pm.cardType === cardType && pm.last4 === last4 && pm.expMonth === expMonth && pm.expYear === expYear && pm.name === name;
+      if (match && pm.current) wasCurrent = true;
+      return !match;
+    });
+    // If current was deleted, set first as current
+    if (wasCurrent && user.paymentMethods.length > 0) {
+      user.paymentMethods[0].current = true;
+    }
+    await user.save();
+    res.json(user.paymentMethods);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router; 

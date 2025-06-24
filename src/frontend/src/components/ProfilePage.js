@@ -36,7 +36,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
           <div className="profile-pro-badge">PRO</div>
         )}
         <div className="profile-username">{name}</div>
-        <div className="profile-desc">{bio || '¡Agrega una bio desde Editar Perfil!'}</div>
+        <div className="profile-desc">{bio || 'Add a bio from Edit Profile!'}</div>
         <div className="profile-menu-list-2">
           {profileMenuList.filter(item => !item.remove).map(item => (
             <div
