@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './MealPlanner.css';
 import { mealPlanService } from '../services/mealPlanService';
 import { getUserPreferences } from '../services/userService';
+import { getCurrentUser } from '../services/authService';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
@@ -172,9 +173,14 @@ function MealPlanner() {
       setSearchLoading(true);
       setSearchError('');
       try {
+        const user = getCurrentUser();
+        const token = user?.token;
         const response = await fetch('http://localhost:5000/api/search', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'x-auth-token': token } : {})
+          },
           body: JSON.stringify({ query: search.trim(), preferences }),
         });
         if (!response.ok) {
@@ -217,7 +223,11 @@ function MealPlanner() {
                 className="cell"
                 onClick={() => handleCellClick(day, mealTime)}
               >
-                {mealPlan[day]?.[mealTime]?.name || '+'}
+                {mealPlan[day]?.[mealTime]?.name ? (
+                  <span className="cell-content" title={mealPlan[day][mealTime].name}>
+                    {mealPlan[day][mealTime].name}
+                  </span>
+                ) : '+'}
               </div>
             ))}
           </div>

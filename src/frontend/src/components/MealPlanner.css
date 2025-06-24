@@ -67,6 +67,22 @@
   transition: background 0.2s, color 0.2s;
   font-size: 1.05em;
   border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 160px;
+}
+
+.cell .cell-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+  text-align: center;
 }
 
 .cell:hover {
