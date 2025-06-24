@@ -216,6 +216,7 @@ function MealPlanner() {
 
   // Hover state for expanded cell
   const [hoveredCell, setHoveredCell] = useState({ day: null, mealTime: null });
+  const [cellPosition, setCellPosition] = useState({ x: 0, y: 0 });
 
   // Modal state for recipe details
   const [modalOpen, setModalOpen] = useState(false);
@@ -249,6 +250,24 @@ function MealPlanner() {
     setModalLoading(false);
   };
 
+  // Handler for cell hover
+  const handleCellHover = (day, mealTime, event) => {
+    // Only expand if there's a recipe in this cell
+    if (mealPlan[day]?.[mealTime]?.name) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      setCellPosition({
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      });
+      setHoveredCell({ day, mealTime });
+    }
+  };
+
+  // Handler for cell leave
+  const handleCellLeave = () => {
+    setHoveredCell({ day: null, mealTime: null });
+  };
+
   // Render the grid using CSS grid
   return (
     <div className="meal-planner-container">
@@ -267,10 +286,17 @@ function MealPlanner() {
               <div
                 key={day + mealTime}
                 className={`cell${hoveredCell.day === day && hoveredCell.mealTime === mealTime ? ' cell-expanded' : ''}`}
-                style={{ gridRow: rowIdx + 2, gridColumn: colIdx + 2 }}
+                style={{ 
+                  gridRow: rowIdx + 2, 
+                  gridColumn: colIdx + 2,
+                  ...(hoveredCell.day === day && hoveredCell.mealTime === mealTime && {
+                    '--cell-x': `${cellPosition.x}px`,
+                    '--cell-y': `${cellPosition.y}px`
+                  })
+                }}
                 onClick={() => handleCellClick(day, mealTime)}
-                onMouseEnter={() => setHoveredCell({ day, mealTime })}
-                onMouseLeave={() => setHoveredCell({ day: null, mealTime: null })}
+                onMouseEnter={(e) => handleCellHover(day, mealTime, e)}
+                onMouseLeave={handleCellLeave}
               >
                 {mealPlan[day]?.[mealTime]?.name ? (
                   hoveredCell.day === day && hoveredCell.mealTime === mealTime ? (

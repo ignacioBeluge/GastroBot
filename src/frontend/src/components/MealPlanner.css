@@ -80,6 +80,15 @@
   position: relative;
 }
 
+/* Only apply hover effects to cells with content */
+.cell:has(.cell-content) {
+  cursor: pointer;
+}
+
+.cell:has(.cell-content):hover {
+  background: #2a2e32;
+}
+
 .cell-expanded {
   z-index: 10;
   background: #23272b;
@@ -96,10 +105,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   transform: translate(-50%, -50%);
-  left: 50%;
-  top: 50%;
+  left: var(--cell-x, 50%);
+  top: var(--cell-y, 50%);
 }
 
 .cell-expanded-content {
