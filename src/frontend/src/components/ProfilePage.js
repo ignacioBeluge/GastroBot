@@ -1,6 +1,7 @@
 import React from 'react';
 import { getCurrentUser } from '../services/authService';
 import './ProfilePage.css';
+import { useNavigate } from 'react-router-dom';
 
 const profileMenuList = [
   { icon: '🧑‍💼', label: 'Personal Info', key: 'personal' },
@@ -15,6 +16,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
   const user = getCurrentUser();
   const name = user?.user?.name || '';
   const bio = user?.user?.bio || '';
+  const navigate = useNavigate();
   
   return (
     <div className="profile-bg">
@@ -38,7 +40,9 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
               key={item.label}
               onClick={item.key === 'signout'
                 ? () => { if (onSignOut) onSignOut(); }
-                : item.key ? () => onMenu(item.key) : undefined}
+                : item.key === 'payment'
+                  ? () => navigate('/payment')
+                  : item.key ? () => onMenu(item.key) : undefined}
             >
               <span className="profile-menu-icon-2">{item.icon}</span>
               <span>{item.label}</span>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUserPlan, getPaymentMethods, addPaymentMethod } from '../services/userService';
 import './PaymentScreen.css';
 
@@ -21,6 +22,7 @@ const updatePlan = async (plan) => {
 };
 
 const PaymentScreen = () => {
+  const navigate = useNavigate();
   const [plan, setPlan] = useState('');
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +33,11 @@ const PaymentScreen = () => {
   const [planLoading, setPlanLoading] = useState(false);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { replace: true });
+      return;
+    }
     async function fetchData() {
       setLoading(true);
       try {
@@ -44,7 +51,7 @@ const PaymentScreen = () => {
       setLoading(false);
     }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const handleOpenModal = () => {
     setForm({ cardType: cardTypes[0], name: '', number: '', expMonth: months[0], expYear: years[0] });
@@ -127,6 +134,9 @@ const PaymentScreen = () => {
   return (
     <div className="payment-screen-bg">
       <div className="payment-screen-container">
+        <button className="add-payment-btn" style={{ position: 'absolute', left: 24, top: 24 }} onClick={() => navigate('/home')}>
+          ← Back to Home
+        </button>
         <h2 className="payment-title">Payment & Plan</h2>
         {loading ? (
           <div className="payment-loading">Loading...</div>
