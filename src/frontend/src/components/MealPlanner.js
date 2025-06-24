@@ -159,12 +159,18 @@ function MealPlanner() {
       await mealPlanService.deleteMealPlan(meal._id);
       setMealPlan(prev => {
         const updated = { ...prev };
-        if (updated[sidePanel.content.meal.day]) {
-          delete updated[sidePanel.content.meal.day][sidePanel.content.meal.mealTime];
+        if (updated[meal.day] && updated[meal.day][meal.mealTime]) {
+          delete updated[meal.day][meal.mealTime];
         }
         return updated;
       });
-      closeSidePanel();
+      // If the deleted meal is being shown in the modal, close it
+      if (selectedRecipe && selectedRecipe._id === meal._id) {
+        setModalOpen(false);
+        setSelectedRecipe(null);
+        setRecipeDetails(null);
+        setModalLoading(false);
+      }
     } catch (e) {
       alert(e.message || 'Could not delete meal');
     }
@@ -298,7 +304,7 @@ function MealPlanner() {
                 onMouseEnter={(e) => handleCellHover(day, mealTime, e)}
                 onMouseLeave={handleCellLeave}
               >
-                {mealPlan[day]?.[mealTime]?.name ? (
+                {mealPlan[day]?.[mealTime] && mealPlan[day][mealTime].name ? (
                   hoveredCell.day === day && hoveredCell.mealTime === mealTime ? (
                     <div className="cell-expanded-content">
                       {mealPlan[day][mealTime].img && (
