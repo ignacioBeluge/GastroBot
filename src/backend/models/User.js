@@ -41,6 +41,20 @@ const userSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
+  plan: {
+    type: String,
+    enum: ['free', 'pro'],
+    default: 'free'
+  },
+  paymentMethods: [
+    {
+      cardType: String,
+      last4: String,
+      expMonth: String,
+      expYear: String,
+      name: String
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now

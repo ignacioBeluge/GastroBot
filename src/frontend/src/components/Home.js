@@ -13,6 +13,7 @@ import MealTypeList from './MealTypeList';
 import Favorite from './Favorite';
 import History from './History';
 import MealPlanner from './MealPlanner';
+import PaymentScreen from './PaymentScreen';
 import './Home.css';
 
 // Utility functions
@@ -196,6 +197,10 @@ const Home = ({ onSignOut }) => {
 
   if (page === 'mealtypelist') {
     return <MealTypeList onBack={() => setPage('mealtype')} selectedMealType={selectedMealType} onRecipeSelect={handleShowRecipe} />;
+  }
+
+  if (page === 'payment') {
+    return <PaymentScreen />;
   }
 
   // Main home page

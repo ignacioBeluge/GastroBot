@@ -4,7 +4,6 @@ import './ProfilePage.css';
 
 const profileMenuList = [
   { icon: '🧑‍💼', label: 'Personal Info', key: 'personal' },
-  { icon: '🏠', label: 'Addresses' },
   { icon: '💳', label: 'Payment', key: 'payment' },
   { icon: '🔔', label: 'Notifications' },
   { icon: '❓', label: 'FAQs' },

@@ -26,4 +26,36 @@ export const updateUserPreferences = async (preferences) => {
   }
   const response = await axios.put(`${API_URL}/preferences`, { preferences }, { headers });
   return response.data;
+};
+
+export const getUserPlan = async () => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_URL}/plan`, {
+    headers: { 'x-auth-token': token }
+  });
+  if (!res.ok) throw new Error('Failed to fetch plan');
+  return res.json();
+};
+
+export const getPaymentMethods = async () => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_URL}/payment-methods`, {
+    headers: { 'x-auth-token': token }
+  });
+  if (!res.ok) throw new Error('Failed to fetch payment methods');
+  return res.json();
+};
+
+export const addPaymentMethod = async (method) => {
+  const token = localStorage.getItem('token');
+  const res = await fetch(`${API_URL}/payment-methods`, {
+    method: 'POST',
+    headers: {
+      'x-auth-token': token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(method)
+  });
+  if (!res.ok) throw new Error('Failed to add payment method');
+  return res.json();
 }; 
