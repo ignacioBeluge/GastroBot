@@ -341,21 +341,18 @@
 }
 
 .profile-pro-badge {
-  position: absolute;
-  top: -18px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  margin: 0.5rem auto 0.7rem auto;
   background: linear-gradient(90deg, #ff7a00 0%, #ff9500 100%);
   color: #fff;
-  font-weight: 800;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  padding: 0.3em 1.2em;
-  letter-spacing: 2px;
-  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.18);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 7px;
+  padding: 0.18em 0.9em;
+  letter-spacing: 1.5px;
+  box-shadow: 0 1px 4px rgba(255, 122, 0, 0.10);
   text-align: center;
   z-index: 2;
-  border: 2.5px solid #fff2;
 }
 
 /* Responsive Design */

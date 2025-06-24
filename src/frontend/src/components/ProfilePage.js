@@ -33,10 +33,10 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
         </div>
         <div className="profile-avatar-badge-container">
           <div className="profile-avatar-big" />
-          {plan === 'pro' && (
-            <div className="profile-pro-badge">PRO</div>
-          )}
         </div>
+        {plan === 'pro' && (
+          <div className="profile-pro-badge">PRO</div>
+        )}
         <div className="profile-username">{name}</div>
         <div className="profile-menu-list-2">
           {profileMenuList.filter(item => !item.remove).map(item => (

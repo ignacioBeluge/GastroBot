@@ -54,12 +54,14 @@ const PaymentScreen = ({ onBack }) => {
         } else {
           setSelectedPaymentMethod(null);
         }
+        setDowngradeWarning(''); // Clear warning on mount
       } catch (e) {
         // handle error
       }
       setLoading(false);
     }
     fetchData();
+    return () => setDowngradeWarning(''); // Clear warning on unmount
   }, []);
 
   const handleOpenModal = () => {
@@ -72,6 +74,7 @@ const PaymentScreen = ({ onBack }) => {
     setModalOpen(false);
     setFormError('');
     setFormLoading(false);
+    setDowngradeWarning('');
   };
 
   const handleFormChange = e => {
@@ -130,6 +133,7 @@ const PaymentScreen = ({ onBack }) => {
 
   const handlePlanChange = async () => {
     setUpgradeError('');
+    setDowngradeWarning('');
     if (plan !== 'pro') {
       // Upgrade to pro: require card selection
       if (paymentMethods.length === 0) {
@@ -159,6 +163,7 @@ const PaymentScreen = ({ onBack }) => {
   const handleSelectPaymentMethod = async (pm) => {
     setPlanLoading(true);
     setUpgradeError('');
+    setDowngradeWarning('');
     try {
       // Persist current card selection to backend
       const updated = await setCurrentPaymentMethod({
