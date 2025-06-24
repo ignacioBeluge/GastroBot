@@ -302,7 +302,7 @@ function MealPlanner() {
                   hoveredCell.day === day && hoveredCell.mealTime === mealTime ? (
                     <div className="cell-expanded-content">
                       {mealPlan[day][mealTime].img && (
-                        <img src={mealPlan[day][mealTime].img} alt={mealPlan[day][mealTime].name} className="cell-img-thumb" />
+                        <img src={mealPlan[day][mealTime].img} alt={mealPlan[day][mealTime].name} className="cell-img-thumb" style={{ pointerEvents: 'none' }} />
                       )}
                       <span
                         className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
