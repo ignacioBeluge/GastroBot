@@ -90,8 +90,13 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
         </div>
         <div className="profile-avatar-badge-container">
           <div className="profile-avatar-big profile-avatar-upload" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="Profile" className="profile-avatar-img" />
+            {avatarUrl && avatarUrl !== 'null' && avatarUrl !== '' ? (
+              <>
+                <img src={avatarUrl} alt="Profile" className="profile-avatar-img" />
+                {!uploading && (
+                  <button className="profile-avatar-delete-btn" onClick={e => { e.stopPropagation(); handleDeletePicture(); }} title="Delete profile picture">🗑️</button>
+                )}
+              </>
             ) : (
               <span className="profile-avatar-placeholder">👤</span>
             )}
@@ -103,9 +108,6 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
-            {avatarUrl && !uploading && (
-              <button className="profile-avatar-delete-btn" onClick={e => { e.stopPropagation(); handleDeletePicture(); }} title="Delete profile picture">🗑️</button>
-            )}
           </div>
         </div>
         {plan === 'pro' && (
