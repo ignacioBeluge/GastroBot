@@ -522,10 +522,15 @@
   margin-bottom: 1.5rem;
 }
 
-.recipe-instructions p {
+.recipe-instructions ol {
   margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.recipe-instructions li {
+  margin-bottom: 0.8rem;
   line-height: 1.6;
-  text-align: justify;
+  text-align: left;
 }
 
 .recipe-ingredients {
@@ -540,24 +545,4 @@
 .recipe-ingredients li {
   margin-bottom: 0.3rem;
   line-height: 1.4;
-}
-
-.recipe-video {
-  margin-top: 1rem;
-  padding: 0.5rem;
-  background: #181c20;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.recipe-video a {
-  color: #ff7a00;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.recipe-video a:hover {
-  color: #e66a00;
-  text-decoration: underline;
 } 

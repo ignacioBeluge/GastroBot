@@ -431,7 +431,15 @@ const RecipeModal = ({ isOpen, recipe, onClose, details, loading }) => {
                 </div>
                 <div className="recipe-instructions">
                   <strong>Instructions:</strong>
-                  <p>{details.strInstructions}</p>
+                  <ol>
+                    {details.strInstructions
+                      .split('.')
+                      .map((step, index) => step.trim())
+                      .filter(step => step.length > 0)
+                      .map((step, index) => (
+                        <li key={index}>{step}.</li>
+                      ))}
+                  </ol>
                 </div>
                 <div className="recipe-ingredients">
                   <strong>Ingredients:</strong>
@@ -450,14 +458,6 @@ const RecipeModal = ({ isOpen, recipe, onClose, details, loading }) => {
                     }).filter(Boolean)}
                   </ul>
                 </div>
-                {details.strYoutube && (
-                  <div className="recipe-video">
-                    <strong>Video:</strong>
-                    <a href={details.strYoutube} target="_blank" rel="noopener noreferrer">
-                      Watch on YouTube
-                    </a>
-                  </div>
-                )}
               </div>
             </>
           ) : (
