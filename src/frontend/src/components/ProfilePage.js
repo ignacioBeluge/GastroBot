@@ -6,9 +6,6 @@ import './ProfilePage.css';
 const profileMenuList = [
   { icon: '🧑‍💼', label: 'Personal Info', key: 'personal' },
   { icon: '💳', label: 'Payment', key: 'payment' },
-  { icon: '🔔', label: 'Notifications' },
-  { icon: '❓', label: 'FAQs' },
-  { icon: '⭐', label: 'User Review' },
   { icon: '🚪', label: 'Sign Out', key: 'signout', logout: true },
 ];
 
