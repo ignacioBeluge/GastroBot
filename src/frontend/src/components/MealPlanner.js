@@ -4,7 +4,7 @@ import { mealPlanService } from '../services/mealPlanService';
 import { getUserPreferences } from '../services/userService';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const mealTimes = ['breakfast', 'lunch', 'dinner', 'snack'];
+const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
 
 function getStartOfWeek(date) {
   const d = new Date(date);
@@ -64,14 +64,32 @@ function MealPlanner() {
   }, [weekStart]);
 
   // Handler for clicking a cell (add or view meal)
-  const handleCellClick = (day, mealTime) => {
+  const handleCellClick = async (day, mealTime) => {
+    const meal = mealPlan[day]?.[mealTime];
+    if (meal && (!meal.recipe || !meal.recipe.ingredients || !meal.recipe.fullDesc)) {
+      // Fetch full recipe details if missing
+      try {
+        const res = await fetch(`http://localhost:5000/api/recipes/${meal.recipe?._id || meal.recipe}`);
+        if (res.ok) {
+          const recipe = await res.json();
+          setMealPlan(prev => {
+            const updated = { ...prev };
+            if (!updated[day]) updated[day] = {};
+            updated[day][mealTime] = { ...meal, recipe };
+            return updated;
+          });
+          setSidePanel({ open: true, content: { type: 'details', meal: { ...meal, recipe } } });
+          return;
+        }
+      } catch (e) { /* ignore */ }
+    }
     setSearch('');
     setSearchResults([]);
     setSearchError('');
     setSidePanel({
       open: true,
-      content: mealPlan[day]?.[mealTime]
-        ? { type: 'details', meal: mealPlan[day][mealTime] }
+      content: meal
+        ? { type: 'details', meal }
         : { type: 'add', day, mealTime }
     });
   };
@@ -90,15 +108,15 @@ function MealPlanner() {
     const date = formatDate(getDateForDay(weekStart, daysOfWeek.indexOf(day)));
     try {
       const res = await mealPlanService.addMealPlan({ date, mealTime, recipe: recipeId });
-      // Update state
+      // Find the full recipe object from searchResults
+      const recipeObj = searchResults.find(r => r.id === recipeId);
       setMealPlan(prev => {
         const updated = { ...prev };
         if (!updated[day]) updated[day] = {};
-        const recipeObj = searchResults.find(r => r.id === recipeId);
-        updated[day][mealTime] = { ...res, name: recipeObj?.name || '' };
+        updated[day][mealTime] = { ...res, name: recipeObj?.name || '', recipe: recipeObj };
         return updated;
       });
-      closeSidePanel();
+      setSidePanel({ open: false, content: null });
     } catch (e) {
       alert(e.message || 'Could not add meal');
     }
