@@ -63,4 +63,18 @@ export const addPaymentMethod = async (method) => {
   });
   if (!res.ok) throw new Error('Failed to add payment method');
   return res.json();
+};
+
+export const setCurrentPaymentMethod = async (method) => {
+  const token = getAuthToken();
+  const res = await fetch(`${API_URL}/payment-methods/current`, {
+    method: 'PUT',
+    headers: {
+      'x-auth-token': token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(method)
+  });
+  if (!res.ok) throw new Error('Failed to set current payment method');
+  return res.json();
 }; 

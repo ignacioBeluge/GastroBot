@@ -52,7 +52,8 @@ const userSchema = new mongoose.Schema({
       last4: String,
       expMonth: String,
       expYear: String,
-      name: String
+      name: String,
+      current: { type: Boolean, default: false }
     }
   ],
   createdAt: {

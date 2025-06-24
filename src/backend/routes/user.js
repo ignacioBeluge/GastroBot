@@ -102,4 +102,34 @@ router.put('/plan', authMiddleware, async (req, res) => {
   }
 });
 
+// Set a payment method as current
+router.put('/payment-methods/current', authMiddleware, async (req, res) => {
+  const { last4, expMonth, expYear, cardType, name } = req.body;
+  if (!last4 || !expMonth || !expYear || !cardType || !name) {
+    return res.status(400).json({ msg: 'Missing payment method fields to identify the card' });
+  }
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    user.paymentMethods = (user.paymentMethods || []).map(pm => {
+      if (
+        pm.last4 === last4 &&
+        pm.expMonth === expMonth &&
+        pm.expYear === expYear &&
+        pm.cardType === cardType &&
+        pm.name === name
+      ) {
+        return { ...pm.toObject(), current: true };
+      } else {
+        return { ...pm.toObject(), current: false };
+      }
+    });
+    await user.save();
+    res.json(user.paymentMethods);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router; 

@@ -223,4 +223,38 @@
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+.payment-method-card.payment-method-selected {
+  border: 2.5px solid #ffb300;
+  box-shadow: 0 0 0 2px #ffb30044;
+  background: #23272b;
+}
+.payment-method-card.payment-method-current {
+  border-left: 6px solid #00c853;
+  background: #1e2327;
+}
+.payment-method-current-label {
+  margin-left: 1rem;
+  color: #00c853;
+  font-weight: 700;
+  font-size: 1em;
+  background: #23272b;
+  border-radius: 6px;
+  padding: 0.2em 0.7em;
+}
+.payment-error-msg {
+  color: #ff4444;
+  background: #2a1818;
+  border-radius: 6px;
+  padding: 0.7em 1em;
+  margin: 0.7em 0 1.2em 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.08em;
+}
+.payment-method-card.selectable:hover {
+  background: #23272b;
+  border: 2.5px solid #ff7a00;
+  cursor: pointer;
 } 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import { getUserPlan, getPaymentMethods, addPaymentMethod } from '../services/userService';
+import { getUserPlan, getPaymentMethods, addPaymentMethod, setCurrentPaymentMethod } from '../services/userService';
 import './PaymentScreen.css';
 
 const cardTypes = ['Visa', 'Mastercard', 'Amex', 'Discover'];
@@ -31,6 +31,9 @@ const PaymentScreen = ({ onBack }) => {
   const [formError, setFormError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
   const [planLoading, setPlanLoading] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectCardModalOpen, setSelectCardModalOpen] = useState(false);
+  const [upgradeError, setUpgradeError] = useState('');
 
   useEffect(() => {
     // Remove token redirect logic; parent handles auth
@@ -41,6 +44,12 @@ const PaymentScreen = ({ onBack }) => {
         setPlan(planRes.plan);
         const methods = await getPaymentMethods();
         setPaymentMethods(methods);
+        // If there's a current card, select it by default
+        if (methods.length > 0) {
+          setSelectedPaymentMethod(methods.find(m => m.current) || methods[0]);
+        } else {
+          setSelectedPaymentMethod(null);
+        }
       } catch (e) {
         // handle error
       }
@@ -116,13 +125,46 @@ const PaymentScreen = ({ onBack }) => {
   };
 
   const handlePlanChange = async () => {
+    setUpgradeError('');
+    if (plan !== 'pro') {
+      // Upgrade to pro: require card selection
+      if (paymentMethods.length === 0) {
+        setUpgradeError('You need to add and select a payment method first.');
+        return;
+      }
+      setSelectCardModalOpen(true);
+      return;
+    }
+    // Downgrade to free
     setPlanLoading(true);
     try {
-      const newPlan = plan === 'pro' ? 'free' : 'pro';
-      const res = await updatePlan(newPlan);
+      const res = await updatePlan('free');
       setPlan(res.plan);
     } catch (e) {
       // handle error
+    }
+    setPlanLoading(false);
+  };
+
+  const handleSelectPaymentMethod = async (pm) => {
+    setPlanLoading(true);
+    setUpgradeError('');
+    try {
+      // Persist current card selection to backend
+      const updated = await setCurrentPaymentMethod({
+        cardType: pm.cardType,
+        last4: pm.last4,
+        expMonth: pm.expMonth,
+        expYear: pm.expYear,
+        name: pm.name
+      });
+      setPaymentMethods(updated);
+      setSelectedPaymentMethod(updated.find(m => m.current));
+      const res = await updatePlan('pro');
+      setPlan(res.plan);
+      setSelectCardModalOpen(false);
+    } catch (e) {
+      setUpgradeError('Failed to upgrade plan.');
     }
     setPlanLoading(false);
   };
@@ -152,6 +194,7 @@ const PaymentScreen = ({ onBack }) => {
                   {planLoading ? 'Updating...' : plan === 'pro' ? 'Downgrade to Free' : 'Upgrade to Pro'}
                 </button>
               </div>
+              {upgradeError && <div className="payment-error-msg">{upgradeError}</div>}
               <div className="payment-methods-section">
                 <div className="payment-methods-header">
                   <span>Payment Methods</span>
@@ -162,11 +205,12 @@ const PaymentScreen = ({ onBack }) => {
                 ) : (
                   <div className="payment-methods-list">
                     {paymentMethods.map((pm, idx) => (
-                      <div key={idx} className="payment-method-card">
+                      <div key={idx} className={`payment-method-card${selectedPaymentMethod && pm === selectedPaymentMethod ? ' payment-method-selected' : ''}${pm.current ? ' payment-method-current' : ''}`}> 
                         <span className="payment-method-type">{pm.cardType}</span>
                         <span className="payment-method-last4">•••• {pm.last4}</span>
                         <span className="payment-method-exp">{pm.expMonth}/{pm.expYear}</span>
                         <span className="payment-method-name">{pm.name}</span>
+                        {pm.current && <span className="payment-method-current-label">Current</span>}
                       </div>
                     ))}
                   </div>
@@ -209,6 +253,31 @@ const PaymentScreen = ({ onBack }) => {
                 {formError && <div style={{ color: '#ff4444', marginBottom: '1rem' }}>{formError}</div>}
                 <button className="add-confirm-btn" type="submit" disabled={formLoading}>{formLoading ? 'Adding...' : 'Add Payment Method'}</button>
               </form>
+            </div>
+          </div>
+        )}
+        {selectCardModalOpen && (
+          <div className="modal-overlay" onClick={() => setSelectCardModalOpen(false)}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2>Select Payment Method</h2>
+                <button className="modal-close" onClick={() => setSelectCardModalOpen(false)}>×</button>
+              </div>
+              <div className="modal-body">
+                {paymentMethods.map((pm, idx) => (
+                  <div
+                    key={idx}
+                    className={`payment-method-card selectable${selectedPaymentMethod && pm === selectedPaymentMethod ? ' payment-method-selected' : ''}`}
+                    onClick={() => handleSelectPaymentMethod(pm)}
+                    style={{ cursor: 'pointer', marginBottom: '1rem' }}
+                  >
+                    <span className="payment-method-type">{pm.cardType}</span>
+                    <span className="payment-method-last4">•••• {pm.last4}</span>
+                    <span className="payment-method-exp">{pm.expMonth}/{pm.expYear}</span>
+                    <span className="payment-method-name">{pm.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
