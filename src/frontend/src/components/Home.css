@@ -59,31 +59,35 @@
 }
 
 .home-avatar {
-  width: 60px !important;
-  height: 60px !important;
-  border-radius: 50% !important;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
-  border: 3px solid #333333 !important;
-  font-size: 1.5rem !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.home-avatar:hover {
-  transform: translateY(-2px) scale(1.05) !important;
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4) !important;
-  border-color: #ffffff !important;
+.home-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
 }
 
-.home-avatar::before {
-  content: '👤' !important;
-  font-size: 1.8rem !important;
+.home-avatar-placeholder {
+  font-size: 32px;
+  color: #bbb;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
 }
 
 /* Home Menu Grid */
