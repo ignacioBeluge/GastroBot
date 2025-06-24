@@ -4,6 +4,12 @@ import { getCurrentUser } from '../services/authService';
 import FilterBar from './FilterBar';
 import { filterRecipes } from '../utils/recipeFilters';
 import './MealType.css';
+import { mealPlanService } from '../services/mealPlanService';
+import { FaPlus } from 'react-icons/fa';
+import AddToMealPlannerModal from './AddToMealPlannerModal';
+
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
 
 const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
   const [recipes, setRecipes] = useState([]);
@@ -15,6 +21,9 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
     rating: 'all',
     difficulty: 'all'
   });
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [userMealPlan, setUserMealPlan] = useState({});
 
   useEffect(() => {
     if (!selectedMealType) {
@@ -64,12 +73,65 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
     setFilteredRecipes(filtered);
   }, [filters, recipes]);
 
+  // Fetch user's meal plan for the week on mount
+  useEffect(() => {
+    async function fetchMealPlan() {
+      try {
+        const today = new Date();
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay() + 1);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        const plans = await mealPlanService.getMealPlans(weekStart.toISOString().split('T')[0], weekEnd.toISOString().split('T')[0]);
+        const planMap = {};
+        plans.forEach(mp => {
+          const dateObj = new Date(mp.date);
+          const dayIdx = (dateObj.getUTCDay() + 6) % 7;
+          const day = daysOfWeek[dayIdx];
+          if (!planMap[day]) planMap[day] = {};
+          planMap[day][mp.mealTime] = { ...mp };
+        });
+        setUserMealPlan(planMap);
+      } catch (e) {
+        // ignore
+      }
+    }
+    fetchMealPlan();
+  }, []);
+
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
   const handleRecipeClick = (recipe) => {
     onRecipeSelect(recipe);
+  };
+
+  const handlePlusClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setAddModalOpen(true);
+  };
+
+  const handleAddToMealPlan = async ({ day, mealTime, recipe }) => {
+    const today = new Date();
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1);
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + daysOfWeek.indexOf(day));
+    await mealPlanService.addMealPlan({
+      date: date.toISOString().split('T')[0],
+      mealTime,
+      mealdbId: recipe.idMeal || recipe.id,
+      name: recipe.name,
+      img: recipe.img
+    });
+    // Update local meal plan state
+    setUserMealPlan(prev => {
+      const updated = { ...prev };
+      if (!updated[day]) updated[day] = {};
+      updated[day][mealTime] = { name: recipe.name };
+      return updated;
+    });
   };
 
   if (loading) {
@@ -118,6 +180,9 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
           {filteredRecipes.map((recipe) => (
             <div key={recipe.idMeal} className="meal-type-list-card" onClick={() => handleRecipeClick(recipe)}>
               <img src={recipe.img} alt={recipe.name} className="meal-type-list-image" />
+              <button className="add-to-mealplan-btn" onClick={e => { e.stopPropagation(); handlePlusClick(recipe); }} title="Add to meal planner">
+                <FaPlus />
+              </button>
               <div className="meal-type-list-content">
                 <h3 className="meal-type-list-name">{recipe.name}</h3>
                 <div className="meal-type-list-meta">
@@ -150,6 +215,15 @@ const MealTypeList = ({ onBack, selectedMealType, onRecipeSelect }) => {
           </div>
         )}
       </div>
+      <AddToMealPlannerModal
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        recipe={selectedRecipe}
+        onAdd={handleAddToMealPlan}
+        userMealPlan={userMealPlan}
+        daysOfWeek={daysOfWeek}
+        mealTimes={mealTimes}
+      />
     </div>
   );
 };

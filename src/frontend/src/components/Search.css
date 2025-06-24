@@ -372,4 +372,27 @@
   background: #e66a00;
   color: #fff;
   transform: scale(1.04);
+}
+
+.add-meal-select {
+  background: #23272b;
+  color: #ff7a00;
+  border: 1.5px solid #ff7a00;
+  border-radius: 8px;
+  padding: 0.4rem 1.2rem 0.4rem 0.7rem;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 0 0.2rem;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  appearance: none;
+}
+.add-meal-select:focus {
+  border: 2px solid #ff7a00;
+  box-shadow: 0 0 0 2px #ff7a0033;
+}
+.add-meal-select option {
+  background: #23272b;
+  color: #e0e0e0;
 } 

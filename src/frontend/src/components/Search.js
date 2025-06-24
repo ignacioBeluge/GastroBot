@@ -233,11 +233,11 @@ const Search = ({ onBack, onRecipeSelect }) => {
               </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label>Day: </label>
-                <select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+                <select className="add-meal-select" value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
                   {daysOfWeek.map(day => <option key={day} value={day}>{day}</option>)}
                 </select>
                 <label style={{ marginLeft: '1rem' }}>Meal Time: </label>
-                <select value={selectedMealTime} onChange={e => setSelectedMealTime(e.target.value)}>
+                <select className="add-meal-select" value={selectedMealTime} onChange={e => setSelectedMealTime(e.target.value)}>
                   {mealTimes.map(mt => <option key={mt} value={mt}>{mt.charAt(0).toUpperCase() + mt.slice(1)}</option>)}
                 </select>
               </div>

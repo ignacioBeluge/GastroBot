@@ -4,6 +4,12 @@ import { getCurrentUser } from '../services/authService';
 import FilterBar from './FilterBar';
 import { filterRecipes } from '../utils/recipeFilters';
 import './CategoryRecipes.css';
+import { mealPlanService } from '../services/mealPlanService';
+import { FaPlus } from 'react-icons/fa';
+import AddToMealPlannerModal from './AddToMealPlannerModal';
+
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
 
 const getRandomDifficulty = () => {
   const difficulties = ['Easy', 'Medium', 'Hard'];
@@ -24,6 +30,9 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
     rating: 'all',
     difficulty: 'all'
   });
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [userMealPlan, setUserMealPlan] = useState({});
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -54,6 +63,32 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
     fetchRecipes();
   }, [category.strCategory]);
 
+  // Fetch user's meal plan for the week on mount
+  useEffect(() => {
+    async function fetchMealPlan() {
+      try {
+        const today = new Date();
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay() + 1);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        const plans = await mealPlanService.getMealPlans(weekStart.toISOString().split('T')[0], weekEnd.toISOString().split('T')[0]);
+        const planMap = {};
+        plans.forEach(mp => {
+          const dateObj = new Date(mp.date);
+          const dayIdx = (dateObj.getUTCDay() + 6) % 7;
+          const day = daysOfWeek[dayIdx];
+          if (!planMap[day]) planMap[day] = {};
+          planMap[day][mp.mealTime] = { ...mp };
+        });
+        setUserMealPlan(planMap);
+      } catch (e) {
+        // ignore
+      }
+    }
+    fetchMealPlan();
+  }, []);
+
   // Apply filters whenever filters or recipes change
   useEffect(() => {
     const filtered = filterRecipes(recipes, filters);
@@ -66,6 +101,33 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
 
   const handleRecipeClick = (recipe) => {
     onShowRecipe(recipe);
+  };
+
+  const handlePlusClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setAddModalOpen(true);
+  };
+
+  const handleAddToMealPlan = async ({ day, mealTime, recipe }) => {
+    const today = new Date();
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + 1);
+    const date = new Date(weekStart);
+    date.setDate(weekStart.getDate() + daysOfWeek.indexOf(day));
+    await mealPlanService.addMealPlan({
+      date: date.toISOString().split('T')[0],
+      mealTime,
+      mealdbId: recipe.idMeal || recipe.id,
+      name: recipe.name,
+      img: recipe.img
+    });
+    // Update local meal plan state
+    setUserMealPlan(prev => {
+      const updated = { ...prev };
+      if (!updated[day]) updated[day] = {};
+      updated[day][mealTime] = { name: recipe.name };
+      return updated;
+    });
   };
 
   if (loading) {
@@ -135,6 +197,9 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
               >
                 <div className="category-recipes-image-container">
                   <img src={recipe.img} alt={recipe.name} className="category-recipes-image" />
+                  <button className="add-to-mealplan-btn" onClick={e => { e.stopPropagation(); handlePlusClick(recipe); }} title="Add to meal planner">
+                    <FaPlus />
+                  </button>
                   <div className="category-recipes-overlay">
                     <div className="category-recipes-meta">
                       <span className="category-recipes-time">{recipe.time || getRandomTime()}</span>
@@ -151,6 +216,15 @@ const CategoryRecipes = ({ category, onBack, onShowRecipe }) => {
           </div>
         )}
       </div>
+      <AddToMealPlannerModal
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        recipe={selectedRecipe}
+        onAdd={handleAddToMealPlan}
+        userMealPlan={userMealPlan}
+        daysOfWeek={daysOfWeek}
+        mealTimes={mealTimes}
+      />
     </div>
   );
 };
