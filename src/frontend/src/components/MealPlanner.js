@@ -171,11 +171,18 @@ function MealPlanner() {
                 onChange={e => setSearch(e.target.value)}
                 className="recipe-search-input"
               />
-              <div className="recipe-list">
-                {filteredRecipes.map(r => (
-                  <div key={r._id} className="recipe-list-item" onClick={() => handleAddMeal(r._id)}>
-                    <b>{r.name}</b>
-                    <div style={{ fontSize: 12, color: '#bbb' }}>{r.ingredients?.slice(0, 3).join(', ')}{r.ingredients?.length > 3 ? '...' : ''}</div>
+              <div className="reduced-search-results">
+                {filteredRecipes.slice(0, 2).map(r => (
+                  <div key={r._id} className="reduced-search-card" onClick={() => handleAddMeal(r._id)}>
+                    <img src={r.img} alt={r.name} className="reduced-search-image" />
+                    <div className="reduced-search-content">
+                      <div className="reduced-search-name">{r.name}</div>
+                      <div className="reduced-search-meta">
+                        <span>{r.time}</span>
+                        <span>{r.difficulty}</span>
+                        <span>⭐ {r.rating}</span>
+                      </div>
+                    </div>
                   </div>
                 ))}
                 {filteredRecipes.length === 0 && <div className="no-recipes">No recipes found.</div>}
