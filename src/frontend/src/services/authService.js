@@ -107,6 +107,11 @@ export const updateUser = async (id, data) => {
   }
 };
 
+export const getAuthToken = () => {
+  const user = getCurrentUser();
+  return user?.token || '';
+};
+
 const authService = {
   register,
   login,

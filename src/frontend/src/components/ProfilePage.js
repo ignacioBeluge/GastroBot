@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { getCurrentUser } from '../services/authService';
-import { uploadProfilePicture, getAuthToken } from '../services/userService';
+import { getCurrentUser, getAuthToken } from '../services/authService';
+import { uploadProfilePicture } from '../services/userService';
 import './ProfilePage.css';
 // import { useNavigate } from 'react-router-dom';
 
