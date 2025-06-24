@@ -240,7 +240,7 @@ const Home = ({ onSignOut }) => {
           </div>
           <div className="home-avatar-badge-stack">
             <div className="home-avatar" onClick={() => setPage('profile')} style={{ position: 'relative', overflow: 'hidden' }}>
-              {avatarUrl ? (
+              {avatarUrl && avatarUrl !== 'null' && avatarUrl !== '' ? (
                 <img src={avatarUrl} alt="Profile" className="home-avatar-img" />
               ) : (
                 <span className="home-avatar-placeholder">👤</span>

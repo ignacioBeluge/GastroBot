@@ -106,4 +106,16 @@ export const uploadProfilePicture = async (file) => {
   });
   if (!res.ok) throw new Error('Failed to upload profile picture');
   return res.json();
+};
+
+export const deleteProfilePicture = async () => {
+  const token = getAuthToken();
+  const res = await fetch(`${API_URL}/profile-picture`, {
+    method: 'DELETE',
+    headers: {
+      'x-auth-token': token
+    }
+  });
+  if (!res.ok) throw new Error('Failed to delete profile picture');
+  return res.json();
 }; 

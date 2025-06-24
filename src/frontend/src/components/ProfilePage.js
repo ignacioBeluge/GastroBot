@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { getCurrentUser, getAuthToken } from '../services/authService';
-import { uploadProfilePicture } from '../services/userService';
+import { uploadProfilePicture, deleteProfilePicture } from '../services/userService';
 import './ProfilePage.css';
 // import { useNavigate } from 'react-router-dom';
 
@@ -63,6 +63,19 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
     setUploading(false);
   };
 
+  const handleDeletePicture = async () => {
+    setUploadError('');
+    setUploading(true);
+    try {
+      await deleteProfilePicture();
+      await fetchProfilePicture();
+      window.dispatchEvent(new Event('profilePictureUpdated'));
+    } catch (err) {
+      setUploadError('Failed to delete image.');
+    }
+    setUploading(false);
+  };
+
   return (
     <div className="profile-bg">
       <div className="profile-card">
@@ -90,6 +103,9 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
               style={{ display: 'none' }}
               onChange={handleFileChange}
             />
+            {avatarUrl && !uploading && (
+              <button className="profile-avatar-delete-btn" onClick={e => { e.stopPropagation(); handleDeletePicture(); }} title="Delete profile picture">🗑️</button>
+            )}
           </div>
         </div>
         {plan === 'pro' && (

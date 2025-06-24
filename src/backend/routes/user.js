@@ -209,4 +209,18 @@ router.get('/profile-picture', authMiddleware, async (req, res) => {
   }
 });
 
+// Delete profile picture
+router.delete('/profile-picture', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    user.profilePicture = undefined;
+    await user.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router; 
