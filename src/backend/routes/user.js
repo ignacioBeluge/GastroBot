@@ -161,16 +161,8 @@ router.delete('/payment-methods', authMiddleware, async (req, res) => {
   }
 });
 
-// Multer storage config
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../uploads'));
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    cb(null, req.user._id + '_profile' + ext);
-  }
-});
+// Multer memory storage config for buffer
+const storage = multer.memoryStorage();
 const upload = multer({
   storage,
   limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
@@ -182,7 +174,7 @@ const upload = multer({
   }
 });
 
-// Upload or update profile picture
+// Upload or update profile picture (store in MongoDB as Buffer)
 router.post('/profile-picture', authMiddleware, upload.single('profilePicture'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: 'No profile picture file uploaded' });
@@ -190,10 +182,27 @@ router.post('/profile-picture', authMiddleware, upload.single('profilePicture'),
   try {
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ msg: 'User not found' });
-    // Save relative path to file
-    user.profilePicture = `/uploads/${req.file.filename}`;
+    user.profilePicture = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype
+    };
     await user.save();
-    res.json({ profilePicture: user.profilePicture });
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Serve profile picture as image
+router.get('/profile-picture', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user || !user.profilePicture || !user.profilePicture.data) {
+      return res.status(404).json({ msg: 'No profile picture found' });
+    }
+    res.set('Content-Type', user.profilePicture.contentType);
+    res.send(user.profilePicture.data);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

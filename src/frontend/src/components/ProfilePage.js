@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { getCurrentUser } from '../services/authService';
-import { uploadProfilePicture } from '../services/userService';
+import { uploadProfilePicture, getAuthToken } from '../services/userService';
 import './ProfilePage.css';
 // import { useNavigate } from 'react-router-dom';
 
@@ -19,10 +19,34 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
   const fileInputRef = useRef();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState(null);
   
   const handleAvatarClick = () => {
     if (fileInputRef.current) fileInputRef.current.click();
   };
+
+  // Fetch avatar from backend
+  const fetchProfilePicture = async () => {
+    const token = getAuthToken();
+    try {
+      const res = await fetch('http://localhost:5000/api/user/profile-picture', {
+        headers: { 'x-auth-token': token }
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        setAvatarUrl(URL.createObjectURL(blob));
+      } else {
+        setAvatarUrl(null);
+      }
+    } catch (err) {
+      setAvatarUrl(null);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfilePicture();
+    // eslint-disable-next-line
+  }, [userObj?.user?._id]);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -30,12 +54,8 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
     setUploadError('');
     setUploading(true);
     try {
-      const res = await uploadProfilePicture(file);
-      // Update localStorage and state
-      const updatedUser = { ...userObj };
-      updatedUser.user.profilePicture = res.profilePicture;
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      setUserObj(updatedUser);
+      await uploadProfilePicture(file);
+      await fetchProfilePicture(); // Refresh avatar
     } catch (err) {
       setUploadError('Failed to upload image.');
     }
@@ -56,10 +76,10 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
         </div>
         <div className="profile-avatar-badge-container">
           <div className="profile-avatar-big profile-avatar-upload" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
-            {profilePicture ? (
-              <img src={profilePicture} alt="Profile" className="profile-avatar-img" />
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Profile" className="profile-avatar-img" />
             ) : (
-              <span className="profile-avatar-placeholder">👤</span>
+              <span className="profile-avatar-placeholder">��</span>
             )}
             {uploading && <div className="profile-avatar-uploading">Uploading...</div>}
             <input

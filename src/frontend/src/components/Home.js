@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCurrentUser } from '../services/authService';
+import { getCurrentUser, getAuthToken } from '../services/authService';
 import Chatbox from './Chatbox';
 import ProfilePage from './ProfilePage';
 import PersonalInfo from './PersonalInfo';
@@ -38,6 +38,7 @@ const Home = ({ onSignOut }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
   const isMobile = useResponsive();
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   const user = getCurrentUser();
   const name = user?.user?.name || '';
@@ -53,6 +54,28 @@ const Home = ({ onSignOut }) => {
     window.addEventListener('storage', handleAuthChange);
     return () => window.removeEventListener('storage', handleAuthChange);
   }, [onSignOut]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchProfilePicture = async () => {
+      const token = getAuthToken();
+      try {
+        const res = await fetch('http://localhost:5000/api/user/profile-picture', {
+          headers: { 'x-auth-token': token }
+        });
+        if (res.ok) {
+          const blob = await res.blob();
+          if (isMounted) setAvatarUrl(URL.createObjectURL(blob));
+        } else {
+          if (isMounted) setAvatarUrl(null);
+        }
+      } catch (err) {
+        if (isMounted) setAvatarUrl(null);
+      }
+    };
+    fetchProfilePicture();
+    return () => { isMounted = false; };
+  }, [user?.user?._id]);
 
   const loadData = async () => {
     try {
@@ -215,8 +238,8 @@ const Home = ({ onSignOut }) => {
           </div>
           <div className="home-avatar-badge-stack">
             <div className="home-avatar" onClick={() => setPage('profile')} style={{ position: 'relative', overflow: 'hidden' }}>
-              {user?.user?.profilePicture ? (
-                <img src={user.user.profilePicture} alt="Profile" className="home-avatar-img" />
+              {avatarUrl ? (
+                <img src={avatarUrl} alt="Profile" className="home-avatar-img" />
               ) : (
                 <span className="home-avatar-placeholder">👤</span>
               )}
