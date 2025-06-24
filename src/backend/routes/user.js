@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); 
 const authMiddleware = require('../middleware/auth'); 
+const multer = require('multer');
+const path = require('path');
 
 // @route   GET /api/user/preferences
 // @desc    Get user's dietary preferences
@@ -153,6 +155,45 @@ router.delete('/payment-methods', authMiddleware, async (req, res) => {
     }
     await user.save();
     res.json(user.paymentMethods);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Multer storage config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../uploads'));
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, req.user._id + '_profile' + ext);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+  }
+});
+
+// Upload or update profile picture
+router.post('/profile-picture', authMiddleware, upload.single('profilePicture'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ msg: 'No profile picture file uploaded' });
+  }
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    // Save relative path to file
+    user.profilePicture = `/uploads/${req.file.filename}`;
+    await user.save();
+    res.json({ profilePicture: user.profilePicture });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

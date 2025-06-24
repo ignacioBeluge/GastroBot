@@ -91,4 +91,19 @@ export const deletePaymentMethod = async (method) => {
   });
   if (!res.ok) throw new Error('Failed to delete payment method');
   return res.json();
+};
+
+export const uploadProfilePicture = async (file) => {
+  const token = getAuthToken();
+  const formData = new FormData();
+  formData.append('profilePicture', file);
+  const res = await fetch(`${API_URL}/profile-picture`, {
+    method: 'POST',
+    headers: {
+      'x-auth-token': token
+    },
+    body: formData
+  });
+  if (!res.ok) throw new Error('Failed to upload profile picture');
+  return res.json();
 }; 

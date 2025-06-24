@@ -214,7 +214,13 @@ const Home = ({ onSignOut }) => {
             <p className="home-subtitle">What would you like to cook today?</p>
           </div>
           <div className="home-avatar-badge-stack">
-            <div className="home-avatar" onClick={() => setPage('profile')} />
+            <div className="home-avatar" onClick={() => setPage('profile')} style={{ position: 'relative', overflow: 'hidden' }}>
+              {user?.user?.profilePicture ? (
+                <img src={user.user.profilePicture} alt="Profile" className="home-avatar-img" />
+              ) : (
+                <span className="home-avatar-placeholder">👤</span>
+              )}
+            </div>
             {plan === 'pro' && (
               <div className="home-pro-badge">PRO</div>
             )}

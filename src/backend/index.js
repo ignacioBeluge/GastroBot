@@ -31,6 +31,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/browse', browseRoutes);
 app.use('/api/mealplan', mealPlanRouter);
+app.use('/uploads', express.static('src/backend/uploads'));
 
 // Ruta de prueba
 app.get('/', (req, res) => {

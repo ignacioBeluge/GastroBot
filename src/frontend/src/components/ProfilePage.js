@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { getCurrentUser } from '../services/authService';
+import { uploadProfilePicture } from '../services/userService';
 import './ProfilePage.css';
 // import { useNavigate } from 'react-router-dom';
 
@@ -10,12 +11,37 @@ const profileMenuList = [
 ];
 
 const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
-  const user = getCurrentUser();
-  const name = user?.user?.name || '';
-  const bio = user?.user?.bio || '';
-  const plan = user?.user?.plan || 'free';
-  // const navigate = useNavigate();
+  const [userObj, setUserObj] = useState(getCurrentUser());
+  const name = userObj?.user?.name || '';
+  const bio = userObj?.user?.bio || '';
+  const plan = userObj?.user?.plan || 'free';
+  const profilePicture = userObj?.user?.profilePicture || '';
+  const fileInputRef = useRef();
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadError('');
+    setUploading(true);
+    try {
+      const res = await uploadProfilePicture(file);
+      // Update localStorage and state
+      const updatedUser = { ...userObj };
+      updatedUser.user.profilePicture = res.profilePicture;
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      setUserObj(updatedUser);
+    } catch (err) {
+      setUploadError('Failed to upload image.');
+    }
+    setUploading(false);
+  };
+
   return (
     <div className="profile-bg">
       <div className="profile-card">
@@ -29,11 +55,26 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
           <span className="profile-title">Profile</span>
         </div>
         <div className="profile-avatar-badge-container">
-          <div className="profile-avatar-big" />
+          <div className="profile-avatar-big profile-avatar-upload" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
+            {profilePicture ? (
+              <img src={profilePicture} alt="Profile" className="profile-avatar-img" />
+            ) : (
+              <span className="profile-avatar-placeholder">👤</span>
+            )}
+            {uploading && <div className="profile-avatar-uploading">Uploading...</div>}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
+          </div>
         </div>
         {plan === 'pro' && (
           <div className="profile-pro-badge">PRO</div>
         )}
+        {uploadError && <div className="profile-error">{uploadError}</div>}
         <div className="profile-username">{name}</div>
         <div className="profile-menu-list-2">
           {profileMenuList.filter(item => !item.remove).map(item => (
