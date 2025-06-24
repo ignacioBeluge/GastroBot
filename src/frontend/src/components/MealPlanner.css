@@ -520,17 +520,41 @@
 
 .recipe-instructions {
   margin-bottom: 1.5rem;
+  background: #181c20;
+  border-radius: 8px;
+  border-left: 3px solid #ff7a00;
+  padding: 1rem 1.2rem 1rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.recipe-instructions strong {
+  color: #ff7a00;
+  font-size: 1.08em;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.7rem;
 }
 
 .recipe-instructions ol {
-  margin-top: 0.5rem;
-  padding-left: 1.5rem;
+  margin-top: 0.2rem;
+  padding-left: 1.2rem;
+  counter-reset: step;
 }
 
 .recipe-instructions li {
   margin-bottom: 0.8rem;
   line-height: 1.6;
   text-align: left;
+  color: #e0e0e0;
+  font-size: 1.01em;
+  position: relative;
+  padding-left: 0.5em;
+}
+
+.recipe-instructions li::marker {
+  color: #ff7a00;
+  font-weight: bold;
+  font-size: 1.08em;
 }
 
 .recipe-ingredients {

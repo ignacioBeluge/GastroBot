@@ -432,13 +432,22 @@ const RecipeModal = ({ isOpen, recipe, onClose, details, loading }) => {
                 <div className="recipe-instructions">
                   <strong>Instructions:</strong>
                   <ol>
-                    {details.strInstructions
-                      .split('.')
-                      .map((step, index) => step.trim())
-                      .filter(step => step.length > 0)
-                      .map((step, index) => (
-                        <li key={index}>{step}.</li>
-                      ))}
+                    {(() => {
+                      let steps = [];
+                      if (details.strInstructions.includes('\n')) {
+                        steps = details.strInstructions.split(/\r?\n/);
+                      } else {
+                        steps = details.strInstructions.split('.');
+                      }
+                      return steps
+                        .map(step => step.trim())
+                        .filter(step => step.length > 0)
+                        .map((step, index) => {
+                          // Remove duplicate numbering at the start (e.g., '1 ', '2 ', etc.)
+                          const cleaned = step.replace(/^\d+\.?\s*/, '');
+                          return <li key={index}>{cleaned}</li>;
+                        });
+                    })()}
                   </ol>
                 </div>
                 <div className="recipe-ingredients">
