@@ -134,9 +134,15 @@ const PaymentScreen = () => {
   return (
     <div className="payment-screen-bg">
       <div className="payment-screen-container">
-        <button className="add-payment-btn" style={{ position: 'absolute', left: 24, top: 24 }} onClick={() => navigate('/home')}>
-          ← Back to Home
-        </button>
+        <div className="payment-header-banner">
+          <button className="payment-back-btn" onClick={() => navigate('/home')}>
+            <svg width="28" height="28" viewBox="0 0 22 22">
+              <circle cx="11" cy="11" r="11" fill="#f5f5f5" />
+              <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            </svg>
+          </button>
+          <span className="payment-header-title">Payment</span>
+        </div>
         <h2 className="payment-title">Payment & Plan</h2>
         {loading ? (
           <div className="payment-loading">Loading...</div>

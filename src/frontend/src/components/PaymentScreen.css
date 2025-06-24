@@ -177,4 +177,39 @@
     min-width: unset;
     max-width: 98vw;
   }
+}
+
+.payment-header-banner {
+  width: 100vw;
+  background: #23272b;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1.5rem 0.7rem 0.7rem;
+  border-bottom: 2px solid #404040;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.payment-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 1.1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+.payment-back-btn:hover {
+  background: #181c20;
+}
+.payment-header-title {
+  color: #ff7a00;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 } 
