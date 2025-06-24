@@ -92,4 +92,24 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Get recipe details by ID from TheMealDB
+router.get('/details/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // Fetch recipe details from TheMealDB API
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+    const data = await response.json();
+    
+    if (!data.meals || data.meals.length === 0) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    
+    res.json(data.meals[0]);
+  } catch (error) {
+    console.error('Error fetching recipe details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 module.exports = router; 

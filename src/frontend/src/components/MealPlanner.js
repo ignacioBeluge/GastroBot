@@ -4,6 +4,7 @@ import { mealPlanService } from '../services/mealPlanService';
 import { getUserPreferences } from '../services/userService';
 import { getCurrentUser } from '../services/authService';
 import { FaRegEye, FaTimes } from 'react-icons/fa';
+import { recipeService } from '../services/recipeService';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
@@ -219,17 +220,33 @@ function MealPlanner() {
   // Modal state for recipe details
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [recipeDetails, setRecipeDetails] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
 
   // Handler for details icon
-  const handleShowDetails = (meal) => {
+  const handleShowDetails = async (meal) => {
     setSelectedRecipe(meal);
     setModalOpen(true);
+    setModalLoading(true);
+    setRecipeDetails(null);
+    
+    try {
+      // Fetch recipe details from backend
+      const details = await recipeService.getRecipeDetails(meal.mealdbId);
+      setRecipeDetails(details);
+    } catch (error) {
+      console.error('Error fetching recipe details:', error);
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   // Handler for closing modal
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedRecipe(null);
+    setRecipeDetails(null);
+    setModalLoading(false);
   };
 
   // Render the grid using CSS grid
@@ -348,14 +365,16 @@ function MealPlanner() {
       <RecipeModal 
         isOpen={modalOpen} 
         recipe={selectedRecipe} 
-        onClose={handleCloseModal} 
+        onClose={handleCloseModal}
+        details={recipeDetails}
+        loading={modalLoading}
       />
     </div>
   );
 }
 
 // Modal component for recipe details
-const RecipeModal = ({ isOpen, recipe, onClose }) => {
+const RecipeModal = ({ isOpen, recipe, onClose, details, loading }) => {
   if (!isOpen || !recipe) return null;
 
   return (
@@ -366,16 +385,60 @@ const RecipeModal = ({ isOpen, recipe, onClose }) => {
           <button className="modal-close" onClick={onClose}>×</button>
         </div>
         <div className="modal-body">
-          {recipe.img && (
-            <div className="modal-image">
-              <img src={recipe.img} alt={recipe.name} />
+          {loading ? (
+            <div className="modal-loading">
+              <p>Loading recipe details...</p>
+            </div>
+          ) : details ? (
+            <>
+              {details.strMealThumb && (
+                <div className="modal-image">
+                  <img src={details.strMealThumb} alt={details.strMeal} />
+                </div>
+              )}
+              <div className="modal-info">
+                <div className="recipe-category">
+                  <strong>Category:</strong> {details.strCategory}
+                </div>
+                <div className="recipe-area">
+                  <strong>Cuisine:</strong> {details.strArea}
+                </div>
+                <div className="recipe-instructions">
+                  <strong>Instructions:</strong>
+                  <p>{details.strInstructions}</p>
+                </div>
+                <div className="recipe-ingredients">
+                  <strong>Ingredients:</strong>
+                  <ul>
+                    {Array.from({ length: 20 }, (_, i) => i + 1).map(i => {
+                      const ingredient = details[`strIngredient${i}`];
+                      const measure = details[`strMeasure${i}`];
+                      if (ingredient && ingredient.trim()) {
+                        return (
+                          <li key={i}>
+                            {measure ? `${measure} ` : ''}{ingredient}
+                          </li>
+                        );
+                      }
+                      return null;
+                    }).filter(Boolean)}
+                  </ul>
+                </div>
+                {details.strYoutube && (
+                  <div className="recipe-video">
+                    <strong>Video:</strong>
+                    <a href={details.strYoutube} target="_blank" rel="noopener noreferrer">
+                      Watch on YouTube
+                    </a>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="modal-error">
+              <p>Could not load recipe details.</p>
             </div>
           )}
-          <div className="modal-info">
-            <p><strong>Meal ID:</strong> {recipe.mealdbId}</p>
-            <p><strong>Date:</strong> {recipe.date}</p>
-            <p><strong>Meal Time:</strong> {recipe.mealTime}</p>
-          </div>
         </div>
       </div>
     </div>

@@ -71,5 +71,28 @@ export const recipeService = {
     } catch (error) {
       throw error.response?.data || { message: 'Error al eliminar la receta' };
     }
+  },
+
+  // Get recipe details by ID
+  getRecipeDetails: async (recipeId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/recipes/details/${recipeId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch recipe details');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching recipe details:', error);
+      throw error;
+    }
   }
 }; 

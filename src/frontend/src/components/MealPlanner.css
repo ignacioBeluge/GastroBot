@@ -81,21 +81,25 @@
 }
 
 .cell-expanded {
-  z-index: 2;
+  z-index: 10;
   background: #23272b;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  width: 240px !important;
-  height: 120px !important;
-  min-width: 240px;
-  min-height: 120px;
-  max-width: 240px;
-  max-height: 120px;
-  border-radius: 12px;
-  transition: width 0.2s, height 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  width: 300px !important;
+  height: 180px !important;
+  min-width: 300px;
+  min-height: 180px;
+  max-width: 300px;
+  max-height: 180px;
+  border-radius: 16px;
+  transition: width 0.3s, height 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
 }
 
 .cell-expanded-content {
@@ -105,50 +109,60 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  gap: 0.3rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
 }
 
 .cell-img-thumb {
-  width: 48px;
-  height: 48px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.2rem;
-  border: 1.5px solid #404040;
+  border-radius: 12px;
+  margin-bottom: 0.3rem;
+  border: 2px solid #404040;
   background: #181c20;
 }
 
 .cell-icons {
   display: flex;
-  gap: 0.7rem;
-  margin-top: 0.2rem;
+  gap: 1rem;
+  margin-top: 0.3rem;
   align-items: center;
   justify-content: center;
 }
 
 .cell-icon {
-  font-size: 1.2em;
+  font-size: 1.4em;
   cursor: pointer;
-  color: #ff7a00;
   background: none;
   border: none;
-  transition: color 0.2s, transform 0.2s;
+  transition: all 0.2s;
   margin: 0 2px;
+  padding: 0.3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.cell-icon:hover {
+.cell-details-icon {
   color: #fff;
-  transform: scale(1.15);
+  background: #ff7a00;
+}
+
+.cell-details-icon:hover {
+  background: #e66a00;
+  transform: scale(1.1);
 }
 
 .cell-delete-icon {
-  color: #ff4444;
+  color: #fff;
+  background: #ff4444;
 }
 
 .cell-delete-icon:hover {
-  color: #fff;
-  background: #ff4444;
-  border-radius: 50%;
+  background: #cc3333;
+  transform: scale(1.1);
 }
 
 .cell:last-child,
@@ -472,4 +486,69 @@
   .modal-image img {
     max-height: 200px;
   }
+}
+
+.modal-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #e0e0e0;
+}
+
+.modal-error {
+  text-align: center;
+  padding: 2rem;
+  color: #ff4444;
+}
+
+.recipe-category,
+.recipe-area {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: #181c20;
+  border-radius: 8px;
+  border-left: 3px solid #ff7a00;
+}
+
+.recipe-instructions {
+  margin-bottom: 1.5rem;
+}
+
+.recipe-instructions p {
+  margin-top: 0.5rem;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.recipe-ingredients {
+  margin-bottom: 1.5rem;
+}
+
+.recipe-ingredients ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.recipe-ingredients li {
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+
+.recipe-video {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #181c20;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.recipe-video a {
+  color: #ff7a00;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.recipe-video a:hover {
+  color: #e66a00;
+  text-decoration: underline;
 } 
