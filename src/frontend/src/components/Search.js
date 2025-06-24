@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getUserPreferences } from '../services/userService';
+import { mealPlanService } from '../services/mealPlanService';
 import './Search.css';
+import { FaPlus } from 'react-icons/fa';
 
 const Search = ({ onBack, onRecipeSelect }) => {
   const [query, setQuery] = useState('');
@@ -10,8 +12,45 @@ const Search = ({ onBack, onRecipeSelect }) => {
   const [searched, setSearched] = useState(false); // Track if a search has been performed
   const searchInputRef = useRef(null);
 
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][0]);
+  const [selectedMealTime, setSelectedMealTime] = useState(['breakfast', 'lunch', 'snack', 'dinner'][0]);
+  const [addError, setAddError] = useState('');
+  const [addLoading, setAddLoading] = useState(false);
+  const [userMealPlan, setUserMealPlan] = useState({});
+
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
+
   useEffect(() => {
     searchInputRef.current?.focus();
+  }, []);
+
+  // Fetch user's meal plan for the week on mount
+  useEffect(() => {
+    async function fetchMealPlan() {
+      try {
+        const today = new Date();
+        const weekStart = new Date(today);
+        weekStart.setDate(today.getDate() - today.getDay() + 1);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+        const plans = await mealPlanService.getMealPlans(weekStart.toISOString().split('T')[0], weekEnd.toISOString().split('T')[0]);
+        const planMap = {};
+        plans.forEach(mp => {
+          const dateObj = new Date(mp.date);
+          const dayIdx = (dateObj.getUTCDay() + 6) % 7;
+          const day = daysOfWeek[dayIdx];
+          if (!planMap[day]) planMap[day] = {};
+          planMap[day][mp.mealTime] = { ...mp };
+        });
+        setUserMealPlan(planMap);
+      } catch (e) {
+        // ignore
+      }
+    }
+    fetchMealPlan();
   }, []);
 
   const handleSearch = async (e) => {
@@ -54,6 +93,61 @@ const Search = ({ onBack, onRecipeSelect }) => {
 
   const handleRecipeClick = (recipe) => {
     onRecipeSelect(recipe, false); // Pass the full recipe object
+  };
+
+  const handlePlusClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setAddModalOpen(true);
+    setAddError('');
+    setSelectedDay(daysOfWeek[0]);
+    setSelectedMealTime(mealTimes[0]);
+  };
+
+  const handleAddToMealPlan = async () => {
+    setAddError('');
+    setAddLoading(true);
+    try {
+      // Check if slot is already taken
+      if (userMealPlan[selectedDay]?.[selectedMealTime]) {
+        setAddError(`You already have a meal for ${selectedDay} ${selectedMealTime}`);
+        setAddLoading(false);
+        return;
+      }
+      // Add meal
+      const today = new Date();
+      const weekStart = new Date(today);
+      weekStart.setDate(today.getDate() - today.getDay() + 1);
+      const date = new Date(weekStart);
+      date.setDate(weekStart.getDate() + daysOfWeek.indexOf(selectedDay));
+      await mealPlanService.addMealPlan({
+        date: date.toISOString().split('T')[0],
+        mealTime: selectedMealTime,
+        mealdbId: selectedRecipe.id,
+        name: selectedRecipe.name,
+        img: selectedRecipe.img
+      });
+      // Update local meal plan state
+      setUserMealPlan(prev => {
+        const updated = { ...prev };
+        if (!updated[selectedDay]) updated[selectedDay] = {};
+        updated[selectedDay][selectedMealTime] = { name: selectedRecipe.name };
+        return updated;
+      });
+      setAddModalOpen(false);
+      setSelectedRecipe(null);
+      setAddLoading(false);
+      // Optionally, trigger a callback to update the meal planner view if needed
+    } catch (e) {
+      setAddError(e.message || 'Could not add meal');
+      setAddLoading(false);
+    }
+  };
+
+  const handleCloseAddModal = () => {
+    setAddModalOpen(false);
+    setSelectedRecipe(null);
+    setAddError('');
+    setAddLoading(false);
   };
 
   return (
@@ -99,6 +193,9 @@ const Search = ({ onBack, onRecipeSelect }) => {
                       <span>⭐ {recipe.rating}</span>
                     </div>
                   </div>
+                  <button className="add-to-mealplan-btn" onClick={e => { e.stopPropagation(); handlePlusClick(recipe); }} title="Add to meal planner">
+                    <FaPlus />
+                  </button>
                 </div>
               ))}
             </div>
@@ -121,6 +218,37 @@ const Search = ({ onBack, onRecipeSelect }) => {
           )}
         </div>
       </div>
+
+      {addModalOpen && (
+        <div className="modal-overlay" onClick={handleCloseAddModal}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Add to Meal Planner</h2>
+              <button className="modal-close" onClick={handleCloseAddModal}>×</button>
+            </div>
+            <div className="modal-body">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                <img src={selectedRecipe?.img} alt={selectedRecipe?.name} style={{ width: 60, height: 60, borderRadius: 8, objectFit: 'cover' }} />
+                <span style={{ fontWeight: 600, color: '#ff7a00' }}>{selectedRecipe?.name}</span>
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label>Day: </label>
+                <select value={selectedDay} onChange={e => setSelectedDay(e.target.value)}>
+                  {daysOfWeek.map(day => <option key={day} value={day}>{day}</option>)}
+                </select>
+                <label style={{ marginLeft: '1rem' }}>Meal Time: </label>
+                <select value={selectedMealTime} onChange={e => setSelectedMealTime(e.target.value)}>
+                  {mealTimes.map(mt => <option key={mt} value={mt}>{mt.charAt(0).toUpperCase() + mt.slice(1)}</option>)}
+                </select>
+              </div>
+              {addError && <div style={{ color: '#ff4444', marginBottom: '1rem' }}>{addError}</div>}
+              <button className="add-confirm-btn" onClick={handleAddToMealPlan} disabled={addLoading}>
+                {addLoading ? 'Adding...' : 'Add to Meal Planner'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
