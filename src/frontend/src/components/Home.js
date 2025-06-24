@@ -213,10 +213,12 @@ const Home = ({ onSignOut }) => {
             <h1 className="home-title">Welcome back, {name}!</h1>
             <p className="home-subtitle">What would you like to cook today?</p>
           </div>
-          <div className="home-avatar" onClick={() => setPage('profile')} />
-          {plan === 'pro' && (
-            <div className="home-pro-badge">PRO</div>
-          )}
+          <div className="home-avatar-badge-stack">
+            <div className="home-avatar" onClick={() => setPage('profile')} />
+            {plan === 'pro' && (
+              <div className="home-pro-badge">PRO</div>
+            )}
+          </div>
         </div>
 
         <MealPlanner />

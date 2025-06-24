@@ -228,7 +228,7 @@
   .home-pro-badge {
     font-size: 0.7rem;
     padding: 0.09em 0.5em;
-    top: -8px;
+    margin-top: 0.18rem;
   }
 }
 
@@ -293,20 +293,26 @@
   display: inline-block;
 }
 
+.home-avatar-badge-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .home-pro-badge {
-  position: absolute;
-  left: 50%;
-  top: -12px;
-  transform: translateX(-50%);
+  position: static;
+  margin-top: 0.25rem;
   background: linear-gradient(90deg, #ff7a00 0%, #ff9500 100%);
   color: #fff;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   border-radius: 7px;
-  padding: 0.13em 0.7em;
-  letter-spacing: 1.2px;
+  padding: 0.10em 0.7em;
+  letter-spacing: 1.1px;
   box-shadow: 0 1px 4px rgba(255, 122, 0, 0.10);
   z-index: 10;
   pointer-events: none;
   border: none;
+  display: inline-block;
 } 

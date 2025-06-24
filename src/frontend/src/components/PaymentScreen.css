@@ -76,7 +76,12 @@
 }
 
 .payment-methods-section {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 120px;
 }
 .payment-methods-header {
   display: flex;
@@ -86,17 +91,20 @@
   color: #e0e0e0;
   font-size: 1.1em;
   font-weight: 600;
+  width: 100%;
 }
 .add-payment-btn {
   background: #ff7a00;
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 0.5em 1.2em;
-  font-size: 1em;
-  font-weight: 600;
+  padding: 0.7em 1.5em;
+  font-size: 1.1em;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
+  margin: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.10);
 }
 .add-payment-btn:hover {
   background: #e66a00;
@@ -106,7 +114,9 @@
 .payment-methods-empty {
   color: #aaa;
   text-align: center;
-  margin: 1.5rem 0;
+  margin: 2.5rem 0 1.5rem 0;
+  font-size: 1.1em;
+  font-weight: 500;
 }
 .payment-methods-list {
   display: flex;
