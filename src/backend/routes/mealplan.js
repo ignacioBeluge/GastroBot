@@ -24,30 +24,16 @@ router.get('/', auth, async (req, res) => {
 // Add a meal plan entry
 router.post('/', auth, async (req, res) => {
   try {
-    const { date, mealTime, recipe } = req.body;
-    const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    const recipeDoc = await Recipe.findById(recipe);
-    if (!recipeDoc) return res.status(404).json({ message: 'Recipe not found' });
-    // Convert recipeDoc to plain object and add ingredients array if needed
-    const recipeObj = recipeDoc.toObject();
-    if (!recipeObj.ingredients && recipeObj.ingredient) {
-      recipeObj.ingredients = recipeObj.ingredient;
-    }
-    // Ensure ingredients is an array of strings
-    if (!Array.isArray(recipeObj.ingredients)) {
-      recipeObj.ingredients = [];
-    }
-    // Filter check
-    const filtered = filterRecipes([recipeObj], user.dietaryPreferences);
-    if (filtered.length === 0) {
-      return res.status(400).json({ message: 'Recipe does not match your dietary preferences' });
+    const { date, mealTime, mealdbId, name } = req.body;
+    if (!mealdbId || !name) {
+      return res.status(400).json({ message: 'mealdbId and name are required' });
     }
     const mealPlan = new MealPlan({
       user: req.user._id,
       date,
       mealTime,
-      recipe
+      mealdbId,
+      name
     });
     await mealPlan.save();
     res.status(201).json(mealPlan);
@@ -59,12 +45,13 @@ router.post('/', auth, async (req, res) => {
 // Update a meal plan entry
 router.put('/:id', auth, async (req, res) => {
   try {
-    const { date, mealTime, recipe } = req.body;
+    const { date, mealTime, mealdbId, name } = req.body;
     const mealPlan = await MealPlan.findOne({ _id: req.params.id, user: req.user._id });
     if (!mealPlan) return res.status(404).json({ message: 'Meal plan not found' });
     if (date) mealPlan.date = date;
     if (mealTime) mealPlan.mealTime = mealTime;
-    if (recipe) mealPlan.recipe = recipe;
+    if (mealdbId) mealPlan.mealdbId = mealdbId;
+    if (name) mealPlan.name = name;
     await mealPlan.save();
     res.json(mealPlan);
   } catch (err) {

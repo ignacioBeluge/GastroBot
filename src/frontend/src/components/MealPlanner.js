@@ -66,20 +66,34 @@ function MealPlanner() {
   // Handler for clicking a cell (add or view meal)
   const handleCellClick = async (day, mealTime) => {
     const meal = mealPlan[day]?.[mealTime];
-    if (meal && (!meal.recipe || !meal.recipe.ingredients || !meal.recipe.fullDesc)) {
-      // Fetch full recipe details if missing
+    if (meal && meal.mealdbId && (!meal.details || !meal.details.ingredients || !meal.details.fullDesc)) {
+      // Fetch full recipe details from TheMealDB if missing
       try {
-        const res = await fetch(`http://localhost:5000/api/recipes/${meal.recipe?._id || meal.recipe}`);
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.mealdbId}`);
         if (res.ok) {
-          const recipe = await res.json();
-          setMealPlan(prev => {
-            const updated = { ...prev };
-            if (!updated[day]) updated[day] = {};
-            updated[day][mealTime] = { ...meal, recipe };
-            return updated;
-          });
-          setSidePanel({ open: true, content: { type: 'details', meal: { ...meal, recipe } } });
-          return;
+          const data = await res.json();
+          if (data.meals && data.meals[0]) {
+            const m = data.meals[0];
+            const details = {
+              ...m,
+              name: m.strMeal,
+              img: m.strMealThumb,
+              fullDesc: m.strInstructions,
+              ingredients: Array.from({ length: 20 }, (_, i) => {
+                const ing = m[`strIngredient${i + 1}`];
+                const measure = m[`strMeasure${i + 1}`];
+                return ing && ing.trim() ? `${measure || ''} ${ing}`.trim() : null;
+              }).filter(Boolean),
+            };
+            setMealPlan(prev => {
+              const updated = { ...prev };
+              if (!updated[day]) updated[day] = {};
+              updated[day][mealTime] = { ...meal, details };
+              return updated;
+            });
+            setSidePanel({ open: true, content: { type: 'details', meal: { ...meal, details } } });
+            return;
+          }
         }
       } catch (e) { /* ignore */ }
     }
@@ -106,14 +120,20 @@ function MealPlanner() {
   const handleAddMeal = async (recipeId) => {
     const { day, mealTime } = sidePanel.content;
     const date = formatDate(getDateForDay(weekStart, daysOfWeek.indexOf(day)));
+    // Find the full recipe object from searchResults
+    const recipeObj = searchResults.find(r => r.id === recipeId);
+    if (!recipeObj) return;
     try {
-      const res = await mealPlanService.addMealPlan({ date, mealTime, recipe: recipeId });
-      // Find the full recipe object from searchResults
-      const recipeObj = searchResults.find(r => r.id === recipeId);
+      const res = await mealPlanService.addMealPlan({
+        date,
+        mealTime,
+        mealdbId: recipeObj.id,
+        name: recipeObj.name
+      });
       setMealPlan(prev => {
         const updated = { ...prev };
         if (!updated[day]) updated[day] = {};
-        updated[day][mealTime] = { ...res, name: recipeObj?.name || '', recipe: recipeObj };
+        updated[day][mealTime] = { ...res };
         return updated;
       });
       setSidePanel({ open: false, content: null });
@@ -212,8 +232,8 @@ function MealPlanner() {
               <h2>{sidePanel.content.meal.name}</h2>
               <p><b>Meal Time:</b> {sidePanel.content.meal.mealTime}</p>
               <p><b>Date:</b> {formatDate(sidePanel.content.meal.date)}</p>
-              <p><b>Ingredients:</b> {sidePanel.content.meal.recipe?.ingredients?.join(', ')}</p>
-              <p><b>Description:</b> {sidePanel.content.meal.recipe?.fullDesc}</p>
+              <p><b>Ingredients:</b> {sidePanel.content.meal.details?.ingredients?.join(', ')}</p>
+              <p><b>Description:</b> {sidePanel.content.meal.details?.fullDesc}</p>
               <button onClick={() => handleDeleteMeal(sidePanel.content.meal)}>Delete</button>
             </div>
           )}

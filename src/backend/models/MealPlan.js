@@ -19,6 +19,14 @@ const MealPlanSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Recipe',
     required: true
+  },
+  mealdbId: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
   }
 });
 
