@@ -42,6 +42,11 @@ function MealPlanner() {
     async function fetchData() {
       setLoading(true);
       try {
+        const user = getCurrentUser();
+        if (!user || !user.token) {
+          setLoading(false);
+          return;
+        }
         const prefs = await getUserPreferences();
         setPreferences(prefs);
         // Get meal plans for the week
@@ -224,7 +229,10 @@ function MealPlanner() {
                 onClick={() => handleCellClick(day, mealTime)}
               >
                 {mealPlan[day]?.[mealTime]?.name ? (
-                  <span className="cell-content" title={mealPlan[day][mealTime].name}>
+                  <span
+                    className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
+                    title={mealPlan[day][mealTime].name}
+                  >
                     {mealPlan[day][mealTime].name}
                   </span>
                 ) : '+'}
