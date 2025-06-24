@@ -56,6 +56,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
     try {
       await uploadProfilePicture(file);
       await fetchProfilePicture(); // Refresh avatar
+      window.dispatchEvent(new Event('profilePictureUpdated'));
     } catch (err) {
       setUploadError('Failed to upload image.');
     }
@@ -79,7 +80,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
             {avatarUrl ? (
               <img src={avatarUrl} alt="Profile" className="profile-avatar-img" />
             ) : (
-              <span className="profile-avatar-placeholder">��</span>
+              <span className="profile-avatar-placeholder">👤</span>
             )}
             {uploading && <div className="profile-avatar-uploading">Uploading...</div>}
             <input

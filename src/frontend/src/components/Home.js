@@ -74,7 +74,9 @@ const Home = ({ onSignOut }) => {
       }
     };
     fetchProfilePicture();
-    return () => { isMounted = false; };
+    const onProfilePictureUpdated = () => fetchProfilePicture();
+    window.addEventListener('profilePictureUpdated', onProfilePictureUpdated);
+    return () => { isMounted = false; window.removeEventListener('profilePictureUpdated', onProfilePictureUpdated); };
   }, [user?.user?._id]);
 
   const loadData = async () => {
