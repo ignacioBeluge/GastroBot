@@ -6,15 +6,6 @@ const Recipe = require('../models/Recipe');
 const User = require('../models/User');
 const { filterRecipes } = require('../services/recipeFilterService');
 
-// Add logging middleware
-router.use((req, res, next) => {
-  console.log(`[MealPlan API] ${req.method} ${req.originalUrl} - User: ${req.user ? req.user._id : 'N/A'}`);
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log('[MealPlan API] Payload:', req.body);
-  }
-  next();
-});
-
 // Get all meal plans for the authenticated user (optionally by week)
 router.get('/', auth, async (req, res) => {
   try {

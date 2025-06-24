@@ -58,7 +58,7 @@ function MealPlanner() {
         plans.forEach(mp => {
           const day = daysOfWeek[new Date(mp.date).getDay() === 0 ? 6 : new Date(mp.date).getDay() - 1];
           if (!planMap[day]) planMap[day] = {};
-          planMap[day][mp.mealTime] = { ...mp, name: mp.recipe?.name || '' };
+          planMap[day][mp.mealTime] = { ...mp };
         });
         setMealPlan(planMap);
       } catch (e) {
@@ -209,23 +209,25 @@ function MealPlanner() {
     return () => { cancelled = true; };
   }, [search, preferences, sidePanel]);
 
-  // Render the grid
+  // Render the grid using CSS grid
   return (
     <div className="meal-planner-container">
       <div className="meal-planner-grid">
-        <div className="header-row">
-          <div className="corner-cell"></div>
-          {daysOfWeek.map(day => (
-            <div key={day} className="header-cell">{day}</div>
-          ))}
-        </div>
-        {mealTimes.map(mealTime => (
-          <div className="row" key={mealTime}>
-            <div className="meal-time-cell">{mealTime.charAt(0).toUpperCase() + mealTime.slice(1)}</div>
-            {daysOfWeek.map(day => (
+        {/* Corner cell */}
+        <div className="corner-cell" style={{ gridRow: 1, gridColumn: 1 }}></div>
+        {/* Header cells */}
+        {daysOfWeek.map((day, i) => (
+          <div key={day} className="header-cell" style={{ gridRow: 1, gridColumn: i + 2 }}>{day}</div>
+        ))}
+        {/* Meal time labels and cells */}
+        {mealTimes.map((mealTime, rowIdx) => (
+          <React.Fragment key={mealTime}>
+            <div className="meal-time-cell" style={{ gridRow: rowIdx + 2, gridColumn: 1 }}>{mealTime.charAt(0).toUpperCase() + mealTime.slice(1)}</div>
+            {daysOfWeek.map((day, colIdx) => (
               <div
                 key={day + mealTime}
                 className="cell"
+                style={{ gridRow: rowIdx + 2, gridColumn: colIdx + 2 }}
                 onClick={() => handleCellClick(day, mealTime)}
               >
                 {mealPlan[day]?.[mealTime]?.name ? (
@@ -238,7 +240,7 @@ function MealPlanner() {
                 ) : '+'}
               </div>
             ))}
-          </div>
+          </React.Fragment>
         ))}
       </div>
       {sidePanel.open && (

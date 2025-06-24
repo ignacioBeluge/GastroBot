@@ -10,32 +10,22 @@
 }
 
 .meal-planner-grid {
+  display: grid;
+  grid-template-columns: 120px repeat(7, 1fr);
+  grid-template-rows: 48px repeat(4, 1fr);
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
   min-width: 320px;
-  min-height: 420px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  min-height: 320px;
   background: #23272b;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.18);
   border: 2px solid #404040;
-  justify-content: center;
-  align-items: center;
 }
 
 .header-row, .row {
   display: flex;
-}
-
-.header-cell, .meal-time-cell, .cell {
-  padding: 16px 18px;
-  text-align: center;
-  border-bottom: 1px solid #333;
-  border-right: 1px solid #333;
-  font-weight: 600;
 }
 
 .header-cell {
@@ -43,44 +33,62 @@
   color: #ff7a00;
   font-size: 1.1em;
   letter-spacing: 0.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1.5px solid #333;
+  border-right: 1.5px solid #333;
 }
 
 .corner-cell {
-  width: 110px;
   background: #2a2a2a;
-  border-bottom: 1px solid #333;
+  border-bottom: 1.5px solid #333;
+  border-right: 1.5px solid #333;
+  border-radius: 20px 0 0 0;
 }
 
 .meal-time-cell {
   background: #2a2a2a;
   color: #ff7a00;
-  width: 110px;
   font-size: 1em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1.5px solid #333;
+  border-right: 1.5px solid #333;
 }
 
 .cell {
   background: #23272b;
   color: #e0e0e0;
   cursor: pointer;
-  width: 160px;
-  height: 56px;
-  min-width: 160px;
-  min-height: 56px;
-  max-width: 160px;
-  max-height: 56px;
-  transition: background 0.2s, color 0.2s;
   font-size: 1.05em;
-  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  border-bottom: 1.5px solid #333;
+  border-right: 1.5px solid #333;
+  min-width: 0;
+  min-height: 0;
+  transition: background 0.2s, color 0.2s;
   box-sizing: border-box;
 }
 
-.cell .cell-content {
+.cell:last-child,
+.header-cell:last-child {
+  border-right: none;
+}
+
+.meal-time-cell:last-child {
+  border-bottom: none;
+}
+
+.cell-content {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,7 +98,7 @@
   font-size: 1em;
 }
 
-.cell .cell-content-long {
+.cell-content-long {
   font-size: 0.85em;
 }
 
@@ -236,4 +244,21 @@
   color: #bbb;
   display: flex;
   gap: 0.75rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .meal-planner-grid {
+    max-width: 98vw;
+    grid-template-columns: 80px repeat(7, 1fr);
+  }
+  .header-cell, .meal-time-cell {
+    font-size: 0.95em;
+  }
+}
+@media (max-width: 600px) {
+  .meal-planner-grid {
+    grid-template-columns: 60px repeat(7, 1fr);
+    font-size: 0.9em;
+  }
 } 
