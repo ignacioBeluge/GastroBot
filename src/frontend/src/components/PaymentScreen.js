@@ -139,78 +139,80 @@ const PaymentScreen = ({ onBack }) => {
           </button>
           <span className="payment-header-title">Payment</span>
         </div>
-        <h2 className="payment-title">Payment & Plan</h2>
-        {loading ? (
-          <div className="payment-loading">Loading...</div>
-        ) : (
-          <>
-            <div className="payment-plan-section">
-              <span className="payment-plan-label">Current Plan:</span>
-              <span className={`payment-plan-value payment-plan-${plan}`}>{plan === 'pro' ? 'Pro' : 'Free'}</span>
-              <button className="add-payment-btn" style={{ marginLeft: '1.5rem' }} onClick={handlePlanChange} disabled={planLoading}>
-                {planLoading ? 'Updating...' : plan === 'pro' ? 'Downgrade to Free' : 'Upgrade to Pro'}
-              </button>
-            </div>
-            <div className="payment-methods-section">
-              <div className="payment-methods-header">
-                <span>Payment Methods</span>
-                <button className="add-payment-btn" onClick={handleOpenModal}>+ Add Payment Method</button>
+        <div className="payment-card">
+          <h2 className="payment-title">Payment & Plan</h2>
+          {loading ? (
+            <div className="payment-loading">Loading...</div>
+          ) : (
+            <>
+              <div className="payment-plan-section">
+                <span className="payment-plan-label">Current Plan:</span>
+                <span className={`payment-plan-value payment-plan-${plan}`}>{plan === 'pro' ? 'Pro' : 'Free'}</span>
+                <button className="add-payment-btn" style={{ marginLeft: '1.5rem' }} onClick={handlePlanChange} disabled={planLoading}>
+                  {planLoading ? 'Updating...' : plan === 'pro' ? 'Downgrade to Free' : 'Upgrade to Pro'}
+                </button>
               </div>
-              {paymentMethods.length === 0 ? (
-                <div className="payment-methods-empty">No payment methods registered.</div>
-              ) : (
-                <div className="payment-methods-list">
-                  {paymentMethods.map((pm, idx) => (
-                    <div key={idx} className="payment-method-card">
-                      <span className="payment-method-type">{pm.cardType}</span>
-                      <span className="payment-method-last4">•••• {pm.last4}</span>
-                      <span className="payment-method-exp">{pm.expMonth}/{pm.expYear}</span>
-                      <span className="payment-method-name">{pm.name}</span>
-                    </div>
-                  ))}
+              <div className="payment-methods-section">
+                <div className="payment-methods-header">
+                  <span>Payment Methods</span>
+                  <button className="add-payment-btn" onClick={handleOpenModal}>+ Add Payment Method</button>
                 </div>
-              )}
+                {paymentMethods.length === 0 ? (
+                  <div className="payment-methods-empty">No payment methods registered.</div>
+                ) : (
+                  <div className="payment-methods-list">
+                    {paymentMethods.map((pm, idx) => (
+                      <div key={idx} className="payment-method-card">
+                        <span className="payment-method-type">{pm.cardType}</span>
+                        <span className="payment-method-last4">•••• {pm.last4}</span>
+                        <span className="payment-method-exp">{pm.expMonth}/{pm.expYear}</span>
+                        <span className="payment-method-name">{pm.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+        {modalOpen && (
+          <div className="modal-overlay" onClick={handleCloseModal}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2>Add Payment Method</h2>
+                <button className="modal-close" onClick={handleCloseModal}>×</button>
+              </div>
+              <form className="modal-body" onSubmit={handleAddPayment}>
+                <div className="payment-form-row">
+                  <label>Card Type:</label>
+                  <select className="add-meal-select" name="cardType" value={form.cardType} onChange={handleFormChange}>
+                    {cardTypes.map(type => <option key={type} value={type}>{type}</option>)}
+                  </select>
+                </div>
+                <div className="payment-form-row">
+                  <label>Name on Card:</label>
+                  <input className="add-meal-select" name="name" value={form.name} onChange={handleFormChange} />
+                </div>
+                <div className="payment-form-row">
+                  <label>Card Number:</label>
+                  <input className="add-meal-select" name="number" value={form.number} onChange={handleFormChange} maxLength={16} />
+                </div>
+                <div className="payment-form-row">
+                  <label>Exp:</label>
+                  <select className="add-meal-select" name="expMonth" value={form.expMonth} onChange={handleFormChange}>
+                    {months.map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                  <select className="add-meal-select" name="expYear" value={form.expYear} onChange={handleFormChange}>
+                    {years.map(y => <option key={y} value={y}>{y}</option>)}
+                  </select>
+                </div>
+                {formError && <div style={{ color: '#ff4444', marginBottom: '1rem' }}>{formError}</div>}
+                <button className="add-confirm-btn" type="submit" disabled={formLoading}>{formLoading ? 'Adding...' : 'Add Payment Method'}</button>
+              </form>
             </div>
-          </>
+          </div>
         )}
       </div>
-      {modalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>Add Payment Method</h2>
-              <button className="modal-close" onClick={handleCloseModal}>×</button>
-            </div>
-            <form className="modal-body" onSubmit={handleAddPayment}>
-              <div className="payment-form-row">
-                <label>Card Type:</label>
-                <select className="add-meal-select" name="cardType" value={form.cardType} onChange={handleFormChange}>
-                  {cardTypes.map(type => <option key={type} value={type}>{type}</option>)}
-                </select>
-              </div>
-              <div className="payment-form-row">
-                <label>Name on Card:</label>
-                <input className="add-meal-select" name="name" value={form.name} onChange={handleFormChange} />
-              </div>
-              <div className="payment-form-row">
-                <label>Card Number:</label>
-                <input className="add-meal-select" name="number" value={form.number} onChange={handleFormChange} maxLength={16} />
-              </div>
-              <div className="payment-form-row">
-                <label>Exp:</label>
-                <select className="add-meal-select" name="expMonth" value={form.expMonth} onChange={handleFormChange}>
-                  {months.map(m => <option key={m} value={m}>{m}</option>)}
-                </select>
-                <select className="add-meal-select" name="expYear" value={form.expYear} onChange={handleFormChange}>
-                  {years.map(y => <option key={y} value={y}>{y}</option>)}
-                </select>
-              </div>
-              {formError && <div style={{ color: '#ff4444', marginBottom: '1rem' }}>{formError}</div>}
-              <button className="add-confirm-btn" type="submit" disabled={formLoading}>{formLoading ? 'Adding...' : 'Add Payment Method'}</button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
