@@ -3,6 +3,7 @@ import './MealPlanner.css';
 import { mealPlanService } from '../services/mealPlanService';
 import { getUserPreferences } from '../services/userService';
 import { getCurrentUser } from '../services/authService';
+import { FaRegEye, FaTimes } from 'react-icons/fa';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const mealTimes = ['breakfast', 'lunch', 'snack', 'dinner'];
@@ -56,7 +57,9 @@ function MealPlanner() {
         // Map to { [day]: { [mealTime]: mealObj } }
         const planMap = {};
         plans.forEach(mp => {
-          const day = daysOfWeek[new Date(mp.date).getDay() === 0 ? 6 : new Date(mp.date).getDay() - 1];
+          const dateObj = new Date(mp.date);
+          const dayIdx = (dateObj.getUTCDay() + 6) % 7; // 0=Monday, 1=Tuesday, ..., 6=Sunday
+          const day = daysOfWeek[dayIdx];
           if (!planMap[day]) planMap[day] = {};
           planMap[day][mp.mealTime] = { ...mp };
         });
@@ -134,7 +137,8 @@ function MealPlanner() {
         date,
         mealTime,
         mealdbId: recipeObj.id,
-        name: recipeObj.name
+        name: recipeObj.name,
+        img: recipeObj.img
       });
       setMealPlan(prev => {
         const updated = { ...prev };
@@ -209,6 +213,25 @@ function MealPlanner() {
     return () => { cancelled = true; };
   }, [search, preferences, sidePanel]);
 
+  // Hover state for expanded cell
+  const [hoveredCell, setHoveredCell] = useState({ day: null, mealTime: null });
+
+  // Modal state for recipe details
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+
+  // Handler for details icon
+  const handleShowDetails = (meal) => {
+    setSelectedRecipe(meal);
+    setModalOpen(true);
+  };
+
+  // Handler for closing modal
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedRecipe(null);
+  };
+
   // Render the grid using CSS grid
   return (
     <div className="meal-planner-container">
@@ -226,17 +249,45 @@ function MealPlanner() {
             {daysOfWeek.map((day, colIdx) => (
               <div
                 key={day + mealTime}
-                className="cell"
+                className={`cell${hoveredCell.day === day && hoveredCell.mealTime === mealTime ? ' cell-expanded' : ''}`}
                 style={{ gridRow: rowIdx + 2, gridColumn: colIdx + 2 }}
                 onClick={() => handleCellClick(day, mealTime)}
+                onMouseEnter={() => setHoveredCell({ day, mealTime })}
+                onMouseLeave={() => setHoveredCell({ day: null, mealTime: null })}
               >
                 {mealPlan[day]?.[mealTime]?.name ? (
-                  <span
-                    className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
-                    title={mealPlan[day][mealTime].name}
-                  >
-                    {mealPlan[day][mealTime].name}
-                  </span>
+                  hoveredCell.day === day && hoveredCell.mealTime === mealTime ? (
+                    <div className="cell-expanded-content">
+                      {mealPlan[day][mealTime].img && (
+                        <img src={mealPlan[day][mealTime].img} alt={mealPlan[day][mealTime].name} className="cell-img-thumb" />
+                      )}
+                      <span
+                        className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
+                        title={mealPlan[day][mealTime].name}
+                      >
+                        {mealPlan[day][mealTime].name}
+                      </span>
+                      <span className="cell-icons">
+                        <FaRegEye
+                          className="cell-icon cell-details-icon"
+                          title="Show details"
+                          onClick={e => { e.stopPropagation(); handleShowDetails(mealPlan[day][mealTime]); }}
+                        />
+                        <FaTimes
+                          className="cell-icon cell-delete-icon"
+                          title="Delete"
+                          onClick={e => { e.stopPropagation(); handleDeleteMeal(mealPlan[day][mealTime]); }}
+                        />
+                      </span>
+                    </div>
+                  ) : (
+                    <span
+                      className={`cell-content${mealPlan[day][mealTime].name.length > 16 ? ' cell-content-long' : ''}`}
+                      title={mealPlan[day][mealTime].name}
+                    >
+                      {mealPlan[day][mealTime].name}
+                    </span>
+                  )
                 ) : '+'}
               </div>
             ))}
@@ -292,8 +343,43 @@ function MealPlanner() {
         </div>
       )}
       {loading && <div style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, background: 'rgba(255,255,255,0.5)', zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</div>}
+      
+      {/* Recipe Details Modal */}
+      <RecipeModal 
+        isOpen={modalOpen} 
+        recipe={selectedRecipe} 
+        onClose={handleCloseModal} 
+      />
     </div>
   );
 }
+
+// Modal component for recipe details
+const RecipeModal = ({ isOpen, recipe, onClose }) => {
+  if (!isOpen || !recipe) return null;
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2>{recipe.name}</h2>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          {recipe.img && (
+            <div className="modal-image">
+              <img src={recipe.img} alt={recipe.name} />
+            </div>
+          )}
+          <div className="modal-info">
+            <p><strong>Meal ID:</strong> {recipe.mealdbId}</p>
+            <p><strong>Date:</strong> {recipe.date}</p>
+            <p><strong>Meal Time:</strong> {recipe.mealTime}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default MealPlanner; 

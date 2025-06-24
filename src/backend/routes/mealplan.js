@@ -28,7 +28,7 @@ router.get('/', auth, async (req, res) => {
 // Add a meal plan entry
 router.post('/', auth, async (req, res) => {
   try {
-    const { date, mealTime, mealdbId, name } = req.body;
+    const { date, mealTime, mealdbId, name, img } = req.body;
     if (!mealdbId || !name) {
       console.warn('[MealPlan API] POST missing mealdbId or name');
       return res.status(400).json({ message: 'mealdbId and name are required' });
@@ -38,7 +38,8 @@ router.post('/', auth, async (req, res) => {
       date,
       mealTime,
       mealdbId,
-      name
+      name,
+      img
     });
     await mealPlan.save();
     console.log('[MealPlan API] Created meal plan:', mealPlan);
@@ -52,7 +53,7 @@ router.post('/', auth, async (req, res) => {
 // Update a meal plan entry
 router.put('/:id', auth, async (req, res) => {
   try {
-    const { date, mealTime, mealdbId, name } = req.body;
+    const { date, mealTime, mealdbId, name, img } = req.body;
     const mealPlan = await MealPlan.findOne({ _id: req.params.id, user: req.user._id });
     if (!mealPlan) {
       console.warn('[MealPlan API] PUT not found:', req.params.id);
@@ -62,6 +63,7 @@ router.put('/:id', auth, async (req, res) => {
     if (mealTime) mealPlan.mealTime = mealTime;
     if (mealdbId) mealPlan.mealdbId = mealdbId;
     if (name) mealPlan.name = name;
+    if (img) mealPlan.img = img;
     await mealPlan.save();
     console.log('[MealPlan API] Updated meal plan:', mealPlan);
     res.json(mealPlan);
