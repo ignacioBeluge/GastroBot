@@ -16,6 +16,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
   const user = getCurrentUser();
   const name = user?.user?.name || '';
   const bio = user?.user?.bio || '';
+  const plan = user?.user?.plan || 'free';
   // const navigate = useNavigate();
   
   return (
@@ -31,6 +32,9 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
           <span className="profile-title">Profile</span>
         </div>
         <div className="profile-avatar-big" />
+        {plan === 'pro' && (
+          <div className="profile-pro-badge">PRO</div>
+        )}
         <div className="profile-username">{name}</div>
         <div className="profile-desc">{bio || '¡Agrega una bio desde Editar Perfil!'}</div>
         <div className="profile-menu-list-2">

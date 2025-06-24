@@ -41,6 +41,7 @@ const Home = ({ onSignOut }) => {
 
   const user = getCurrentUser();
   const name = user?.user?.name || '';
+  const plan = user?.user?.plan || 'free';
 
   useEffect(() => {
     const handleAuthChange = () => {
@@ -213,6 +214,9 @@ const Home = ({ onSignOut }) => {
             <p className="home-subtitle">What would you like to cook today?</p>
           </div>
           <div className="home-avatar" onClick={() => setPage('profile')} />
+          {plan === 'pro' && (
+            <div className="home-pro-badge">PRO</div>
+          )}
         </div>
 
         <MealPlanner />

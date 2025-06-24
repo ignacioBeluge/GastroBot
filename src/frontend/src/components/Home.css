@@ -31,6 +31,7 @@
   align-items: center !important;
   padding: 1rem 0 !important;
   margin-bottom: 1rem !important;
+  position: relative;
 }
 
 .home-welcome {
@@ -279,4 +280,20 @@
   .home-menu-item:hover .home-menu-icon {
     transform: none !important;
   }
+}
+
+.home-pro-badge {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.2rem;
+  background: linear-gradient(90deg, #ff7a00 0%, #ff9500 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  border-radius: 7px;
+  padding: 0.18em 0.7em;
+  letter-spacing: 1.5px;
+  box-shadow: 0 2px 8px rgba(255, 122, 0, 0.18);
+  z-index: 10;
+  pointer-events: none;
 } 

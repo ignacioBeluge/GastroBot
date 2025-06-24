@@ -122,6 +122,9 @@
   border-left: 4px solid #ff7a00;
   color: #e0e0e0;
   font-size: 1.08em;
+  width: 100%;
+  max-width: 420px;
+  box-sizing: border-box;
 }
 .payment-method-type {
   font-weight: 600;
@@ -257,4 +260,16 @@
   background: #23272b;
   border: 2.5px solid #ff7a00;
   cursor: pointer;
+}
+
+.modal-content {
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-body {
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
 } 

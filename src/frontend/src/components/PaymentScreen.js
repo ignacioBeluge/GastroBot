@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { getUserPlan, getPaymentMethods, addPaymentMethod, setCurrentPaymentMethod } from '../services/userService';
+import { getCurrentUser } from '../services/authService';
 import './PaymentScreen.css';
 
 const cardTypes = ['Visa', 'Mastercard', 'Amex', 'Discover'];
@@ -8,7 +9,8 @@ const months = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0
 const years = Array.from({ length: 12 }, (_, i) => String(new Date().getFullYear() + i));
 
 const updatePlan = async (plan) => {
-  const token = localStorage.getItem('token');
+  const user = getCurrentUser();
+  const token = user?.token || '';
   const res = await fetch('http://localhost:5000/api/user/plan', {
     method: 'PUT',
     headers: {
