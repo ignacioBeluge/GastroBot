@@ -157,15 +157,9 @@ function MealPlanner() {
   const handleDeleteMeal = async (meal) => {
     try {
       await mealPlanService.deleteMealPlan(meal._id);
-      setMealPlan(prev => {
-        const updated = { ...prev };
-        if (updated[meal.day] && updated[meal.day][meal.mealTime]) {
-          // Create a new object for the day to ensure React re-renders
-          updated[meal.day] = { ...updated[meal.day] };
-          delete updated[meal.day][meal.mealTime];
-        }
-        return { ...updated };
-      });
+      // Re-fetch the meal plan from the backend after deletion
+      const updatedMealPlan = await mealPlanService.getMealPlan();
+      setMealPlan(updatedMealPlan);
       // If the deleted meal is being shown in the modal, close it
       if (selectedRecipe && selectedRecipe._id === meal._id) {
         setModalOpen(false);
@@ -316,6 +310,7 @@ function MealPlanner() {
                           className="cell-img-thumb"
                           style={{ pointerEvents: 'none' }}
                           draggable={false}
+                          onClick={e => e.stopPropagation()}
                           tabIndex={-1}
                         />
                       )}
