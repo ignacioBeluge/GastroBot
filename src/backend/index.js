@@ -8,6 +8,7 @@ const chatRoutes = require('./routes/chat');
 const searchRoutes = require('./routes/search');
 const userRoutes = require('./routes/user');
 const browseRoutes = require('./routes/browse');
+const mealPlanRouter = require('./routes/mealplan');
 const connectDB = require('./config/db');
 
 // Conectar a la base de datos
@@ -29,6 +30,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/browse', browseRoutes);
+app.use('/api/mealplan', mealPlanRouter);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
