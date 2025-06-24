@@ -34,6 +34,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1.5px solid #333;
 }
 
 .payment-title {
@@ -111,6 +112,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
+  width: 100%;
 }
 .payment-method-card {
   background: #181c20;
@@ -123,8 +125,19 @@
   color: #e0e0e0;
   font-size: 1.08em;
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   box-sizing: border-box;
+  position: relative;
+  border: 1.5px solid #444;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.payment-method-card .fa-trash, .payment-method-card svg {
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 1.2em;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 .payment-method-type {
   font-weight: 600;

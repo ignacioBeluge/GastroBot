@@ -37,6 +37,7 @@ const PaymentScreen = ({ onBack }) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [selectCardModalOpen, setSelectCardModalOpen] = useState(false);
   const [upgradeError, setUpgradeError] = useState('');
+  const [downgradeWarning, setDowngradeWarning] = useState('');
 
   useEffect(() => {
     // Remove token redirect logic; parent handles auth
@@ -143,6 +144,12 @@ const PaymentScreen = ({ onBack }) => {
     try {
       const res = await updatePlan('free');
       setPlan(res.plan);
+      // Update user object in localStorage
+      const userObj = JSON.parse(localStorage.getItem('user'));
+      if (userObj && userObj.user) {
+        userObj.user.plan = res.plan;
+        localStorage.setItem('user', JSON.stringify(userObj));
+      }
     } catch (e) {
       // handle error
     }
@@ -165,6 +172,12 @@ const PaymentScreen = ({ onBack }) => {
       setSelectedPaymentMethod(updated.find(m => m.current));
       const res = await updatePlan('pro');
       setPlan(res.plan);
+      // Update user object in localStorage
+      const userObj = JSON.parse(localStorage.getItem('user'));
+      if (userObj && userObj.user) {
+        userObj.user.plan = res.plan;
+        localStorage.setItem('user', JSON.stringify(userObj));
+      }
       setSelectCardModalOpen(false);
     } catch (e) {
       setUpgradeError('Failed to upgrade plan.');
@@ -190,6 +203,18 @@ const PaymentScreen = ({ onBack }) => {
         setSelectedPaymentMethod(updated[0]);
       } else if (updated.length === 0) {
         setSelectedPaymentMethod(null);
+        // If user is pro, downgrade to free and show warning
+        if (plan === 'pro') {
+          setDowngradeWarning('You have been downgraded to Free because you have no payment methods.');
+          const res = await updatePlan('free');
+          setPlan(res.plan);
+          // Update user object in localStorage
+          const userObj = JSON.parse(localStorage.getItem('user'));
+          if (userObj && userObj.user) {
+            userObj.user.plan = 'free';
+            localStorage.setItem('user', JSON.stringify(userObj));
+          }
+        }
       }
     } catch (e) {
       alert('Failed to delete payment method.');
@@ -227,6 +252,7 @@ const PaymentScreen = ({ onBack }) => {
                 )}
               </div>
               {upgradeError && <div className="payment-error-msg">{upgradeError}</div>}
+              {downgradeWarning && <div className="payment-error-msg" style={{ color: '#ffb300' }}>{downgradeWarning}</div>}
               <div className="payment-methods-section">
                 <div className="payment-methods-header">
                   <span>Payment Methods</span>
