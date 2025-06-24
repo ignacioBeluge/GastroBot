@@ -169,16 +169,16 @@ function MealPlanner() {
                 placeholder="Search recipes..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{ width: '100%', marginBottom: 12 }}
+                className="recipe-search-input"
               />
-              <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+              <div className="recipe-list">
                 {filteredRecipes.map(r => (
-                  <div key={r._id} style={{ padding: 8, borderBottom: '1px solid #eee', cursor: 'pointer' }} onClick={() => handleAddMeal(r._id)}>
+                  <div key={r._id} className="recipe-list-item" onClick={() => handleAddMeal(r._id)}>
                     <b>{r.name}</b>
-                    <div style={{ fontSize: 12, color: '#888' }}>{r.ingredients?.slice(0, 3).join(', ')}{r.ingredients?.length > 3 ? '...' : ''}</div>
+                    <div style={{ fontSize: 12, color: '#bbb' }}>{r.ingredients?.slice(0, 3).join(', ')}{r.ingredients?.length > 3 ? '...' : ''}</div>
                   </div>
                 ))}
-                {filteredRecipes.length === 0 && <div>No recipes found.</div>}
+                {filteredRecipes.length === 0 && <div className="no-recipes">No recipes found.</div>}
               </div>
             </div>
           )}

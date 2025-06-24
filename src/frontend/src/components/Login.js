@@ -14,10 +14,13 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    // Si el usuario ya está autenticado, redirigir a home
-    if (isAuthenticated()) {
-      navigate('/home', { replace: true });
+    async function checkAuth() {
+      const authed = await isAuthenticated();
+      if (authed) {
+        navigate('/home', { replace: true });
+      }
     }
+    checkAuth();
   }, [navigate]);
 
   const handleChange = (e) => {
