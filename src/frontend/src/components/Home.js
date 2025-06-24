@@ -57,6 +57,7 @@ const Home = ({ onSignOut }) => {
 
   useEffect(() => {
     let isMounted = true;
+    let previousUrl = null;
     const fetchProfilePicture = async () => {
       const token = getAuthToken();
       try {
@@ -65,18 +66,35 @@ const Home = ({ onSignOut }) => {
         });
         if (res.ok) {
           const blob = await res.blob();
-          if (isMounted) setAvatarUrl(URL.createObjectURL(blob));
+          const url = URL.createObjectURL(blob);
+          if (isMounted) {
+            if (previousUrl) URL.revokeObjectURL(previousUrl);
+            setAvatarUrl(url);
+            previousUrl = url;
+          }
         } else {
-          if (isMounted) setAvatarUrl(null);
+          if (isMounted) {
+            if (previousUrl) URL.revokeObjectURL(previousUrl);
+            setAvatarUrl(null);
+            previousUrl = null;
+          }
         }
       } catch (err) {
-        if (isMounted) setAvatarUrl(null);
+        if (isMounted) {
+          if (previousUrl) URL.revokeObjectURL(previousUrl);
+          setAvatarUrl(null);
+          previousUrl = null;
+        }
       }
     };
     fetchProfilePicture();
     const onProfilePictureUpdated = () => fetchProfilePicture();
     window.addEventListener('profilePictureUpdated', onProfilePictureUpdated);
-    return () => { isMounted = false; window.removeEventListener('profilePictureUpdated', onProfilePictureUpdated); };
+    return () => {
+      isMounted = false;
+      window.removeEventListener('profilePictureUpdated', onProfilePictureUpdated);
+      if (previousUrl) URL.revokeObjectURL(previousUrl);
+    };
   }, [user?.user?._id]);
 
   const loadData = async () => {
@@ -240,7 +258,7 @@ const Home = ({ onSignOut }) => {
           </div>
           <div className="home-avatar-badge-stack">
             <div className="home-avatar" onClick={() => setPage('profile')} style={{ position: 'relative', overflow: 'hidden' }}>
-              {avatarUrl && avatarUrl !== 'null' && avatarUrl !== '' ? (
+              {avatarUrl && typeof avatarUrl === 'string' && avatarUrl !== 'null' && avatarUrl !== '' ? (
                 <img src={avatarUrl} alt="Profile" className="home-avatar-img" />
               ) : (
                 <span className="home-avatar-placeholder">👤</span>
