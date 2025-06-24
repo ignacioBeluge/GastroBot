@@ -12,6 +12,7 @@ import MealType from './MealType';
 import MealTypeList from './MealTypeList';
 import Favorite from './Favorite';
 import History from './History';
+import MealPlanner from './MealPlanner';
 import './Home.css';
 
 // Utility functions
@@ -208,6 +209,8 @@ const Home = ({ onSignOut }) => {
           </div>
           <div className="home-avatar" onClick={() => setPage('profile')} />
         </div>
+
+        <MealPlanner />
 
         <div className="home-menu-grid">
           <div className="home-menu-item" onClick={() => setPage('search')}>

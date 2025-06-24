@@ -6,9 +6,7 @@ const profileMenuList = [
   { icon: '🧑‍💼', label: 'Personal Info', key: 'personal' },
   { icon: '🏠', label: 'Addresses' },
   { icon: '💳', label: 'Payment', key: 'payment' },
-  { icon: '❤️', label: 'Favourite', key: 'favorite' },
   { icon: '🔔', label: 'Notifications' },
-  { icon: '🕓', label: 'History', key: 'history' },
   { icon: '❓', label: 'FAQs' },
   { icon: '⭐', label: 'User Review' },
   { icon: '🚪', label: 'Sign Out', key: 'signout', logout: true },
@@ -35,7 +33,7 @@ const ProfilePage = ({ onBack, onMenu, onSignOut }) => {
         <div className="profile-username">{name}</div>
         <div className="profile-desc">{bio || '¡Agrega una bio desde Editar Perfil!'}</div>
         <div className="profile-menu-list-2">
-          {profileMenuList.map(item => (
+          {profileMenuList.filter(item => !item.remove).map(item => (
             <div
               className={`profile-menu-item-2${item.logout ? ' logout' : ''}`}
               key={item.label}
