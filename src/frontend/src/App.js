@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import EmailVerification from './components/EmailVerification';
+import PaymentScreen from './components/PaymentScreen';
 import { isAuthenticated, logout } from './services/authService';
 
 // Componente para proteger rutas
@@ -95,6 +96,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
+      <Route path="/payment" element={<ProtectedRoute><PaymentScreen /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>

@@ -76,6 +76,17 @@ const PaymentScreen = () => {
       setFormLoading(false);
       return;
     }
+    if (parseInt(form.expMonth) < 1 || parseInt(form.expMonth) > 12) {
+      setFormError('Invalid expiration month');
+      setFormLoading(false);
+      return;
+    }
+    const currentYear = new Date().getFullYear();
+    if (parseInt(form.expYear) < currentYear) {
+      setFormError('Expiration year must be this year or later');
+      setFormLoading(false);
+      return;
+    }
     try {
       const last4 = form.number.slice(-4);
       const method = {
@@ -89,7 +100,14 @@ const PaymentScreen = () => {
       setPaymentMethods(updated);
       setModalOpen(false);
     } catch (e) {
-      setFormError('Failed to add payment method');
+      let msg = 'Failed to add payment method';
+      if (e && e.message) {
+        try {
+          const errObj = JSON.parse(e.message);
+          if (errObj.msg) msg = errObj.msg;
+        } catch { msg = e.message; }
+      }
+      setFormError(msg);
     }
     setFormLoading(false);
   };
