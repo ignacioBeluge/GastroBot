@@ -33,11 +33,7 @@ const PaymentScreen = ({ onBack }) => {
   const [planLoading, setPlanLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      window.location.href = '/login';
-      return;
-    }
+    // Remove token redirect logic; parent handles auth
     async function fetchData() {
       setLoading(true);
       try {
