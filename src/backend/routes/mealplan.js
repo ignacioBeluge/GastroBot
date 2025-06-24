@@ -18,6 +18,8 @@ router.use((req, res, next) => {
 // Get all meal plans for the authenticated user (optionally by week)
 router.get('/', auth, async (req, res) => {
   try {
+    console.log('[MealPlan API] GET headers:', req.headers);
+    console.log('[MealPlan API] GET req.user:', req.user);
     const { weekStart, weekEnd } = req.query;
     const query = { user: req.user._id };
     if (weekStart && weekEnd) {
