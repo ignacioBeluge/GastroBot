@@ -48,6 +48,7 @@ export const getPaymentMethods = async () => {
 
 export const addPaymentMethod = async (method) => {
   const token = localStorage.getItem('token');
+  console.log('addPaymentMethod token:', token);
   const res = await fetch(`${API_URL}/payment-methods`, {
     method: 'POST',
     headers: {

@@ -2,9 +2,10 @@
   min-height: 100vh;
   background: #181c20;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2.5rem 0;
+  justify-content: flex-start;
+  padding: 0;
 }
 
 .payment-screen-container {
@@ -27,10 +28,9 @@
   border-radius: 18px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   padding: 2.5rem 2.5rem 2rem 2.5rem;
-  min-width: 350px;
   max-width: 420px;
   width: 100%;
-  margin-top: 2.5rem;
+  margin: 2.5rem auto 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
