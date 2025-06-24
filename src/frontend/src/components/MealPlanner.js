@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MealPlanner.css';
 import { mealPlanService } from '../services/mealPlanService';
-import { recipeService } from '../services/recipeService';
 import { getUserPreferences } from '../services/userService';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -29,25 +28,21 @@ const initialPlan = {};
 function MealPlanner() {
   const [mealPlan, setMealPlan] = useState(initialPlan);
   const [sidePanel, setSidePanel] = useState({ open: false, content: null });
-  const [recipes, setRecipes] = useState([]);
   const [preferences, setPreferences] = useState([]);
   const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState('');
   const [loading, setLoading] = useState(true);
   const [weekStart, setWeekStart] = useState(getStartOfWeek(new Date()));
 
-  // Load user preferences, recipes, and meal plan
+  // Load user preferences and meal plan
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       try {
         const prefs = await getUserPreferences();
         setPreferences(prefs);
-        const allRecipes = await recipeService.getAllRecipes();
-        // Filter recipes by preferences (frontend, backend will also check)
-        const filtered = prefs && prefs.length > 0
-          ? allRecipes.filter(r => !r.ingredients || r.ingredients.every(ing => !prefs.some(p => (ing || '').toLowerCase().includes(p.toLowerCase()))))
-          : allRecipes;
-        setRecipes(filtered);
         // Get meal plans for the week
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekEnd.getDate() + 6);
@@ -70,16 +65,23 @@ function MealPlanner() {
 
   // Handler for clicking a cell (add or view meal)
   const handleCellClick = (day, mealTime) => {
-    const meal = mealPlan[day]?.[mealTime];
+    setSearch('');
+    setSearchResults([]);
+    setSearchError('');
     setSidePanel({
       open: true,
-      content: meal ? { type: 'details', meal } : { type: 'add', day, mealTime }
+      content: mealPlan[day]?.[mealTime]
+        ? { type: 'details', meal: mealPlan[day][mealTime] }
+        : { type: 'add', day, mealTime }
     });
   };
 
   // Handler for closing side panel
   const closeSidePanel = () => {
     setSidePanel({ open: false, content: null });
+    setSearch('');
+    setSearchResults([]);
+    setSearchError('');
   };
 
   // Handler for adding a meal
@@ -92,7 +94,7 @@ function MealPlanner() {
       setMealPlan(prev => {
         const updated = { ...prev };
         if (!updated[day]) updated[day] = {};
-        const recipeObj = recipes.find(r => r._id === recipeId);
+        const recipeObj = searchResults.find(r => r.id === recipeId);
         updated[day][mealTime] = { ...res, name: recipeObj?.name || '' };
         return updated;
       });
@@ -119,8 +121,44 @@ function MealPlanner() {
     }
   };
 
-  // Filter recipes by search
-  const filteredRecipes = recipes.filter(r => r.name.toLowerCase().includes(search.toLowerCase()));
+  // Real search: query backend when search changes
+  useEffect(() => {
+    if (!sidePanel.open || sidePanel.content?.type !== 'add') return;
+    if (!search.trim()) {
+      setSearchResults([]);
+      setSearchError('');
+      return;
+    }
+    let cancelled = false;
+    async function doSearch() {
+      setSearchLoading(true);
+      setSearchError('');
+      try {
+        const response = await fetch('http://localhost:5000/api/search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: search.trim(), preferences }),
+        });
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Failed to fetch recipes');
+        }
+        const recipes = await response.json();
+        if (!cancelled) {
+          setSearchResults(recipes);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setSearchError(err.message || 'An error occurred during the search. Please try again.');
+          setSearchResults([]);
+        }
+      } finally {
+        if (!cancelled) setSearchLoading(false);
+      }
+    }
+    doSearch();
+    return () => { cancelled = true; };
+  }, [search, preferences, sidePanel]);
 
   // Render the grid
   return (
@@ -171,9 +209,11 @@ function MealPlanner() {
                 onChange={e => setSearch(e.target.value)}
                 className="recipe-search-input"
               />
+              {searchLoading && <div style={{ color: '#ff7a00', margin: '1rem 0' }}>Searching...</div>}
+              {searchError && <div className="no-recipes">{searchError}</div>}
               <div className="reduced-search-results">
-                {filteredRecipes.slice(0, 2).map(r => (
-                  <div key={r._id} className="reduced-search-card" onClick={() => handleAddMeal(r._id)}>
+                {searchResults.slice(0, 2).map(r => (
+                  <div key={r.id} className="reduced-search-card" onClick={() => handleAddMeal(r.id)}>
                     <img src={r.img} alt={r.name} className="reduced-search-image" />
                     <div className="reduced-search-content">
                       <div className="reduced-search-name">{r.name}</div>
@@ -185,7 +225,9 @@ function MealPlanner() {
                     </div>
                   </div>
                 ))}
-                {filteredRecipes.length === 0 && <div className="no-recipes">No recipes found.</div>}
+                {!searchLoading && searchResults.length === 0 && search && !searchError && (
+                  <div className="no-recipes">No recipes found.</div>
+                )}
               </div>
             </div>
           )}
