@@ -96,7 +96,7 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      <Route path="/payment" element={<ProtectedRoute><PaymentScreen /></ProtectedRoute>} />
+      {/* <Route path="/payment" element={<ProtectedRoute><PaymentScreen /></ProtectedRoute>} /> */}
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>

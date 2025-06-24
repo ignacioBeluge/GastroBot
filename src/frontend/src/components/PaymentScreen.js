@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { getUserPlan, getPaymentMethods, addPaymentMethod } from '../services/userService';
 import './PaymentScreen.css';
 
@@ -21,8 +21,8 @@ const updatePlan = async (plan) => {
   return res.json();
 };
 
-const PaymentScreen = () => {
-  const navigate = useNavigate();
+const PaymentScreen = ({ onBack }) => {
+  // const navigate = useNavigate();
   const [plan, setPlan] = useState('');
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,7 @@ const PaymentScreen = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login', { replace: true });
+      window.location.href = '/login';
       return;
     }
     async function fetchData() {
@@ -51,7 +51,7 @@ const PaymentScreen = () => {
       setLoading(false);
     }
     fetchData();
-  }, [navigate]);
+  }, []);
 
   const handleOpenModal = () => {
     setForm({ cardType: cardTypes[0], name: '', number: '', expMonth: months[0], expYear: years[0] });
@@ -135,7 +135,7 @@ const PaymentScreen = () => {
     <div className="payment-screen-bg">
       <div className="payment-screen-container">
         <div className="payment-header-banner">
-          <button className="payment-back-btn" onClick={() => navigate('/home')}>
+          <button className="payment-back-btn" onClick={onBack}>
             <svg width="28" height="28" viewBox="0 0 22 22">
               <circle cx="11" cy="11" r="11" fill="#f5f5f5" />
               <path d="M14 18l-6-7 6-7" stroke="#222" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />

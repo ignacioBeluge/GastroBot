@@ -200,7 +200,7 @@ const Home = ({ onSignOut }) => {
   }
 
   if (page === 'payment') {
-    return <PaymentScreen />;
+    return <PaymentScreen onBack={() => setPage('profile')} />;
   }
 
   // Main home page
