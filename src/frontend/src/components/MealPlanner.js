@@ -158,8 +158,19 @@ function MealPlanner() {
     try {
       await mealPlanService.deleteMealPlan(meal._id);
       // Re-fetch the meal plan from the backend after deletion
-      const updatedMealPlan = await mealPlanService.getMealPlan();
-      setMealPlan(updatedMealPlan);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      const plans = await mealPlanService.getMealPlans(formatDate(weekStart), formatDate(weekEnd));
+      // Map to { [day]: { [mealTime]: mealObj } }
+      const planMap = {};
+      plans.forEach(mp => {
+        const dateObj = new Date(mp.date);
+        const dayIdx = (dateObj.getUTCDay() + 6) % 7; // 0=Monday, 1=Tuesday, ..., 6=Sunday
+        const day = daysOfWeek[dayIdx];
+        if (!planMap[day]) planMap[day] = {};
+        planMap[day][mp.mealTime] = { ...mp };
+      });
+      setMealPlan(planMap);
       // If the deleted meal is being shown in the modal, close it
       if (selectedRecipe && selectedRecipe._id === meal._id) {
         setModalOpen(false);
