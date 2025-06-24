@@ -3,9 +3,13 @@ import { getCurrentUser } from './authService';
 
 const API_URL = 'http://localhost:5000/api/user';
 
-const getAuthHeaders = () => {
+const getAuthToken = () => {
   const user = getCurrentUser();
-  const token = user?.token;
+  return user?.token || '';
+};
+
+const getAuthHeaders = () => {
+  const token = getAuthToken();
   if (!token) return {};
   return { 'x-auth-token': token };
 };
@@ -29,7 +33,7 @@ export const updateUserPreferences = async (preferences) => {
 };
 
 export const getUserPlan = async () => {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   const res = await fetch(`${API_URL}/plan`, {
     headers: { 'x-auth-token': token }
   });
@@ -38,7 +42,7 @@ export const getUserPlan = async () => {
 };
 
 export const getPaymentMethods = async () => {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   const res = await fetch(`${API_URL}/payment-methods`, {
     headers: { 'x-auth-token': token }
   });
@@ -47,7 +51,7 @@ export const getPaymentMethods = async () => {
 };
 
 export const addPaymentMethod = async (method) => {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   console.log('addPaymentMethod token:', token);
   const res = await fetch(`${API_URL}/payment-methods`, {
     method: 'POST',
