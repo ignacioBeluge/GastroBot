@@ -105,10 +105,14 @@
 }
 
 .meal-type-name {
-  color: #ffffff;
+  color: var(--color-primary-orange);
   font-size: 1.25rem;
   font-weight: 700;
   margin: 0;
+}
+
+.meal-type-card:hover .meal-type-name {
+  color: #fff;
 }
 
 /* Meal Type List Styles */
@@ -199,10 +203,15 @@
 }
 
 .meal-type-list-name {
-  color: #ffffff;
+  color: var(--color-primary-orange);
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
+}
+
+.meal-type-list-card:hover .meal-type-list-name,
+.meal-type-list-card:hover .meal-type-list-meta span {
+  color: #fff !important;
 }
 
 .meal-type-list-meta {
@@ -210,6 +219,10 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.meal-type-list-meta span {
+  color: var(--color-brown);
 }
 
 .meal-type-list-time,

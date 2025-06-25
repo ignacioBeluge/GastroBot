@@ -140,6 +140,10 @@
   margin: 0 0 1rem 0 !important;
 }
 
+.category-card:hover .category-name {
+  color: #fff !important;
+}
+
 .category-description {
   color: var(--color-brown) !important;
   font-size: 1rem !important;
@@ -150,6 +154,10 @@
   line-clamp: 3 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
+}
+
+.category-card:hover .category-description {
+  color: #fff !important;
 }
 
 /* Responsive Design */

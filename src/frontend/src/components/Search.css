@@ -69,18 +69,18 @@
 .search-input {
   flex: 1;
   padding: 1rem 1.5rem;
-  border: 2px solid #404040;
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   font-size: 1rem;
-  background: #333333;
-  color: #e0e0e0;
+  background: #fff;
+  color: var(--color-text-dark);
   transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #ff7a00;
-  background: #404040;
+  border-color: var(--color-primary-orange);
+  background: var(--color-bg-lightgray);
   box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
 }
 
@@ -196,14 +196,14 @@
 .search-recipe-name {
   font-size: 1.25rem; /* Adjusted for grid view */
   font-weight: 700;
-  color: #ffffff;
+  color: var(--color-primary-orange);
   margin-bottom: 0.75rem;
 }
 
 .search-recipe-meta {
   display: flex;
   gap: 1rem;
-  color: #b0b0b0;
+  color: var(--color-brown);
   font-size: 0.9rem;
 }
 
@@ -384,9 +384,9 @@
 }
 
 .add-meal-select {
-  background: #23272b;
-  color: #ff7a00;
-  border: 1.5px solid #ff7a00;
+  background: #fff;
+  color: var(--color-text-dark);
+  border: 1.5px solid var(--color-primary-orange);
   border-radius: 8px;
   padding: 0.4rem 1.2rem 0.4rem 0.7rem;
   font-size: 1em;
@@ -398,12 +398,12 @@
   appearance: none;
 }
 .add-meal-select:focus {
-  border: 2px solid #ff7a00;
+  border: 2px solid var(--color-primary-orange);
   box-shadow: 0 0 0 2px #ff7a0033;
 }
 .add-meal-select option {
-  background: #23272b;
-  color: #e0e0e0;
+  background: #fff;
+  color: var(--color-text-dark);
 }
 
 .search-card {
@@ -444,4 +444,9 @@
 
 .search-item.selected {
   border: 2px solid var(--color-primary-orange);
+}
+
+.search-recipe-card:hover .search-recipe-name,
+.search-recipe-card:hover .search-recipe-meta {
+  color: #fff !important;
 } 

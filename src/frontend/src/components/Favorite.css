@@ -1,6 +1,6 @@
 /* Favorite Component Styles */
 .favorite-bg {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  background: var(--color-bg-offwhite) !important;
   min-height: 100vh !important;
   padding: 2rem 0 !important;
 }
@@ -53,7 +53,7 @@
 }
 
 .favorite-title {
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 2rem !important;
   font-weight: 700 !important;
   flex: 1 !important;
@@ -80,9 +80,10 @@
 .favorite-empty {
   text-align: center !important;
   padding: 4rem 2rem !important;
-  background: #2a2a2a !important;
+  background: #fff !important;
+  color: var(--color-primary-orange) !important;
   border-radius: 20px !important;
-  border: 1px solid #404040 !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .favorite-empty-icon {
@@ -90,10 +91,34 @@
   margin-bottom: 1rem !important;
 }
 
+.favorite-empty-title {
+  color: var(--color-primary-orange) !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+}
+
 .favorite-empty-text {
   color: #b0b0b0 !important;
-  font-size: 1.25rem !important;
-  font-weight: 500 !important;
+  font-size: 1.1rem !important;
+  line-height: 1.5 !important;
+}
+
+.favorite-empty-btn {
+  background: var(--color-primary-orange) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
+  margin-top: 1.5rem !important;
+}
+
+.favorite-empty-btn:hover {
+  background: var(--color-danger) !important;
 }
 
 .favorite-grid {
@@ -127,8 +152,11 @@
 .favorite-card:hover {
   background: var(--color-primary-orange) !important;
   color: #fff !important;
-  transform: translateY(-8px) !important;
-  box-shadow: 0 16px 48px rgba(255, 122, 0, 0.3) !important;
+}
+
+.favorite-card:hover .favorite-name,
+.favorite-card:hover .favorite-meta span {
+  color: #fff !important;
 }
 
 .favorite-image {
@@ -147,12 +175,16 @@
 }
 
 .favorite-name {
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 1.25rem !important;
   font-weight: 700 !important;
   margin: 0 !important;
   line-height: 1.4 !important;
   text-align: center !important;
+}
+
+.favorite-meta span {
+  color: var(--color-brown) !important;
 }
 
 /* Responsive Design */

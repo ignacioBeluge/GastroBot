@@ -190,8 +190,12 @@
   text-align: center !important;
 }
 
+.category-recipes-card:hover .category-recipes-name,
+.category-recipes-card:hover .category-recipes-meta span {
+  color: #fff !important;
+}
+
 .category-recipes-meta span {
-  background: var(--color-secondary-yellow) !important;
   color: var(--color-brown) !important;
 }
 

@@ -38,9 +38,9 @@
 }
 
 .profile-back-btn {
-  background: var(--color-primary-orange);
-  color: #fff;
-  border: none;
+  background: var(--color-table-header);
+  border: 2px solid var(--color-primary-orange);
+  color: var(--color-primary-orange);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -49,19 +49,20 @@
   justify-content: center;
   margin-right: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border 0.2s;
 }
 
 .profile-back-btn:hover {
-  background: var(--color-secondary-red);
+  background: var(--color-table-hover);
+  border-color: var(--color-primary-orange);
 }
 
 .profile-back-btn svg circle {
-  fill: #404040 !important;
+  fill: var(--color-table-header) !important;
 }
 
 .profile-back-btn svg path {
-  stroke: #ffffff !important;
+  stroke: var(--color-primary-orange) !important;
 }
 
 .profile-title {
