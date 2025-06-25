@@ -1,3 +1,20 @@
+:root {
+  --color-bg-offwhite: #fff8f0;
+  --color-bg-lightgray: #f7f3ed;
+  --color-primary-orange: #ff7a00;
+  --color-primary-green: #6fcf97;
+  --color-secondary-yellow: #ffe29a;
+  --color-brown: #a05a2c;
+  --color-text-dark: #3d2c1e;
+  --color-border: #ffe0b2;
+  --color-table-header: #fff3e0;
+  --color-table-row: #fffaf3;
+  --color-table-row-alt: #fff5e1;
+  --color-table-hover: #ffe0b2;
+  --color-table-accent: #ffb300;
+  --color-danger: #ff4444;
+}
+
 .add-to-meal-planner-modal-bg {
   background: var(--color-bg-offwhite);
 }
@@ -30,5 +47,5 @@
 }
 
 .add-to-meal-planner-modal-btn:hover {
-  background: var(--color-secondary-red);
+  background: var(--color-danger);
 } 

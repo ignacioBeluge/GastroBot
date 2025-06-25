@@ -1,12 +1,29 @@
+:root {
+  --color-bg-offwhite: #fff8f0;
+  --color-bg-lightgray: #f7f3ed;
+  --color-primary-orange: #ff7a00;
+  --color-primary-green: #6fcf97;
+  --color-secondary-yellow: #ffe29a;
+  --color-brown: #a05a2c;
+  --color-text-dark: #3d2c1e;
+  --color-border: #ffe0b2;
+  --color-table-header: #fff3e0;
+  --color-table-row: #fffaf3;
+  --color-table-row-alt: #fff5e1;
+  --color-table-hover: #ffe0b2;
+  --color-table-accent: #ffb300;
+  --color-danger: #ff4444;
+}
+
 .filter-bar {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: #2a2a2a;
+  background: var(--color-bg-lightgray);
   border-radius: 12px;
   margin-bottom: 1.5rem;
-  border: 1px solid #404040;
+  border: 1px solid var(--color-border);
   flex-wrap: wrap;
 }
 
@@ -17,16 +34,16 @@
 }
 
 .filter-label {
-  color: #e0e0e0;
+  color: var(--color-brown);
   font-size: 0.9rem;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .filter-select {
-  background: #333333;
-  color: #ffffff;
-  border: 1px solid #505050;
+  background: #fff;
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0.5rem 0.75rem;
   font-size: 0.9rem;
@@ -42,13 +59,13 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #ff7a00;
-  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.2);
+  border-color: var(--color-primary-orange);
+  box-shadow: 0 0 0 2px rgba(255, 122, 0, 0.12);
 }
 
 .filter-clear-btn {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%);
+  color: #fff;
   border: none;
   border-radius: 8px;
   padding: 0.5rem 1rem;

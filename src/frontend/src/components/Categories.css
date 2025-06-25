@@ -1,6 +1,23 @@
+:root {
+  --color-bg-offwhite: #fff8f0;
+  --color-bg-lightgray: #f7f3ed;
+  --color-primary-orange: #ff7a00;
+  --color-primary-green: #6fcf97;
+  --color-secondary-yellow: #ffe29a;
+  --color-brown: #a05a2c;
+  --color-text-dark: #3d2c1e;
+  --color-border: #ffe0b2;
+  --color-table-header: #fff3e0;
+  --color-table-row: #fffaf3;
+  --color-table-row-alt: #fff5e1;
+  --color-table-hover: #ffe0b2;
+  --color-table-accent: #ffb300;
+  --color-danger: #ff4444;
+}
+
 /* Categories Component Styles */
 .categories-bg {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  background: var(--color-bg-offwhite) !important;
   min-height: 100vh !important;
   padding: 2rem 0 !important;
 }
@@ -16,15 +33,15 @@
   align-items: center !important;
   margin-bottom: 2rem !important;
   padding: 1.5rem 2rem !important;
-  background: #2a2a2a !important;
+  background: var(--color-table-header) !important;
   border-radius: 20px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
-  border: 1px solid #404040 !important;
+  box-shadow: 0 8px 24px rgba(255, 145, 77, 0.08) !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .categories-back-btn {
-  background: #404040 !important;
-  border: 2px solid #505050 !important;
+  background: var(--color-border) !important;
+  border: 2px solid var(--color-table-accent) !important;
   border-radius: 50% !important;
   width: 44px !important;
   height: 44px !important;
@@ -37,22 +54,22 @@
 }
 
 .categories-back-btn:hover {
-  background: #505050 !important;
-  border-color: #ff7a00 !important;
+  background: var(--color-table-hover) !important;
+  border-color: var(--color-primary-orange) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15) !important;
 }
 
 .categories-back-btn svg circle {
-  fill: #404040 !important;
+  fill: var(--color-border) !important;
 }
 
 .categories-back-btn svg path {
-  stroke: #ffffff !important;
+  stroke: var(--color-primary-orange) !important;
 }
 
 .categories-title {
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 2rem !important;
   font-weight: 700 !important;
   flex: 1 !important;
@@ -60,12 +77,12 @@
 
 .categories-loading {
   text-align: center !important;
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 1.25rem !important;
   padding: 3rem !important;
-  background: #2a2a2a !important;
+  background: var(--color-table-header) !important;
   border-radius: 20px !important;
-  border: 1px solid #404040 !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .categories-grid {
@@ -75,10 +92,10 @@
 }
 
 .category-card {
-  background: #2a2a2a !important;
+  background: #fff !important;
   border-radius: 20px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
-  border: 1px solid #404040 !important;
+  box-shadow: 0 8px 24px rgba(255, 145, 77, 0.08) !important;
+  border: 1px solid var(--color-border) !important;
   overflow: hidden !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
@@ -92,13 +109,13 @@
   left: 0 !important;
   right: 0 !important;
   height: 4px !important;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%) !important;
 }
 
 .category-card:hover {
   transform: translateY(-8px) !important;
-  box-shadow: 0 16px 48px rgba(255, 122, 0, 0.3) !important;
-  border-color: #ff7a00 !important;
+  box-shadow: 0 16px 48px rgba(255, 122, 0, 0.12) !important;
+  border-color: var(--color-primary-orange) !important;
 }
 
 .category-image {
@@ -117,19 +134,20 @@
 }
 
 .category-name {
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 1.5rem !important;
   font-weight: 700 !important;
   margin: 0 0 1rem 0 !important;
 }
 
 .category-description {
-  color: #b0b0b0 !important;
+  color: var(--color-brown) !important;
   font-size: 1rem !important;
   line-height: 1.6 !important;
   margin: 0 !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 3 !important;
+  line-clamp: 3 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
 }
