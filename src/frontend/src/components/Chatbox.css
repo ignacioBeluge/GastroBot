@@ -106,23 +106,24 @@
   word-wrap: break-word !important;
   line-height: 1.5 !important;
   font-size: 1.08rem !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
   color: #222 !important;
-}
-
-.chat-msg.bot {
-  background: #ffd180 !important;
-  color: #222 !important;
-  align-self: flex-start !important;
+  background: #fff !important;
   border: 1px solid var(--color-border) !important;
 }
 
+.chat-msg.bot {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid var(--color-border) !important;
+  align-self: flex-start !important;
+}
+
 .chat-msg.user {
-  background: var(--color-primary-orange) !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #222 !important;
+  border: 1.5px solid var(--color-primary-orange) !important;
   margin-left: auto !important;
-  font-weight: 600 !important;
-  font-size: 1.08rem !important;
 }
 
 .chat-recipes-list {
