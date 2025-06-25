@@ -188,10 +188,6 @@
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
-.home-menu-item:hover .home-menu-text {
-  color: #ff7a00 !important;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .home-container {

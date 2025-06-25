@@ -16,15 +16,16 @@
   align-items: center;
   margin-bottom: 2rem;
   padding: 1.5rem 2rem;
-  background: #2a2a2a;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border: 1px solid #404040;
+  background: var(--color-table-header);
+  color: var(--color-primary-orange);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(255, 145, 77, 0.08);
+  border: 1px solid var(--color-border);
 }
 
 .search-back-btn {
-  background: #404040;
-  border: 2px solid #505050;
+  background: var(--color-table-header);
+  border: 2px solid var(--color-primary-orange);
   border-radius: 50%;
   width: 44px;
   height: 44px;
@@ -37,18 +38,18 @@
 }
 
 .search-back-btn:hover {
-  background: #505050;
-  border-color: #ff7a00;
+  background: var(--color-table-hover);
+  border-color: var(--color-primary-orange);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15);
 }
 
 .search-back-btn svg circle {
-  fill: #404040;
+  fill: var(--color-table-header);
 }
 
 .search-back-btn svg path {
-  stroke: #ffffff;
+  stroke: var(--color-primary-orange);
 }
 
 .search-title {
@@ -161,9 +162,11 @@
 }
 
 .search-recipe-card {
-  background: #2a2a2a;
-  border: 2px solid #404040;
-  border-radius: 16px;
+  background: #fff;
+  color: var(--color-text-dark);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.08);
+  border: 1px solid var(--color-border);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -173,6 +176,8 @@
 }
 
 .search-recipe-card:hover {
+  background: var(--color-primary-orange);
+  color: #fff;
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   border-color: #ff7a00;
@@ -211,7 +216,10 @@
 .search-empty-state {
   text-align: center;
   padding: 4rem 2rem;
-  color: #a0a0a0;
+  background: #fff;
+  color: var(--color-primary-orange);
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
 }
 
 .search-empty-icon {

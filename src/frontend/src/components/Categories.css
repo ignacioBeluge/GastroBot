@@ -40,8 +40,8 @@
 }
 
 .categories-back-btn {
-  background: var(--color-border) !important;
-  border: 2px solid var(--color-table-accent) !important;
+  background: var(--color-table-header) !important;
+  border: 2px solid var(--color-primary-orange) !important;
   border-radius: 50% !important;
   width: 44px !important;
   height: 44px !important;
@@ -61,7 +61,7 @@
 }
 
 .categories-back-btn svg circle {
-  fill: var(--color-border) !important;
+  fill: var(--color-table-header) !important;
 }
 
 .categories-back-btn svg path {
