@@ -164,6 +164,11 @@
   transform: scaleX(1) !important;
 }
 
+.home-menu-item:hover .home-menu-text,
+.home-menu-item:hover .home-menu-icon {
+  color: #fff !important;
+}
+
 .home-menu-icon {
   font-size: 1.6rem;
   margin-bottom: 6px;

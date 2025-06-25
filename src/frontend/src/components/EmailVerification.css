@@ -4,13 +4,13 @@
   justify-content: center !important;
   align-items: center !important;
   min-height: 100vh !important;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
+  background: var(--color-bg-offwhite) !important;
   padding: 2rem !important;
 }
 
 .verification-card {
-  background: #2a2a2a !important;
-  border: 2px solid #404040 !important;
+  background: #fff !important;
+  border: 2px solid var(--color-border) !important;
   border-radius: 20px !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4) !important;
   padding: 3rem 2rem !important;
@@ -19,6 +19,7 @@
   text-align: center !important;
   position: relative !important;
   overflow: hidden !important;
+  color: var(--color-text-dark) !important;
 }
 
 .verification-card::before {
@@ -32,18 +33,18 @@
 }
 
 .verification-card h2 {
-  color: #ffffff !important;
+  color: var(--color-primary-orange) !important;
   font-size: 2rem !important;
   font-weight: 700 !important;
   margin-bottom: 1.5rem !important;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
 }
 
 .verification-card p {
-  color: #e0e0e0 !important;
+  color: var(--color-text-dark) !important;
   margin-bottom: 1rem !important;
   line-height: 1.6 !important;
   font-size: 1.1rem !important;

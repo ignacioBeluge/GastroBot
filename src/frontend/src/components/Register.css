@@ -4,20 +4,20 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  background: var(--color-bg-offwhite);
   padding: 2rem;
   box-sizing: border-box;
 }
 
 .register-form-container {
-  background: #2a2a2a;
+  background: #fff;
   padding: 3rem;
   border-radius: 20px;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 48px rgba(255, 145, 77, 0.08);
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  border: 1px solid #404040;
+  border: 1px solid var(--color-border);
   position: relative;
   overflow: hidden;
 }
@@ -33,7 +33,7 @@
 }
 
 .register-form-container h2 {
-  color: #ffffff;
+  color: var(--color-primary-orange);
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2rem;
@@ -54,7 +54,7 @@
 }
 
 .form-group label {
-  color: #ffffff;
+  color: var(--color-text-dark);
   font-weight: 600;
   font-size: 1rem;
   margin-bottom: 0.5rem;
@@ -62,20 +62,20 @@
 
 .form-group input {
   padding: 1rem 1.25rem;
-  border: 2px solid #404040;
+  border: 2px solid var(--color-border);
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: #333333;
-  color: #e0e0e0;
+  background: #fff;
+  color: var(--color-text-dark);
   min-height: 52px;
   box-sizing: border-box;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #ff7a00;
-  background: #404040;
+  border-color: var(--color-primary-orange);
+  background: var(--color-bg-lightgray);
   box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.1);
 }
 
@@ -85,8 +85,8 @@
 }
 
 .register-button {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%);
+  color: #fff;
   padding: 1rem 1.5rem;
   border: none;
   border-radius: 12px;

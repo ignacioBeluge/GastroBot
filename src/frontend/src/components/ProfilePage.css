@@ -218,6 +218,11 @@
   color: #fff;
 }
 
+.profile-menu-item-2:hover .profile-menu-icon-2,
+.profile-menu-item-2:hover span {
+  color: #fff !important;
+}
+
 .profile-menu-item-2.logout {
   background: #4a1a1a;
   border-color: #ff4444;
