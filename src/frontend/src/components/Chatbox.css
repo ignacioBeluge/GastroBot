@@ -617,13 +617,13 @@
 
 .chatbox-message.user {
   background: var(--color-primary-orange);
-  color: #fff;
+  color: #1b1a1a;
   border-radius: 12px 12px 4px 12px;
 }
 
 .chatbox-message.bot {
   background: var(--color-primary-green);
-  color: #fff;
+  color: #1b1a1a;
   border-radius: 12px 12px 12px 4px;
 }
 
