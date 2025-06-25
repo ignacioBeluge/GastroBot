@@ -33,13 +33,25 @@
 }
 
 .chatbox-header {
-  background: var(--color-table-header) !important;
-  padding: 1rem 1.5rem !important;
-  border-bottom: 1px solid var(--color-border) !important;
   display: flex !important;
   align-items: center !important;
   gap: 1rem !important;
   min-height: 60px !important;
+  background: var(--color-table-header) !important;
+  padding: 1rem 1.5rem !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.08) !important;
+}
+
+.chatbox-header-logo {
+  width: 38px !important;
+  height: 38px !important;
+  object-fit: contain !important;
+  margin-right: 1rem !important;
+  border-radius: 12px !important;
+  background: #fff8f0 !important;
+  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.10) !important;
+  flex-shrink: 0 !important;
 }
 
 .chatbox-new-btn {
@@ -56,6 +68,7 @@
   align-items: center !important;
   gap: 0.5rem !important;
   flex-shrink: 0 !important;
+  margin-left: auto !important;
 }
 
 .chatbox-new-btn:hover {
@@ -320,6 +333,7 @@
   transition: all 0.3s ease !important;
   flex-shrink: 0 !important;
   outline: none !important;
+  margin-left: 0.5rem !important;
 }
 
 .chatbox-minimize-btn:hover {

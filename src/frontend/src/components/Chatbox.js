@@ -134,6 +134,7 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   };
 
   // If minimized, show only the floating chat button
+  //use logo from public folder
   if (isMinimized) {
     return (
       <div className="chatbox-floating-btn" onClick={onToggleMinimize}>
@@ -145,15 +146,14 @@ const Chatbox = ({ setSelectedRecipe, setShowRecipeDetail, messages: propMessage
   return (
     <div className="chatbox-window">
       <div className="chatbox-header">
+        <img src="/logo.png" alt="GastroBot" className="chatbox-header-logo" />
         <button onClick={handleNewChat} className="chatbox-new-btn" title="New chat">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#fff" strokeWidth="2">
             <path d="M4 17v-2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" />
             <rect x="7" y="7" width="6" height="6" rx="1" />
             <path d="M10 9v2M9 10h2" />
           </svg>
-          <span>New chat</span>
         </button>
-        <span className="chatbox-title">GastroBot Chat</span>
         <button onClick={onToggleMinimize} className="chatbox-minimize-btn" title="Minimize">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2">
             <path d="M18 15l-6-6-6 6"/>
