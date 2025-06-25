@@ -296,15 +296,17 @@ const Home = ({ onSignOut }) => {
         </div>
       </div>
 
-      {/* Always show chat as floating icon */}
-      <Chatbox
-        setSelectedRecipe={setSelectedRecipe}
-        setShowRecipeDetail={setShowRecipeDetail}
-        messages={chatMessages}
-        setMessages={setChatMessages}
-        isMinimized={isChatMinimized}
-        onToggleMinimize={handleToggleChatMinimize}
-      />
+      {/* Only show chat if user is pro */}
+      {plan === 'pro' && (
+        <Chatbox
+          setSelectedRecipe={setSelectedRecipe}
+          setShowRecipeDetail={setShowRecipeDetail}
+          messages={chatMessages}
+          setMessages={setChatMessages}
+          isMinimized={isChatMinimized}
+          onToggleMinimize={handleToggleChatMinimize}
+        />
+      )}
     </div>
   );
 };
