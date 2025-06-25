@@ -625,4 +625,24 @@
   background: var(--color-primary-green);
   color: #fff;
   border-radius: 12px 12px 12px 4px;
+}
+
+.chatbox-window,
+.chatbox-header,
+.chatbox-header-logo,
+.chatbox-title,
+.chatbox-new-btn,
+.chatbox-minimize-btn,
+.chatbox-new-btn svg,
+.chatbox-minimize-btn svg,
+.chatbox-input,
+.chatbox-input-field,
+.chatbox-input-field::placeholder,
+.chatbox-body,
+.chat-msg,
+.chat-msg.bot,
+.chat-msg.user {
+  color: #1b1a1a !important;
+  fill: #1b1a1a !important;
+  stroke: #1b1a1a !important;
 } 
