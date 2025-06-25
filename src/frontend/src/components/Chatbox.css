@@ -288,6 +288,7 @@
   align-items: center !important;
   justify-content: center !important;
   z-index: 1000 !important;
+  padding: 0 !important;
 }
 
 .chatbox-floating-btn:hover {
@@ -297,9 +298,15 @@
 }
 
 .chatbox-floating-icon {
-  width: 32px !important;
-  height: 32px !important;
-  filter: brightness(0) invert(1) !important;
+  width: 38px !important;
+  height: 38px !important;
+  object-fit: contain !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: block !important;
+  margin: 0 !important;
+  filter: none !important;
 }
 
 .chatbox-notification-badge {
