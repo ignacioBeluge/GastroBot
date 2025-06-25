@@ -99,6 +99,12 @@
   font-size: 1.08rem !important;
 }
 
+.chat-msg,
+.chat-msg.bot,
+.chat-msg.user {
+  color: #181818 !important;
+}
+
 .chat-msg {
   padding: 0.85rem 1.1rem !important;
   border-radius: 14px !important;
@@ -107,21 +113,18 @@
   line-height: 1.5 !important;
   font-size: 1.08rem !important;
   font-weight: 400 !important;
-  color: #222 !important;
   background: #fff !important;
   border: 1px solid var(--color-border) !important;
 }
 
 .chat-msg.bot {
   background: #fff !important;
-  color: #222 !important;
   border: 1px solid var(--color-border) !important;
   align-self: flex-start !important;
 }
 
 .chat-msg.user {
   background: #fff !important;
-  color: #222 !important;
   border: 1.5px solid var(--color-primary-orange) !important;
   margin-left: auto !important;
 }
