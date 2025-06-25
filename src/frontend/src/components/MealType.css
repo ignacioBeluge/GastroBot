@@ -228,16 +228,17 @@
 .meal-type-list-time,
 .meal-type-list-difficulty,
 .meal-type-list-rating {
-  background: #404040;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  background: var(--color-secondary-yellow) !important;
+  color: var(--color-brown) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
 }
 
 .meal-type-list-rating {
-  background: #ff7a00;
+  background: var(--color-primary-orange) !important;
+  color: #fff !important;
 }
 
 /* Meal Type List Grid */

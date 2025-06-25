@@ -1,200 +1,366 @@
+:root {
+  --color-bg-offwhite: #fff8f0;
+  --color-bg-lightgray: #f7f3ed;
+  --color-primary-orange: #ff7a00;
+  --color-primary-green: #6fcf97;
+  --color-secondary-yellow: #ffe29a;
+  --color-brown: #a05a2c;
+  --color-text-dark: #3d2c1e;
+  --color-border: #ffe0b2;
+  --color-table-header: #fff3e0;
+  --color-table-row: #fffaf3;
+  --color-table-row-alt: #fff5e1;
+  --color-table-hover: #ffe0b2;
+  --color-table-accent: #ffb300;
+  --color-danger: #ff4444;
+}
+
 /* Personal Info Container Styles */
 .personal-info-bg {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  background: var(--color-bg-offwhite) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .personal-info-container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  background: var(--color-bg-offwhite) !important;
+  min-height: 100vh !important;
+  padding: 2rem 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .personal-info-card {
-  background: #2a2a2a;
-  border-radius: 20px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid #404040;
+  background: #fff !important;
+  border-radius: 20px !important;
+  padding: 2.5rem !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  box-shadow: 0 8px 24px rgba(255, 145, 77, 0.08) !important;
+  border: 1px solid var(--color-border) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.personal-info-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%) !important;
 }
 
 .personal-info-container > div {
-  background: #2a2a2a;
-  border-radius: 20px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid #404040;
+  background: #fff !important;
+  border-radius: 20px !important;
+  padding: 2.5rem !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  box-shadow: 0 8px 24px rgba(255, 145, 77, 0.08) !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .personal-info-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-  gap: 1rem;
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 2rem !important;
+  padding: 1.5rem 2rem !important;
+  background: var(--color-table-header) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(255, 145, 77, 0.08) !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .personal-info-back-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
+  background: var(--color-table-header) !important;
+  border: 2px solid var(--color-primary-orange) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-right: 1rem !important;
 }
 
 .personal-info-back-btn:hover {
-  transform: scale(1.1);
+  background: var(--color-table-hover) !important;
+  border-color: var(--color-primary-orange) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15) !important;
+}
+
+.personal-info-back-btn svg circle {
+  fill: var(--color-table-header) !important;
+}
+
+.personal-info-back-btn svg path {
+  stroke: var(--color-primary-orange) !important;
 }
 
 .personal-info-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #ffffff;
-  flex: 1;
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  color: var(--color-primary-orange) !important;
+  flex: 1 !important;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
 }
 
 .personal-info-content {
-  margin-bottom: 2rem;
+  margin-bottom: 2rem !important;
+  padding: 0 2rem !important;
 }
 
 .personal-info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid #404040;
-  margin-bottom: 1.5rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1rem !important;
+  background: var(--color-bg-lightgray) !important;
+  border-radius: 12px !important;
+  margin-bottom: 1rem !important;
+  border: 1px solid var(--color-border) !important;
+  transition: all 0.3s ease !important;
+}
+
+.personal-info-item:hover {
+  background: var(--color-table-hover) !important;
+  border-color: var(--color-primary-orange) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15) !important;
 }
 
 .personal-info-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0 !important;
 }
 
 .info-label {
-  font-size: 1rem;
-  color: #b0b0b0;
-  font-weight: 500;
+  font-size: 1rem !important;
+  color: var(--color-brown) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 
 .info-value {
-  font-size: 1rem;
-  color: #ffffff;
-  font-weight: 600;
+  font-size: 1rem !important;
+  color: var(--color-text-dark) !important;
+  font-weight: 600 !important;
 }
 
 .edit-profile-btn {
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  width: 100%;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-top: 1rem !important;
+  width: 100% !important;
 }
 
 .edit-profile-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4) !important;
 }
 
 /* Dietary Preferences Section */
 .dietary-preferences-section {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #404040;
+  margin-top: 2.5rem !important;
+  padding: 2rem !important;
+  background: var(--color-bg-lightgray) !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .dietary-preferences-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  text-align: center;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: var(--color-primary-orange) !important;
+  margin-bottom: 1.5rem !important;
+  text-align: center !important;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
 }
 
 .dietary-options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap: 1rem !important;
 }
 
 .dietary-option-btn {
-  padding: 0.75rem 1rem;
-  background: #333333;
-  color: #e0e0e0;
-  border: 2px solid #505050;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
+  padding: 0.75rem 1rem !important;
+  background: #fff !important;
+  color: var(--color-text-dark) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-align: center !important;
 }
 
 .dietary-option-btn.selected {
-  background: #ff7a00;
-  color: #ffffff;
-  border-color: #ff9500;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3);
+  background: var(--color-primary-orange) !important;
+  color: #ffffff !important;
+  border-color: var(--color-primary-orange) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
 }
 
 .dietary-option-btn:hover:not(.selected) {
-  background: #404040;
-  border-color: #666;
+  background: var(--color-table-hover) !important;
+  border-color: var(--color-primary-orange) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15) !important;
 }
 
 .save-preferences-btn {
-  display: block;
-  width: 100%;
-  padding: 1rem;
-  margin-top: 2rem;
-  background: linear-gradient(135deg, #ff7a00 0%, #ff9500 100%);
-  color: #ffffff;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: block !important;
+  width: 100% !important;
+  padding: 1rem !important;
+  margin-top: 2rem !important;
+  background: linear-gradient(135deg, var(--color-primary-orange) 0%, var(--color-table-accent) 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
 }
 
 .save-preferences-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4);
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.4) !important;
 }
 
 .pref-error-msg,
 .pref-success-msg {
-  text-align: center;
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-weight: 600;
+  text-align: center !important;
+  margin-top: 1rem !important;
+  padding: 0.75rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
 }
 
 .pref-error-msg {
-  background: rgba(255, 77, 77, 0.1);
-  color: #ff4d4d;
+  background: rgba(255, 68, 68, 0.1) !important;
+  color: var(--color-danger) !important;
+  border: 1px solid var(--color-danger) !important;
 }
 
 .pref-success-msg {
-  background: rgba(77, 255, 153, 0.1);
-  color: #4dff99;
+  background: rgba(111, 207, 151, 0.1) !important;
+  color: var(--color-primary-green) !important;
+  border: 1px solid var(--color-primary-green) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .personal-info-card {
+    margin: 1rem !important;
+    padding: 2rem !important;
+  }
+  
+  .personal-info-header {
+    padding: 1rem 1.5rem !important;
+  }
+  
+  .personal-info-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .personal-info-content {
+    padding: 0 1.5rem !important;
+  }
+  
+  .dietary-preferences-section {
+    padding: 1.5rem !important;
+  }
+  
+  .dietary-options-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .personal-info-bg,
+  .personal-info-container {
+    padding: 1rem 0 !important;
+  }
+  
+  .personal-info-card {
+    margin: 0.5rem !important;
+    padding: 1.5rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .personal-info-header {
+    padding: 0.75rem 1rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .personal-info-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .personal-info-content {
+    padding: 0 1rem !important;
+  }
+  
+  .dietary-preferences-section {
+    padding: 1rem !important;
+    border-radius: 16px !important;
+  }
+  
+  .dietary-options-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .dietary-option-btn {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .personal-info-card,
+  .personal-info-header,
+  .personal-info-item,
+  .dietary-preferences-section {
+    border-width: 3px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .personal-info-back-btn,
+  .personal-info-item,
+  .dietary-option-btn,
+  .edit-profile-btn,
+  .save-preferences-btn {
+    transition: none !important;
+  }
+  
+  .personal-info-back-btn:hover,
+  .personal-info-item:hover,
+  .dietary-option-btn:hover:not(.selected),
+  .edit-profile-btn:hover,
+  .save-preferences-btn:hover {
+    transform: none !important;
+  }
 } 

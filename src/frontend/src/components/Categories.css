@@ -141,7 +141,7 @@
 }
 
 .category-card:hover .category-name {
-  color: #fff !important;
+  color: var(--color-text-dark) !important;
 }
 
 .category-description {
@@ -157,7 +157,7 @@
 }
 
 .category-card:hover .category-description {
-  color: #fff !important;
+  color: var(--color-brown) !important;
 }
 
 /* Responsive Design */
