@@ -117,18 +117,19 @@
   justify-content: center !important;
   width: 100% !important;
   min-height: 120px !important;
+  margin-top: 2rem !important;
 }
 
 .payment-methods-header {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  margin-bottom: 1.2rem !important;
+  margin-bottom: 1.5rem !important;
   color: var(--color-text-dark) !important;
-  font-size: 1.1em !important;
+  font-size: 1.3em !important;
   font-weight: 600 !important;
   width: 100% !important;
-  margin-bottom: 0.7rem !important;
+  padding: 0 0.5rem !important;
 }
 
 .add-payment-btn {
@@ -154,61 +155,85 @@
 .payment-methods-empty {
   color: var(--color-brown) !important;
   text-align: center !important;
-  margin: 2.5rem 0 1.5rem 0 !important;
-  font-size: 1.1em !important;
+  margin: 3rem 0 2rem 0 !important;
+  font-size: 1.2em !important;
   font-weight: 500 !important;
+  padding: 2rem !important;
+  background: var(--color-bg-lightgray) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--color-border) !important;
 }
 
 .payment-methods-list {
   display: flex !important;
   flex-direction: column !important;
-  gap: 1.1rem !important;
+  gap: 1.5rem !important;
   width: 100% !important;
-  padding-top: 0.5rem !important;
-  padding-bottom: 0.5rem !important;
+  padding: 1rem 0 !important;
 }
 
 .payment-method-card {
   background: var(--color-bg-lightgray) !important;
-  border-radius: 10px !important;
-  margin: 8px 0 !important;
-  padding: 14px 18px !important;
-  font-size: 1.1rem !important;
+  border-radius: 16px !important;
+  margin: 12px 0 !important;
+  padding: 20px 24px !important;
+  font-size: 1.2rem !important;
   font-weight: 500 !important;
-  box-shadow: 0 1px 4px rgba(255, 145, 77, 0.07) !important;
+  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.07) !important;
   transition: background 0.2s, color 0.2s !important;
   border: 1px solid var(--color-border) !important;
   color: var(--color-text-dark) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  flex-wrap: wrap !important;
 }
 
 .payment-method-card .fa-trash, .payment-method-card svg {
   margin-left: auto !important;
   cursor: pointer !important;
-  font-size: 1.2em !important;
+  font-size: 1.4em !important;
   vertical-align: middle !important;
   display: flex !important;
   align-items: center !important;
   color: var(--color-danger) !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.payment-method-card .fa-trash:hover, .payment-method-card svg:hover {
+  background: rgba(255, 68, 68, 0.1) !important;
+  transform: scale(1.1) !important;
 }
 
 .payment-method-type {
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: var(--color-primary-orange) !important;
+  font-size: 1.1rem !important;
+  min-width: 80px !important;
 }
 
 .payment-method-last4 {
-  letter-spacing: 2px !important;
-  font-size: 1.1em !important;
+  letter-spacing: 3px !important;
+  font-size: 1.3em !important;
   color: var(--color-text-dark) !important;
+  font-weight: 600 !important;
+  min-width: 120px !important;
 }
 
 .payment-method-exp {
   color: var(--color-brown) !important;
+  font-size: 1.1rem !important;
+  min-width: 60px !important;
 }
 
 .payment-method-name {
   color: var(--color-text-dark) !important;
   font-style: italic !important;
+  font-size: 1.1rem !important;
+  flex: 1 !important;
+  min-width: 150px !important;
 }
 
 .payment-loading {

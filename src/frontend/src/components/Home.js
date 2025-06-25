@@ -51,13 +51,18 @@ const Home = ({ onSignOut }) => {
         onSignOut();
       }
     };
+    
+    const handlePlanChange = () => {
+      setUserObj(getCurrentUser());
+    };
+    
     window.addEventListener('storage', handleAuthChange);
     window.addEventListener('authStateChanged', handleAuthChange);
-    window.addEventListener('planChanged', handleAuthChange);
+    window.addEventListener('planChanged', handlePlanChange);
     return () => {
       window.removeEventListener('storage', handleAuthChange);
       window.removeEventListener('authStateChanged', handleAuthChange);
-      window.removeEventListener('planChanged', handleAuthChange);
+      window.removeEventListener('planChanged', handlePlanChange);
     };
   }, [onSignOut]);
 

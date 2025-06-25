@@ -153,6 +153,8 @@ const PaymentScreen = ({ onBack }) => {
       if (userObj && userObj.user) {
         userObj.user.plan = res.plan;
         localStorage.setItem('user', JSON.stringify(userObj));
+        // Dispatch event to notify other components of plan change
+        window.dispatchEvent(new Event('planChanged'));
       }
     } catch (e) {
       // handle error
@@ -182,6 +184,8 @@ const PaymentScreen = ({ onBack }) => {
       if (userObj && userObj.user) {
         userObj.user.plan = res.plan;
         localStorage.setItem('user', JSON.stringify(userObj));
+        // Dispatch event to notify other components of plan change
+        window.dispatchEvent(new Event('planChanged'));
       }
       setSelectCardModalOpen(false);
     } catch (e) {
@@ -218,6 +222,8 @@ const PaymentScreen = ({ onBack }) => {
           if (userObj && userObj.user) {
             userObj.user.plan = 'free';
             localStorage.setItem('user', JSON.stringify(userObj));
+            // Dispatch event to notify other components of plan change
+            window.dispatchEvent(new Event('planChanged'));
           }
         }
       }
