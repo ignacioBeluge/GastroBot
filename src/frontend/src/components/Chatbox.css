@@ -641,7 +641,25 @@
 .chatbox-body,
 .chat-msg,
 .chat-msg.bot,
-.chat-msg.user {
+.chat-msg.user,
+.markdown-content,
+.markdown-content *,
+.markdown-content p,
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6,
+.markdown-content ul,
+.markdown-content ol,
+.markdown-content li,
+.markdown-content code,
+.markdown-content pre,
+.markdown-content blockquote,
+.markdown-content strong,
+.markdown-content em,
+.markdown-content a {
   color: #1b1a1a !important;
   fill: #1b1a1a !important;
   stroke: #1b1a1a !important;
