@@ -37,10 +37,10 @@
   align-items: center !important;
   gap: 1rem !important;
   min-height: 60px !important;
-  background: var(--color-table-header) !important;
+  background: #fff !important;
   padding: 1rem 1.5rem !important;
-  border-bottom: 1px solid var(--color-border) !important;
-  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.08) !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  box-shadow: none !important;
 }
 
 .chatbox-header-logo {
@@ -49,17 +49,17 @@
   object-fit: contain !important;
   margin-right: 1rem !important;
   border-radius: 12px !important;
-  background: #fff8f0 !important;
-  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.10) !important;
+  background: #fff !important;
+  box-shadow: none !important;
   flex-shrink: 0 !important;
 }
 
 .chatbox-new-btn {
-  background: var(--color-bg-lightgray) !important;
-  border: 2px solid var(--color-border) !important;
+  background: #fff !important;
+  border: 1.5px solid #e0e0e0 !important;
   border-radius: 8px !important;
   padding: 0.5rem 0.75rem !important;
-  color: var(--color-text-dark) !important;
+  color: #444 !important;
   font-size: 0.85rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
@@ -72,10 +72,15 @@
 }
 
 .chatbox-new-btn:hover {
-  background: var(--color-table-hover) !important;
-  border-color: var(--color-primary-orange) !important;
+  background: #f5f5f5 !important;
+  border-color: #bdbdbd !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.15) !important;
+  box-shadow: none !important;
+}
+
+.chatbox-new-btn svg {
+  color: #444 !important;
+  stroke: #444 !important;
 }
 
 .chatbox-title {
@@ -102,7 +107,10 @@
 .chat-msg,
 .chat-msg.bot,
 .chat-msg.user {
-  color: #181818 !important;
+  background: #fff !important;
+  color: #111 !important;
+  border: 1.5px solid #e0e0e0 !important;
+  font-weight: 400 !important;
 }
 
 .chat-msg {
@@ -180,8 +188,8 @@
 
 .chatbox-input {
   padding: 1rem 1.5rem !important;
-  border-top: 1px solid var(--color-border) !important;
-  background: var(--color-table-header) !important;
+  border-top: 1px solid #e0e0e0 !important;
+  background: #fff !important;
   display: flex !important;
   gap: 0.75rem !important;
   align-items: center !important;
@@ -193,11 +201,11 @@
 .chatbox-input-field {
   flex: 1 !important;
   padding: 0.75rem 1rem !important;
-  border: 2px solid var(--color-border) !important;
+  border: 1.5px solid #e0e0e0 !important;
   border-radius: 12px !important;
   font-size: 1rem !important;
   background: #fff !important;
-  color: var(--color-text-dark) !important;
+  color: #111 !important;
   transition: all 0.3s ease !important;
   position: relative !important;
   z-index: 1 !important;
@@ -205,6 +213,7 @@
   min-height: 44px !important;
   outline: none !important;
   resize: none !important;
+  font-weight: 400 !important;
 }
 
 .chatbox-input-field:focus {
@@ -215,7 +224,7 @@
 }
 
 .chatbox-input-field::placeholder {
-  color: #a05a2c !important;
+  color: #888 !important;
   opacity: 1 !important;
 }
 
@@ -289,11 +298,11 @@
   right: 2rem !important;
   width: 60px !important;
   height: 60px !important;
-  background: var(--color-primary-orange) !important;
-  border: none !important;
+  background: #fff !important;
+  border: 1.5px solid #e0e0e0 !important;
   border-radius: 50% !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
   transition: all 0.3s ease !important;
   display: flex !important;
   align-items: center !important;
@@ -313,7 +322,7 @@
   height: 38px !important;
   object-fit: contain !important;
   border-radius: 50% !important;
-  background: transparent !important;
+  background: #fff !important;
   box-shadow: none !important;
   display: block !important;
   margin: 0 !important;
@@ -339,8 +348,8 @@
 
 /* Minimize Button */
 .chatbox-minimize-btn {
-  background: var(--color-bg-lightgray) !important;
-  border: 2px solid var(--color-border) !important;
+  background: #fff !important;
+  border: 1.5px solid #e0e0e0 !important;
   border-radius: 50% !important;
   width: 32px !important;
   height: 32px !important;
@@ -365,7 +374,8 @@
 }
 
 .chatbox-minimize-btn svg {
-  color: var(--color-primary-orange) !important;
+  color: #444 !important;
+  stroke: #444 !important;
 }
 
 /* Responsive Design */
