@@ -63,25 +63,25 @@ const EmailVerification = () => {
       <div className="verification-card">
         {status === 'verificando' && (
           <>
-            <h2>Verificando tu cuenta...</h2>
+            <h2>Verifying your account...</h2>
             <div className="loading-spinner"></div>
           </>
         )}
         
         {status === 'success' && (
           <>
-            <h2>¡Cuenta verificada!</h2>
-            <p>Tu cuenta ha sido verificada exitosamente.</p>
-            <p>Serás redirigido al inicio de sesión en unos segundos...</p>
+            <h2>Account verified!</h2>
+            <p>Your account has been verified successfully.</p>
+            <p>You will be redirected to the login page in a few seconds...</p>
           </>
         )}
         
         {status === 'error' && (
           <>
-            <h2>Error en la verificación</h2>
+            <h2>Verification error</h2>
             <p>{errorMessage}</p>
             <button onClick={() => navigate('/login', { replace: true })} className="verification-button">
-              Volver al inicio de sesión
+              Back to login
             </button>
           </>
         )}

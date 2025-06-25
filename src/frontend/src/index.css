@@ -1149,3 +1149,15 @@ code {
     flex: 1 1 calc(16.666% - 1.25rem);
   }
 }
+
+/* Food App Color Palette */
+:root {
+  --color-primary-orange: #FF914D;
+  --color-primary-green: #6FCF97;
+  --color-secondary-yellow: #FFD66B;
+  --color-secondary-red: #FF6F61;
+  --color-brown: #A0522D;
+  --color-bg-offwhite: #FFF8F0;
+  --color-bg-lightgray: #F4F4F4;
+  --color-text-dark: #333333;
+}

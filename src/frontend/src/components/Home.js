@@ -39,20 +39,26 @@ const Home = ({ onSignOut }) => {
   const [isChatMinimized, setIsChatMinimized] = useState(true);
   const isMobile = useResponsive();
   const [avatarUrl, setAvatarUrl] = useState(null);
-
-  const user = getCurrentUser();
+  const [userObj, setUserObj] = useState(getCurrentUser());
+  const user = userObj;
   const name = user?.user?.name || '';
   const plan = user?.user?.plan || 'free';
 
   useEffect(() => {
     const handleAuthChange = () => {
+      setUserObj(getCurrentUser());
       if (!getCurrentUser()) {
         onSignOut();
       }
     };
-
     window.addEventListener('storage', handleAuthChange);
-    return () => window.removeEventListener('storage', handleAuthChange);
+    window.addEventListener('authStateChanged', handleAuthChange);
+    window.addEventListener('planChanged', handleAuthChange);
+    return () => {
+      window.removeEventListener('storage', handleAuthChange);
+      window.removeEventListener('authStateChanged', handleAuthChange);
+      window.removeEventListener('planChanged', handleAuthChange);
+    };
   }, [onSignOut]);
 
   useEffect(() => {

@@ -84,4 +84,32 @@
   .filter-clear-btn {
     width: 100%;
   }
+}
+
+.filter-bar-bg {
+  background: var(--color-bg-lightgray);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.filter-bar-btn {
+  background: var(--color-primary-orange);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.filter-bar-btn.selected {
+  background: var(--color-primary-green);
+}
+
+.filter-bar-btn:hover {
+  background: var(--color-secondary-red);
 } 

@@ -569,4 +569,53 @@
 .recipe-ingredients li {
   margin-bottom: 0.3rem;
   line-height: 1.4;
+}
+
+.meal-planner-bg {
+  background: var(--color-bg-offwhite);
+}
+
+.meal-planner-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(255, 145, 77, 0.08);
+  padding: 20px 16px;
+  margin-bottom: 18px;
+}
+
+.meal-planner-title {
+  color: var(--color-primary-orange);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.meal-planner-btn {
+  background: var(--color-primary-orange);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.meal-planner-btn:hover {
+  background: var(--color-secondary-red);
+}
+
+.meal-planner-item {
+  background: var(--color-bg-lightgray);
+  border-radius: 8px;
+  margin: 6px 0;
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(255, 145, 77, 0.07);
+  transition: background 0.2s, color 0.2s;
+}
+
+.meal-planner-item.selected {
+  border: 2px solid var(--color-primary-orange);
 } 

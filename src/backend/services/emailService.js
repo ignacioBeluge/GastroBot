@@ -28,20 +28,20 @@ const sendVerificationEmail = async (email, token) => {
       to: email,
       subject: 'Please verify your email address for GastroBot',
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #ff7a00; text-align: center;">Welcome to Gastrobot</h1>
-          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
-            <p style="font-size: 16px; line-height: 1.5;">Thanks for joining us in Gastrobot. Verify your account by clicking the button down below:</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FFF8F0;">
+          <h1 style="color: #FF914D; text-align: center;">Welcome to GastroBot</h1>
+          <div style="background-color: #fff; padding: 24px; border-radius: 10px; box-shadow: 0 2px 12px rgba(255,145,77,0.08);">
+            <p style="font-size: 16px; line-height: 1.5; color: #333333;">Thanks for joining us in GastroBot. Verify your account by clicking the button down below:</p>
             <div style="text-align: center; margin: 30px 0;">
-              <a href="${verificationUrl}" 
-                 style="background-color: #ff7a00; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">
-                Verificar mi cuenta
+              <a href="${verificationUrl}"
+                 style="background-color: #FF914D; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.1rem; display: inline-block; box-shadow: 0 2px 8px rgba(255,145,77,0.10);">
+                Verify my account
               </a>
             </div>
-            <p style="font-size: 14px; color: #666;">This link is valid for the next 24h.</p>
-            <p style="font-size: 14px; color: #666;">If you didn't create a GastroBot account ignore this email.</p>
+            <p style="font-size: 14px; color: #A0522D;">This link is valid for the next 24h.</p>
+            <p style="font-size: 14px; color: #A0522D;">If you didn't create a GastroBot account, ignore this email.</p>
           </div>
-          <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #999;">
+          <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #6FCF97;">
             <p>© 2024 GastroBot. All rights reserved.</p>
           </div>
         </div>

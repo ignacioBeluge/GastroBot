@@ -8,10 +8,10 @@
 
 /* Home Background */
 .home-bg {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
-  min-height: 100vh !important;
-  padding: 2rem 0 !important;
-  position: relative !important;
+  background: var(--color-bg-offwhite);
+  min-height: 100vh;
+  padding: 2rem 0;
+  position: relative;
 }
 
 /* Home Container */
@@ -39,7 +39,7 @@
 }
 
 .home-title {
-  color: #ffffff !important;
+  color: var(--color-primary-orange);
   font-size: 2.5rem !important;
   font-weight: 800 !important;
   margin: 0 0 0.5rem 0 !important;
@@ -48,21 +48,24 @@
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
   line-height: 1.2 !important;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
 .home-subtitle {
-  color: #b0b0b0 !important;
+  color: var(--color-brown);
   font-size: 1.1rem !important;
   font-weight: 500 !important;
   margin: 0 !important;
   line-height: 1.4 !important;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
 .home-avatar {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--color-secondary-yellow);
+  border: 3px solid var(--color-primary-orange);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,18 +79,19 @@
   object-fit: cover;
   border-radius: 50%;
   display: block;
+  background: var(--color-bg-offwhite);
 }
 
 .home-avatar-placeholder {
   font-size: 32px;
-  color: #bbb;
+  color: var(--color-brown);
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #fff;
+  background: var(--color-bg-offwhite);
 }
 
 /* Home Menu Grid */
@@ -96,19 +100,23 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
   gap: 1.5rem !important;
   margin-top: 1rem !important;
+  background: var(--color-bg-lightgray);
+  border-radius: 18px;
+  padding: 24px 0 12px 0;
+  box-shadow: 0 2px 12px rgba(255, 145, 77, 0.08);
 }
 
 .home-menu-item {
-  background: #333333 !important;
-  border: 2px solid #404040 !important;
-  border-radius: 16px !important;
-  padding: 2rem 1.5rem !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
+  background: #fff;
+  border-radius: 12px;
+  margin: 8px 16px;
+  padding: 18px 0;
+  color: var(--color-text-dark);
+  font-weight: 500;
+  font-size: 1.1rem;
+  box-shadow: 0 1px 4px rgba(255, 145, 77, 0.07);
+  transition: background 0.2s, box-shadow 0.2s;
   cursor: pointer !important;
-  transition: all 0.3s ease !important;
   text-align: center !important;
   min-height: 160px !important;
   position: relative !important;
@@ -128,10 +136,9 @@
 }
 
 .home-menu-item:hover {
-  background: #404040 !important;
-  border-color: #ff7a00 !important;
-  transform: translateY(-8px) !important;
-  box-shadow: 0 12px 32px rgba(255, 122, 0, 0.3) !important;
+  background: var(--color-primary-orange);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255, 145, 77, 0.18);
 }
 
 .home-menu-item:hover::before {
@@ -139,8 +146,9 @@
 }
 
 .home-menu-icon {
-  font-size: 3rem !important;
-  margin-bottom: 1rem !important;
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  color: var(--color-primary-orange);
   transition: all 0.3s ease !important;
 }
 
@@ -149,10 +157,11 @@
 }
 
 .home-menu-text {
-  color: #ffffff !important;
+  color: var(--color-text-dark);
   font-size: 1.2rem !important;
   font-weight: 700 !important;
   transition: all 0.3s ease !important;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
 .home-menu-item:hover .home-menu-text {
@@ -306,15 +315,15 @@
 
 .home-pro-badge {
   position: static;
-  margin-top: 0.25rem;
-  background: linear-gradient(90deg, #ff7a00 0%, #ff9500 100%);
+  margin-top: 6px;
+  background: var(--color-primary-green);
   color: #fff;
-  font-weight: 700;
-  font-size: 0.8rem;
-  border-radius: 7px;
-  padding: 0.10em 0.7em;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  padding: 2px 10px;
   letter-spacing: 1.1px;
-  box-shadow: 0 1px 4px rgba(255, 122, 0, 0.10);
+  box-shadow: 0 2px 8px rgba(111, 207, 151, 0.15);
   z-index: 10;
   pointer-events: none;
   border: none;
@@ -331,7 +340,7 @@
 
 .home-avatar-placeholder {
   font-size: 2.2rem;
-  color: #fff;
+  color: var(--color-brown);
   display: flex;
   align-items: center;
   justify-content: center;
