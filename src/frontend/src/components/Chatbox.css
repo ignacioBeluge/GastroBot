@@ -95,28 +95,34 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 0.75rem !important;
+  color: #222 !important;
+  font-size: 1.08rem !important;
 }
 
 .chat-msg {
-  padding: 0.75rem 1rem !important;
-  border-radius: 12px !important;
+  padding: 0.85rem 1.1rem !important;
+  border-radius: 14px !important;
   max-width: 80% !important;
   word-wrap: break-word !important;
-  line-height: 1.4 !important;
-  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  font-size: 1.08rem !important;
+  font-weight: 500 !important;
+  color: #222 !important;
 }
 
 .chat-msg.bot {
-  background: var(--color-bg-lightgray) !important;
-  color: var(--color-text-dark) !important;
+  background: #ffd180 !important;
+  color: #222 !important;
   align-self: flex-start !important;
   border: 1px solid var(--color-border) !important;
 }
 
 .chat-msg.user {
   background: var(--color-primary-orange) !important;
-  color: #ffffff !important;
+  color: #fff !important;
   margin-left: auto !important;
+  font-weight: 600 !important;
+  font-size: 1.08rem !important;
 }
 
 .chat-recipes-list {
@@ -205,7 +211,8 @@
 }
 
 .chatbox-input-field::placeholder {
-  color: var(--color-brown) !important;
+  color: #a05a2c !important;
+  opacity: 1 !important;
 }
 
 .chatbox-icon-btn {
