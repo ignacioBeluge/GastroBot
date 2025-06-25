@@ -43,7 +43,7 @@ const Login = () => {
         navigate('/home', { replace: true });
       }
     } catch (err) {
-      setError(err.message || 'Error en el inicio de sesión');
+      setError(err.message || 'Error logging in. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -52,7 +52,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-form-container">
-        <h2>Iniciar Sesión en GastroBot</h2>
+        <h2>GastroBot Login</h2>
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit} className="login-form">
@@ -65,13 +65,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Ingresa tu email"
+              placeholder="Enter your email"
               disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Password</label>
             <div style={{ position: 'relative' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -80,7 +80,7 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="Ingresa tu contraseña"
+                placeholder="Enter your password"
                 disabled={loading}
                 style={{ paddingRight: '44px' }}
                 autoComplete="current-password"
@@ -107,7 +107,7 @@ const Login = () => {
                 onClick={() => setShowPassword((v) => !v)}
                 tabIndex={-1}
                 disabled={loading}
-                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                aria-label={showPassword ? 'Hide Password' : 'Show Password'}
               >
                 {showPassword ? (
                   // SVG de ojo cerrado
@@ -125,12 +125,12 @@ const Login = () => {
             className="login-button"
             disabled={loading}
           >
-            {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            {loading ? 'Logging in' : 'Log In'}
           </button>
         </form>
 
         <p className="register-link">
-          ¿No tienes una cuenta? <Link to="/register">Regístrate</Link>
+          Don't have an account?<Link to="/register">Sign up</Link>
         </p>
       </div>
     </div>

@@ -28,23 +28,23 @@ const Register = () => {
 
   const validateForm = () => {
     if (formData.name.trim().length < 2) {
-      setError('El nombre debe tener al menos 2 caracteres');
+      setError('Name must be at least 2 characters long');
       return false;
     }
 
     if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres');
+      setError('Password must be at least 6 characters long');
       return false;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Las contraseñas no coinciden');
+      setError('Passwords do not match');
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError('Por favor, ingresa un email válido');
+      setError('Please enter a valid email address');
       return false;
     }
 
@@ -65,12 +65,12 @@ const Register = () => {
     try {
       const { confirmPassword, ...userData } = formData;
       await register(userData);
-      setSuccess('Registro exitoso. Por favor, verifica tu email para activar tu cuenta.');
+      setSuccess('Sign up succesful! Please verify your email to log in.');
       setTimeout(() => {
         navigate('/login');
       }, 3000);
     } catch (err) {
-      setError(err.message || 'Error en el registro');
+      setError(err.message || 'Sign up failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -79,13 +79,13 @@ const Register = () => {
   return (
     <div className="register-container">
       <div className="register-form-container">
-        <h2>Registro en GastroBot</h2>
+        <h2>Sign Up</h2>
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
         
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-group">
-            <label htmlFor="name">Nombre</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
               id="name"
@@ -93,7 +93,7 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              placeholder="Ingresa tu nombre"
+              placeholder="Enter your name"
               disabled={loading}
             />
           </div>
@@ -107,13 +107,13 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Ingresa tu email"
+              placeholder="Enter your email"
               disabled={loading}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor="password">Password</label>
             <div style={{ position: 'relative' }}>
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -122,7 +122,7 @@ const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                placeholder="Ingresa tu contraseña"
+                placeholder="Enter your password"
                 disabled={loading}
                 style={{ paddingRight: '44px' }}
                 autoComplete="new-password"
@@ -149,7 +149,7 @@ const Register = () => {
                 onClick={() => setShowPassword((v) => !v)}
                 tabIndex={-1}
                 disabled={loading}
-                aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
                   // SVG de ojo cerrado
@@ -163,7 +163,7 @@ const Register = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+            <label htmlFor="confirmPassword">Confirm password</label>
             <div style={{ position: 'relative' }}>
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -172,7 +172,7 @@ const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
-                placeholder="Confirma tu contraseña"
+                placeholder="Reenter your password"
                 disabled={loading}
                 style={{ paddingRight: '44px' }}
                 autoComplete="new-password"
@@ -199,7 +199,7 @@ const Register = () => {
                 onClick={() => setShowConfirmPassword((v) => !v)}
                 tabIndex={-1}
                 disabled={loading}
-                aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
                 {showConfirmPassword ? (
                   // SVG de ojo cerrado
@@ -217,12 +217,12 @@ const Register = () => {
             className="register-button"
             disabled={loading}
           >
-            {loading ? 'Registrando...' : 'Registrarse'}
+            {loading ? 'Signing up...' : 'Sign up'}
           </button>
         </form>
 
         <p className="login-link">
-          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+          Already have an account? <Link to="/login">Log in</Link>
         </p>
       </div>
     </div>
